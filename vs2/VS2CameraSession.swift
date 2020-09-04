@@ -10,7 +10,7 @@ import AVFoundation
 
 class VS2CameraSession: NSObject {
     let session = AVCaptureSession()
-    let frontCamera = AVCaptureDevice.default(AVCaptureDevice.DeviceType.builtInWideAngleCamera, for: .video, position: .front)
+    let frontCamera = AVCaptureDevice.default(for: .video)
 
     func startCapturing() {
         if let camera = frontCamera, let input = try? AVCaptureDeviceInput(device: camera) {
@@ -37,7 +37,7 @@ class VS2CameraSession: NSObject {
 }
 
 extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
-    func captureOutput(_ output: AVCaptureOutput, didDrop sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         print("capture")
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             let width = CVPixelBufferGetWidth(pixelBuffer)
