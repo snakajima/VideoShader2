@@ -25,7 +25,6 @@ final class VS2CameraViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        UIInterfaceOrientation
         if let orientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation {
             print("orientation=", orientation.rawValue)
             switch(orientation) {

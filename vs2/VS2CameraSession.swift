@@ -59,7 +59,7 @@ class VS2CameraSession: NSObject {
             return
         }
         // Apply filter(s)
-        let filter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
+        let filter = MPSImageGaussianBlur(device:gpu, sigma: 1.0)
         filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
         
         commandBuffer.present(drawable)
