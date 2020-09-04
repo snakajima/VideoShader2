@@ -11,8 +11,12 @@ import AVFoundation
 class VS2CameraSession: NSObject {
     let session = AVCaptureSession()
     let frontCamera = AVCaptureDevice.default(for: .video)
+    let device = MTLCreateSystemDefaultDevice()!
+    var textureCache:CVMetalTextureCache?
+    var texture:MTLTexture?
 
     func startCapturing() {
+        CVMetalTextureCacheCreate(nil, nil, device, nil, &textureCache)
         if let camera = frontCamera, let input = try? AVCaptureDeviceInput(device: camera) {
             session.beginConfiguration()
             if session.canAddInput(input) {
@@ -38,13 +42,13 @@ class VS2CameraSession: NSObject {
 
 extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        print("capture")
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             let width = CVPixelBufferGetWidth(pixelBuffer)
             let height = CVPixelBufferGetHeight(pixelBuffer)
-            print("capture", width, height)
+            var textureRef:CVMetalTexture?
+            CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache!, pixelBuffer, nil, .bgra8Unorm, width, height, 0, &textureRef)
+            texture = CVMetalTextureGetTexture(textureRef!)
         }
-
     }
 }
 

@@ -10,20 +10,23 @@ import UIKit
 import AVFoundation
 import SwiftUI
 import MetalKit
+import MetalPerformanceShaders
 
 final class VS2CameraViewController: UIViewController {
     let cameraSession = VS2CameraSession()
-    let metalView = MTKView()
+    lazy var metalView = MTKView(frame: CGRect.zero, device: self.cameraSession.device)
     var previewLayer:AVCaptureVideoPreviewLayer?
     override func viewDidLoad() {
         cameraSession.startCapturing()
         
+        /*
         let previewLayer = AVCaptureVideoPreviewLayer(session: cameraSession.session)
         previewLayer.videoGravity = .resizeAspectFill
         previewLayer.connection?.videoOrientation = .portrait
         view.layer.insertSublayer(previewLayer, at: 0)
-        previewLayer.frame = view.frame
+        //previewLayer.frame = view.frame
         self.previewLayer = previewLayer
+        */
         
         // metal
         metalView.backgroundColor = .yellow
@@ -48,6 +51,14 @@ extension VS2CameraViewController : MTKViewDelegate {
     
     func draw(in view: MTKView) {
         //
+        if let texture = cameraSession.texture,
+            let drawingTexture = view.currentDrawable?.texture,
+            let commandQueue = cameraSession.device.makeCommandQueue(),
+            let commandBuffer = commandQueue.makeCommandBuffer() {
+            let filter = MPSImageGaussianBlur(device: cameraSession.device, sigma: 10.0)
+            filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawingTexture)
+            cameraSession.texture = nil
+        }
     }
 }
 
