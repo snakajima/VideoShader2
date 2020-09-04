@@ -17,7 +17,7 @@ class VS2CameraSession: NSObject {
     private var textureCache:CVMetalTextureCache?
     private var texture:MTLTexture?
 
-    func startCapturing() {
+    func startRunning() {
         CVMetalTextureCacheCreate(nil, nil, gpu, nil, &textureCache)
         guard let camera = camera,
               let input = try? AVCaptureDeviceInput(device: camera) else {

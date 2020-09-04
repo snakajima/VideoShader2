@@ -12,7 +12,6 @@ import MetalKit
 
 final class VS2CameraViewController: UIViewController {
     let cameraSession = VS2CameraSession()
-    //var previewLayer:AVCaptureVideoPreviewLayer?
 
     override func loadView() {
         let metalView = MTKView()
@@ -25,7 +24,7 @@ final class VS2CameraViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        cameraSession.startCapturing()
+        cameraSession.startRunning()
     }
 }
 
@@ -46,6 +45,5 @@ extension VS2CameraViewController : UIViewControllerRepresentable {
     }
     
     public func updateUIViewController(_ uiViewController: VS2CameraViewController, context: UIViewControllerRepresentableContext<VS2CameraViewController>) {
-        //
     }
 }
