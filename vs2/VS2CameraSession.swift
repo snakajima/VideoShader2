@@ -21,12 +21,10 @@ class VS2CameraSession: NSObject {
             session.beginConfiguration()
             if session.canAddInput(input) {
                 session.addInput(input)
-                print("addInput")
                 setOutput()
             }
             session.commitConfiguration()
             session.startRunning()
-            print("startRunning")
         }
     }
     
@@ -36,7 +34,6 @@ class VS2CameraSession: NSObject {
         output.videoSettings = [ kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA ]
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
-        print("setOutput")
     }
 }
 
@@ -47,7 +44,8 @@ extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
             let width = CVPixelBufferGetWidth(pixelBuffer)
             let height = CVPixelBufferGetHeight(pixelBuffer)
             var textureRef:CVMetalTexture?
-            CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache, pixelBuffer, nil, .bgra8Unorm, width, height, 0, &textureRef)
+            CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache, pixelBuffer, nil,
+                                                      .bgra8Unorm, width, height, 0, &textureRef)
             texture = CVMetalTextureGetTexture(textureRef!)
         }
     }

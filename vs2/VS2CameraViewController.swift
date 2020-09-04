@@ -56,13 +56,12 @@ extension VS2CameraViewController : MTKViewDelegate {
            let drawingTexture = view.currentDrawable?.texture,
            let commandQueue = cameraSession.device.makeCommandQueue(),
            let commandBuffer = commandQueue.makeCommandBuffer() {
-            print("draw", texture.width, texture.height)
             let filter = MPSImageGaussianBlur(device: cameraSession.device, sigma: 10.0)
 
             filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawingTexture)
+            commandBuffer.present(view.currentDrawable!)
+            commandBuffer.commit()
             cameraSession.texture = nil
-        } else {
-            print("skip draw")
         }
     }
 }
