@@ -10,14 +10,15 @@ import AVFoundation
 import MetalPerformanceShaders
 
 class VS2CameraSession: NSObject {
-    let session = AVCaptureSession()
-    let camera = AVCaptureDevice.default(for: .video)
-    let device = MTLCreateSystemDefaultDevice()!
-    var textureCache:CVMetalTextureCache?
-    var texture:MTLTexture?
+    let gpu = MTLCreateSystemDefaultDevice()!
+
+    private let session = AVCaptureSession()
+    private let camera = AVCaptureDevice.default(for: .video)
+    private var textureCache:CVMetalTextureCache?
+    private var texture:MTLTexture?
 
     func startCapturing() {
-        CVMetalTextureCacheCreate(nil, nil, device, nil, &textureCache)
+        CVMetalTextureCacheCreate(nil, nil, gpu, nil, &textureCache)
         guard let camera = camera,
               let input = try? AVCaptureDeviceInput(device: camera) else {
             return
@@ -39,12 +40,12 @@ class VS2CameraSession: NSObject {
     func draw(drawable:CAMetalDrawable?) {
         guard let texture = self.texture,
            let drawable = drawable,
-           let commandQueue = device.makeCommandQueue(),
+           let commandQueue = gpu.makeCommandQueue(),
            let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
         }
         // Apply filter(s)
-        let filter = MPSImageGaussianBlur(device:device, sigma: 10.0)
+        let filter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
         filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
         
         commandBuffer.present(drawable)

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AVFoundation
 import SwiftUI
 import MetalKit
 
@@ -28,7 +27,7 @@ final class VS2CameraViewController: UIViewController {
         */
         
         // metal
-        let metalView = MTKView(frame: view.bounds, device: self.cameraSession.device)
+        let metalView = MTKView(frame: view.bounds, device: self.cameraSession.gpu)
         metalView.delegate = self
         metalView.clearColor = MTLClearColorMake(1, 1, 1, 1)
         metalView.colorPixelFormat = MTLPixelFormat.bgra8Unorm
