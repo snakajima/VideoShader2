@@ -17,6 +17,7 @@ class VS2CameraSession: NSObject {
     private let camera = AVCaptureDevice.default(for: .video)
     private var textureCache:CVMetalTextureCache?
     private var texture:MTLTexture?
+    private var sampleBuffer: CMSampleBuffer? // retainer
 
     func startRunning() {
         CVMetalTextureCacheCreate(nil, nil, gpu, nil, &textureCache)
@@ -84,6 +85,7 @@ extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
             CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache, pixelBuffer, nil,
                                                       .bgra8Unorm, width, height, 0, &textureRef)
             texture = CVMetalTextureGetTexture(textureRef!)
+            self.sampleBuffer = sampleBuffer // to retain the sampleBuffer behind the texture
         }
     }
 }
