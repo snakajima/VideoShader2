@@ -14,7 +14,8 @@ import MetalPerformanceShaders
 
 final class VS2CameraViewController: UIViewController {
     let cameraSession = VS2CameraSession()
-    var previewLayer:AVCaptureVideoPreviewLayer?
+    //var previewLayer:AVCaptureVideoPreviewLayer?
+    var metalView:MTKView?
     override func viewDidLoad() {
         cameraSession.startCapturing()
         
@@ -33,13 +34,14 @@ final class VS2CameraViewController: UIViewController {
         metalView.clearColor = MTLClearColorMake(1, 1, 1, 1)
         metalView.colorPixelFormat = MTLPixelFormat.bgra8Unorm
         metalView.framebufferOnly = false
-        metalView.autoResizeDrawable = false
+        //metalView.autoResizeDrawable = false
         view.addSubview(metalView)
+        self.metalView = metalView;
     }
     
     override func viewDidLayoutSubviews() {
-        self.previewLayer?.frame = view.frame
-        //self.metalView.frame = view.frame
+        //self.previewLayer?.frame = view.frame
+        metalView?.frame = view.frame
     }
 }
 
@@ -54,11 +56,13 @@ extension VS2CameraViewController : MTKViewDelegate {
            let drawingTexture = view.currentDrawable?.texture,
            let commandQueue = cameraSession.device.makeCommandQueue(),
            let commandBuffer = commandQueue.makeCommandBuffer() {
-            print("draw")
+            print("draw", texture.width, texture.height)
             let filter = MPSImageGaussianBlur(device: cameraSession.device, sigma: 10.0)
 
             filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawingTexture)
             cameraSession.texture = nil
+        } else {
+            print("skip draw")
         }
     }
 }

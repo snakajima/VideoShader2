@@ -42,11 +42,12 @@ class VS2CameraSession: NSObject {
 
 extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
+           let textureCache = self.textureCache {
             let width = CVPixelBufferGetWidth(pixelBuffer)
             let height = CVPixelBufferGetHeight(pixelBuffer)
             var textureRef:CVMetalTexture?
-            CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache!, pixelBuffer, nil, .bgra8Unorm, width, height, 0, &textureRef)
+            CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache, pixelBuffer, nil, .bgra8Unorm, width, height, 0, &textureRef)
             texture = CVMetalTextureGetTexture(textureRef!)
         }
     }
