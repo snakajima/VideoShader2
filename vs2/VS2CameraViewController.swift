@@ -14,7 +14,6 @@ import MetalPerformanceShaders
 
 final class VS2CameraViewController: UIViewController {
     let cameraSession = VS2CameraSession()
-    lazy var metalView = MTKView(frame: CGRect.zero, device: self.cameraSession.device)
     var previewLayer:AVCaptureVideoPreviewLayer?
     override func viewDidLoad() {
         cameraSession.startCapturing()
@@ -29,18 +28,18 @@ final class VS2CameraViewController: UIViewController {
         */
         
         // metal
-        metalView.backgroundColor = .yellow
-        self.view.addSubview(metalView)
+        let metalView = MTKView(frame: view.bounds, device: self.cameraSession.device)
         metalView.delegate = self
         metalView.clearColor = MTLClearColorMake(1, 1, 1, 1)
         metalView.colorPixelFormat = MTLPixelFormat.bgra8Unorm
         metalView.framebufferOnly = false
         metalView.autoResizeDrawable = false
+        view.addSubview(metalView)
     }
     
     override func viewDidLayoutSubviews() {
         self.previewLayer?.frame = view.frame
-        self.metalView.frame = view.frame
+        //self.metalView.frame = view.frame
     }
 }
 
