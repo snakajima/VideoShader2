@@ -11,30 +11,29 @@ import MetalPerformanceShaders
 
 class VS2CameraSession: NSObject {
     let session = AVCaptureSession()
-    let frontCamera = AVCaptureDevice.default(for: .video)
+    let camera = AVCaptureDevice.default(for: .video)
     let device = MTLCreateSystemDefaultDevice()!
     var textureCache:CVMetalTextureCache?
     var texture:MTLTexture?
 
     func startCapturing() {
         CVMetalTextureCacheCreate(nil, nil, device, nil, &textureCache)
-        if let camera = frontCamera, let input = try? AVCaptureDeviceInput(device: camera) {
-            session.beginConfiguration()
-            if session.canAddInput(input) {
-                session.addInput(input)
-                setOutput()
-            }
-            session.commitConfiguration()
-            session.startRunning()
+        guard let camera = camera,
+              let input = try? AVCaptureDeviceInput(device: camera) else {
+            return
         }
-    }
-    
-    private func setOutput() {
+        guard session.canAddInput(input) else {
+            return
+        }
+        session.addInput(input)
+        
         let output = AVCaptureVideoDataOutput()
         output.alwaysDiscardsLateVideoFrames = true
         output.videoSettings = [ kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA ]
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
+
+        session.startRunning()
     }
     
     func draw(drawable:CAMetalDrawable?) {
