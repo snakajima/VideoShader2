@@ -13,33 +13,19 @@ import MetalKit
 final class VS2CameraViewController: UIViewController {
     let cameraSession = VS2CameraSession()
     //var previewLayer:AVCaptureVideoPreviewLayer?
-    var metalView:MTKView?
-    override func viewDidLoad() {
-        cameraSession.startCapturing()
-        
-        /*
-        let previewLayer = AVCaptureVideoPreviewLayer(session: cameraSession.session)
-        previewLayer.videoGravity = .resizeAspectFill
-        previewLayer.connection?.videoOrientation = .portrait
-        view.layer.insertSublayer(previewLayer, at: 0)
-        //previewLayer.frame = view.frame
-        self.previewLayer = previewLayer
-        */
-        
-        // metal
-        let metalView = MTKView(frame: view.bounds, device: self.cameraSession.gpu)
+
+    override func loadView() {
+        let metalView = MTKView()
+        metalView.device = self.cameraSession.gpu
         metalView.delegate = self
         metalView.clearColor = MTLClearColorMake(1, 1, 1, 1)
         metalView.colorPixelFormat = MTLPixelFormat.bgra8Unorm
         metalView.framebufferOnly = false
-        //metalView.autoResizeDrawable = false
-        view.addSubview(metalView)
-        self.metalView = metalView;
+        self.view = metalView
     }
     
-    override func viewDidLayoutSubviews() {
-        //self.previewLayer?.frame = view.frame
-        metalView?.frame = view.frame
+    override func viewDidLoad() {
+        cameraSession.startCapturing()
     }
 }
 
