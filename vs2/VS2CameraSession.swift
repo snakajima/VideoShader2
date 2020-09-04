@@ -8,18 +8,43 @@
 
 import AVFoundation
 
-class VS2CameraSession {
+class VS2CameraSession: NSObject {
     let session = AVCaptureSession()
     let frontCamera = AVCaptureDevice.default(AVCaptureDevice.DeviceType.builtInWideAngleCamera, for: .video, position: .front)
 
     func startCapturing() {
         if let camera = frontCamera, let input = try? AVCaptureDeviceInput(device: camera) {
+            session.beginConfiguration()
             if session.canAddInput(input) {
                 session.addInput(input)
-                session.startRunning()
-                print("startRunning")
+                print("addInput")
+                setOutput()
             }
+            session.commitConfiguration()
+            session.startRunning()
+            print("startRunning")
         }
+    }
+    
+    private func setOutput() {
+        let output = AVCaptureVideoDataOutput()
+        output.alwaysDiscardsLateVideoFrames = true
+        output.videoSettings = [ kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA ]
+        output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
+        session.addOutput(output)
+        print("setOutput")
+    }
+}
+
+extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
+    func captureOutput(_ output: AVCaptureOutput, didDrop sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        print("capture")
+        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+            let width = CVPixelBufferGetWidth(pixelBuffer)
+            let height = CVPixelBufferGetHeight(pixelBuffer)
+            print("capture", width, height)
+        }
+
     }
 }
 

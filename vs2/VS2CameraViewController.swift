@@ -9,9 +9,11 @@
 import UIKit
 import AVFoundation
 import SwiftUI
+import MetalKit
 
 final class VS2CameraViewController: UIViewController {
     let cameraSession = VS2CameraSession()
+    let metalView = MTKView()
     var previewLayer:AVCaptureVideoPreviewLayer?
     override func viewDidLoad() {
         cameraSession.startCapturing()
@@ -22,10 +24,30 @@ final class VS2CameraViewController: UIViewController {
         view.layer.insertSublayer(previewLayer, at: 0)
         previewLayer.frame = view.frame
         self.previewLayer = previewLayer
+        
+        // metal
+        metalView.backgroundColor = .yellow
+        self.view.addSubview(metalView)
+        metalView.delegate = self
+        metalView.clearColor = MTLClearColorMake(1, 1, 1, 1)
+        metalView.colorPixelFormat = MTLPixelFormat.bgra8Unorm
+        metalView.framebufferOnly = false
+        metalView.autoResizeDrawable = false
     }
     
     override func viewDidLayoutSubviews() {
         self.previewLayer?.frame = view.frame
+        self.metalView.frame = view.frame
+    }
+}
+
+extension VS2CameraViewController : MTKViewDelegate {
+    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+        //
+    }
+    
+    func draw(in view: MTKView) {
+        //
     }
 }
 
