@@ -10,7 +10,6 @@ import UIKit
 import AVFoundation
 import SwiftUI
 import MetalKit
-import MetalPerformanceShaders
 
 final class VS2CameraViewController: UIViewController {
     let cameraSession = VS2CameraSession()
@@ -47,22 +46,10 @@ final class VS2CameraViewController: UIViewController {
 
 extension VS2CameraViewController : MTKViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-        //
     }
     
     func draw(in view: MTKView) {
-        //
-        if let texture = cameraSession.texture,
-           let drawingTexture = view.currentDrawable?.texture,
-           let commandQueue = cameraSession.device.makeCommandQueue(),
-           let commandBuffer = commandQueue.makeCommandBuffer() {
-            let filter = MPSImageGaussianBlur(device: cameraSession.device, sigma: 10.0)
-
-            filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawingTexture)
-            commandBuffer.present(view.currentDrawable!)
-            commandBuffer.commit()
-            cameraSession.texture = nil
-        }
+        cameraSession.draw(drawable: view.currentDrawable)
     }
 }
 

@@ -7,6 +7,7 @@
 //
 
 import AVFoundation
+import MetalPerformanceShaders
 
 class VS2CameraSession: NSObject {
     let session = AVCaptureSession()
@@ -34,6 +35,22 @@ class VS2CameraSession: NSObject {
         output.videoSettings = [ kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA ]
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
+    }
+    
+    func draw(drawable:CAMetalDrawable?) {
+        guard let texture = self.texture,
+           let drawable = drawable,
+           let commandQueue = device.makeCommandQueue(),
+           let commandBuffer = commandQueue.makeCommandBuffer() else {
+            return
+        }
+        // Apply filter(s)
+        let filter = MPSImageGaussianBlur(device:device, sigma: 10.0)
+        filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
+        
+        commandBuffer.present(drawable)
+        commandBuffer.commit()
+        self.texture = nil // no need to draw it again
     }
 }
 
