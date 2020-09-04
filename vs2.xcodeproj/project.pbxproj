@@ -13,6 +13,8 @@
 		74B4C1FE250265A30084BF2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74B4C1FD250265A30084BF2C /* Assets.xcassets */; };
 		74B4C201250265A30084BF2C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74B4C200250265A30084BF2C /* Preview Assets.xcassets */; };
 		74B4C204250265A30084BF2C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74B4C202250265A30084BF2C /* LaunchScreen.storyboard */; };
+		74B4C20C250265C90084BF2C /* VS2CameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C20B250265C90084BF2C /* VS2CameraSession.swift */; };
+		74B4C20E25026A420084BF2C /* VS2CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C20D25026A420084BF2C /* VS2CameraViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		74B4C200250265A30084BF2C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		74B4C203250265A30084BF2C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		74B4C205250265A30084BF2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		74B4C20B250265C90084BF2C /* VS2CameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2CameraSession.swift; sourceTree = "<group>"; };
+		74B4C20D25026A420084BF2C /* VS2CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2CameraViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 				74B4C202250265A30084BF2C /* LaunchScreen.storyboard */,
 				74B4C205250265A30084BF2C /* Info.plist */,
 				74B4C1FF250265A30084BF2C /* Preview Content */,
+				74B4C20B250265C90084BF2C /* VS2CameraSession.swift */,
+				74B4C20D25026A420084BF2C /* VS2CameraViewController.swift */,
 			);
 			path = vs2;
 			sourceTree = "<group>";
@@ -146,7 +152,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74B4C20E25026A420084BF2C /* VS2CameraViewController.swift in Sources */,
 				74B4C1F82502659F0084BF2C /* AppDelegate.swift in Sources */,
+				74B4C20C250265C90084BF2C /* VS2CameraSession.swift in Sources */,
 				74B4C1FA2502659F0084BF2C /* SceneDelegate.swift in Sources */,
 				74B4C1FC2502659F0084BF2C /* ContentView.swift in Sources */,
 			);
