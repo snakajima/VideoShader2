@@ -11,6 +11,7 @@ import MetalPerformanceShaders
 
 class VS2CameraSession: NSObject {
     let gpu = MTLCreateSystemDefaultDevice()!
+    var orientation = AVCaptureVideoOrientation.landscapeLeft
 
     private let session = AVCaptureSession()
     private let camera = AVCaptureDevice.default(for: .video)
@@ -29,6 +30,9 @@ class VS2CameraSession: NSObject {
         session.addInput(input)
         
         let output = AVCaptureVideoDataOutput()
+        guard session.canAddOutput(output) else {
+            return
+        }
         output.alwaysDiscardsLateVideoFrames = true
         #if os(macOS)
         // https://stackoverflow.com/questions/46549906/cvmetaltexturecachecreatetexturefromimage-returns-6660-on-macos-10-13
@@ -43,7 +47,7 @@ class VS2CameraSession: NSObject {
         #endif
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
-
+        
         session.startRunning()
     }
     

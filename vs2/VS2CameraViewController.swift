@@ -9,6 +9,7 @@
 import UIKit
 import SwiftUI
 import MetalKit
+import AVFoundation
 
 final class VS2CameraViewController: UIViewController {
     let cameraSession = VS2CameraSession()
@@ -21,6 +22,20 @@ final class VS2CameraViewController: UIViewController {
         metalView.colorPixelFormat = MTLPixelFormat.bgra8Unorm
         metalView.framebufferOnly = false
         self.view = metalView
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        UIInterfaceOrientation
+        if let orientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation {
+            print("orientation=", orientation.rawValue)
+            switch(orientation) {
+            case .landscapeLeft: cameraSession.orientation = AVCaptureVideoOrientation.landscapeLeft
+            case .landscapeRight: cameraSession.orientation = AVCaptureVideoOrientation.landscapeRight
+            case .portrait: cameraSession.orientation = AVCaptureVideoOrientation.portrait
+            case .portraitUpsideDown: cameraSession.orientation = AVCaptureVideoOrientation.portraitUpsideDown
+            default: break
+            }
+        }
     }
     
     override func viewDidLoad() {
