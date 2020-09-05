@@ -42,8 +42,9 @@ final class VS2CameraViewController: NSViewController {
     }
     
     override func viewDidLayout() {
-        let scale = min(view.frame.size.width / metalView.frame.size.width, view.frame.size.height / metalView.frame.size.height)
-        metalView.layer?.transform = CATransform3DMakeScale(scale, scale, 1.0)
+        let ratio = min(view.frame.size.width / metalView.frame.size.width, view.frame.size.height / metalView.frame.size.height)
+        metalView.layer?.transform = CATransform3DMakeScale(ratio, ratio, 1.0)
+        print(ratio)
     }
 }
 
