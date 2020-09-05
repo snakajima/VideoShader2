@@ -20,6 +20,7 @@ class VS2CameraSession: NSObject {
     private var textureCache:CVMetalTextureCache?
     private var texture:MTLTexture?
     private var sampleBuffer: CMSampleBuffer? // retainer
+    private var descriptor:MTLTextureDescriptor?
 
     func startRunning() {
         CVMetalTextureCacheCreate(nil, nil, gpu, nil, &textureCache)
@@ -35,6 +36,10 @@ class VS2CameraSession: NSObject {
         let dimension = CMVideoFormatDescriptionGetDimensions(formatDescription)
         self.dimension = CGSize(width: CGFloat(dimension.width), height: CGFloat(dimension.height))
         print(self.dimension)
+        
+        let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: Int(dimension.width), height: Int(dimension.height), mipmapped: false)
+        descriptor.usage = [.shaderRead, .shaderWrite]
+        self.descriptor = descriptor
         
         let output = AVCaptureVideoDataOutput()
         guard session.canAddOutput(output) else {
@@ -58,6 +63,13 @@ class VS2CameraSession: NSObject {
         session.startRunning()
     }
     
+    func makeTexture() -> MTLTexture? {
+        guard let descriptor = self.descriptor else {
+            return nil
+        }
+        return gpu.makeTexture(descriptor: descriptor)
+    }
+    
     func draw(drawable:CAMetalDrawable?) {
         guard let texture = self.texture,
            let drawable = drawable,
@@ -66,10 +78,8 @@ class VS2CameraSession: NSObject {
             return
         }
         
-        let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: texture.width, height: texture.height, mipmapped: false)
-        descriptor.usage = [.shaderRead, .shaderWrite]
         // Apply filter(s)
-        guard let texture2 = gpu.makeTexture(descriptor: descriptor) else {
+        guard let texture2 = makeTexture() else {
             return
         }
         let blurFilter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
