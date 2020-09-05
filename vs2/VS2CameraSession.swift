@@ -12,6 +12,7 @@ import MetalPerformanceShaders
 class VS2CameraSession: NSObject {
     let gpu = MTLCreateSystemDefaultDevice()!
     var orientation = AVCaptureVideoOrientation.landscapeLeft
+    var dimension = CGSize.zero
 
     private let session = AVCaptureSession()
     private let camera = AVCaptureDevice.default(for: .video)
@@ -29,6 +30,10 @@ class VS2CameraSession: NSObject {
             return
         }
         session.addInput(input)
+        let formatDescription = camera.activeFormat.formatDescription
+        let dimension = CMVideoFormatDescriptionGetDimensions(formatDescription)
+        self.dimension = CGSize(width: CGFloat(dimension.width), height: CGFloat(dimension.height))
+        print(self.dimension)
         
         let output = AVCaptureVideoDataOutput()
         guard session.canAddOutput(output) else {
@@ -60,6 +65,7 @@ class VS2CameraSession: NSObject {
             return
         }
         // Apply filter(s)
+        /*
         let ratio = min(Double(drawable.texture.width) / Double(texture.width), Double(drawable.texture.height) / Double(texture.height))
         var transform = MPSScaleTransform(scaleX: ratio, scaleY: ratio, translateX: 0.0, translateY: 0.0)
         let filter = MPSImageBilinearScale(device: gpu)
@@ -67,8 +73,10 @@ class VS2CameraSession: NSObject {
             filter.scaleTransform = transformPtr
             filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
         }
-        //let filter = MPSImageGaussianBlur(device:gpu, sigma: 1.0)
-        
+        */
+        let filter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
+        filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
+
         commandBuffer.present(drawable)
         commandBuffer.commit()
         self.texture = nil // no need to draw it again

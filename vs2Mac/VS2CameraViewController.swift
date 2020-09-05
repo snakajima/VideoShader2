@@ -13,7 +13,8 @@ import MetalKit
 
 final class VS2CameraViewController: NSViewController {
     let cameraSession = VS2CameraSession()
-    
+    let metalView = MTKView()
+    /*
     override func loadView() {
         let metalView = MTKView()
         metalView.device = self.cameraSession.gpu
@@ -23,9 +24,27 @@ final class VS2CameraViewController: NSViewController {
         metalView.framebufferOnly = false
         self.view = metalView
     }
+    */
+
+    override func loadView() {
+        self.view = NSView()
+    }
     
     override func viewDidLoad() {
         cameraSession.startRunning()
+        metalView.frame = CGRect(origin: .zero, size: CGSize(width:cameraSession.dimension.width, height:cameraSession.dimension.height))
+        metalView.device = self.cameraSession.gpu
+        metalView.delegate = self
+        metalView.clearColor = MTLClearColorMake(1, 1, 1, 1)
+        metalView.colorPixelFormat = MTLPixelFormat.bgra8Unorm
+        metalView.framebufferOnly = false
+        view.addSubview(metalView)
+    }
+    
+    override func viewDidLayout() {
+        print(view.frame)
+        let scale = min(view.frame.size.width / metalView.frame.size.width, view.frame.size.height / metalView.frame.size.height)
+        metalView.layer?.transform = CATransform3DMakeScale(scale, scale, 1.0)
     }
 }
 
