@@ -38,7 +38,8 @@ final class VS2CameraViewController: NSViewController {
         metalView.clearColor = MTLClearColorMake(1, 1, 1, 1)
         metalView.colorPixelFormat = MTLPixelFormat.bgra8Unorm
         metalView.translatesAutoresizingMaskIntoConstraints = false
-        metalView.framebufferOnly = false
+        metalView.autoResizeDrawable = true
+        metalView.framebufferOnly = false // without this, window is not resizable
         view.addSubview(metalView)
         
         let views = ["metal":metalView]
