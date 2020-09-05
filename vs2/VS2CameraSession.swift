@@ -5,6 +5,7 @@
 //  Created by SATOSHI NAKAJIMA on 9/4/20.
 //  Copyright © 2020 SATOSHI NAKAJIMA. All rights reserved.
 //
+// https://developer.apple.com/library/archive/documentation/3DDrawing/Conceptual/MTLBestPracticesGuide/Drawables.html
 
 import AVFoundation
 import MetalPerformanceShaders
@@ -65,7 +66,6 @@ class VS2CameraSession: NSObject {
             return
         }
         // Apply filter(s)
-        /*
         let ratio = min(Double(drawable.texture.width) / Double(texture.width), Double(drawable.texture.height) / Double(texture.height))
         var transform = MPSScaleTransform(scaleX: ratio, scaleY: ratio, translateX: 0.0, translateY: 0.0)
         let filter = MPSImageBilinearScale(device: gpu)
@@ -73,8 +73,7 @@ class VS2CameraSession: NSObject {
             filter.scaleTransform = transformPtr
             filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
         }
-        */
-        let filter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
+        //let filter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
         filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
 
         commandBuffer.present(drawable)
