@@ -65,16 +65,26 @@ class VS2CameraSession: NSObject {
            let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
         }
+        
+        let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: texture.width, height: texture.height, mipmapped: false)
+        descriptor.usage = [.shaderRead, .shaderWrite]
         // Apply filter(s)
+        guard let texture2 = gpu.makeTexture(descriptor: descriptor) else {
+            return
+        }
+        let blurFilter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
+        blurFilter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: texture2)
+
+        // Scale it to drawable
         let ratio = min(Double(drawable.texture.width) / Double(texture.width), Double(drawable.texture.height) / Double(texture.height))
         var transform = MPSScaleTransform(scaleX: ratio, scaleY: ratio, translateX: 0.0, translateY: 0.0)
         let filter = MPSImageBilinearScale(device: gpu)
         withUnsafePointer(to: &transform) { (transformPtr: UnsafePointer<MPSScaleTransform>) -> () in
             filter.scaleTransform = transformPtr
-            filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
+            filter.encode(commandBuffer: commandBuffer, sourceTexture: texture2, destinationTexture: drawable.texture)
         }
         //let filter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
-        filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
+        //filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
 
         commandBuffer.present(drawable)
         commandBuffer.commit()
