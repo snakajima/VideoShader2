@@ -37,15 +37,23 @@ final class VS2CameraViewController: NSViewController {
         metalView.delegate = self
         metalView.clearColor = MTLClearColorMake(1, 1, 1, 1)
         metalView.colorPixelFormat = MTLPixelFormat.bgra8Unorm
+        metalView.translatesAutoresizingMaskIntoConstraints = false
         metalView.framebufferOnly = false
         view.addSubview(metalView)
+        
+        let views = ["metal":metalView]
+        let verticalConstrains = NSLayoutConstraint.constraints(withVisualFormat: "V:|-[metal]-|", options: .alignAllTop, metrics: nil, views: views)
+        let horizontalConstrains = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[metal]-|", options: .alignAllTop, metrics: nil, views: views)
+        NSLayoutConstraint.activate(verticalConstrains + horizontalConstrains)
     }
     
+    /*
     override func viewDidLayout() {
         let ratio = min(view.frame.size.width / metalView.frame.size.width, view.frame.size.height / metalView.frame.size.height)
         metalView.layer?.transform = CATransform3DMakeScale(ratio, ratio, 1.0)
         print(ratio)
     }
+    */
 }
 
 extension VS2CameraViewController : MTKViewDelegate {

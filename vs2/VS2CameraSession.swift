@@ -5,6 +5,7 @@
 //  Created by SATOSHI NAKAJIMA on 9/4/20.
 //  Copyright © 2020 SATOSHI NAKAJIMA. All rights reserved.
 //
+// https://developer.apple.com/library/archive/documentation/3DDrawing/Conceptual/MTLBestPracticesGuide/Drawables.html
 
 import AVFoundation
 import MetalPerformanceShaders
