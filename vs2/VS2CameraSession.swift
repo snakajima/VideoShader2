@@ -59,7 +59,18 @@ class VS2CameraSession: NSObject {
         #endif
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
-        
+
+        // Apply filter(s)
+        let script = VSScript(script:[
+            "pipeline": [[
+                "filter": "gaussianBlur",
+                "props": [
+                    "sigma":10.0
+                ]
+            ]]
+        ])
+        script.compile()
+
         session.startRunning()
     }
     
@@ -77,17 +88,6 @@ class VS2CameraSession: NSObject {
            let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
         }
-        
-        // Apply filter(s)
-        let script = VSScript(script:[
-            "pipeline": [[
-                "filter": "guaussianBlur",
-                "attr": [
-                    "radius":10
-                ]
-            ]]
-        ])
-        script.encode()
         
         guard let texture2 = makeTexture() else {
             return
