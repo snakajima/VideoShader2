@@ -13,32 +13,25 @@ import AVFoundation
 
 final class VS2CameraViewController: UIViewController {
     let cameraSession = VS2CameraSession()
+    let metalView = MTKView()
 
-    override func loadView() {
-        let metalView = MTKView()
+    override func viewDidLoad() {
+        cameraSession.startRunning()
+        let size = CGSize(width:cameraSession.dimension.width, height:cameraSession.dimension.height)
+        metalView.frame = CGRect(origin: .zero, size: size)
         metalView.device = self.cameraSession.gpu
         metalView.delegate = self
         metalView.clearColor = MTLClearColorMake(1, 1, 1, 1)
         metalView.colorPixelFormat = MTLPixelFormat.bgra8Unorm
         metalView.framebufferOnly = false
-        self.view = metalView
+        view.addSubview(metalView)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        if let orientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation {
-            print("orientation=", orientation.rawValue)
-            switch(orientation) {
-            case .landscapeLeft: cameraSession.orientation = AVCaptureVideoOrientation.landscapeLeft
-            case .landscapeRight: cameraSession.orientation = AVCaptureVideoOrientation.landscapeRight
-            case .portrait: cameraSession.orientation = AVCaptureVideoOrientation.portrait
-            case .portraitUpsideDown: cameraSession.orientation = AVCaptureVideoOrientation.portraitUpsideDown
-            default: break
-            }
-        }
-    }
-    
-    override func viewDidLoad() {
-        cameraSession.startRunning()
+    override func viewDidLayoutSubviews() {
+        let scale = min(view.frame.size.width / metalView.frame.size.width, view.frame.size.height / metalView.frame.size.height)
+            * UIScreen.main.scale
+        print(scale)
+        metalView.layer.transform = CATransform3DMakeScale(scale, scale, 1.0)
     }
 }
 
