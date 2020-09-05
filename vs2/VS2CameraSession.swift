@@ -79,6 +79,16 @@ class VS2CameraSession: NSObject {
         }
         
         // Apply filter(s)
+        let script = VSScript(script:[
+            "pipeline": [[
+                "filter": "guaussianBlur",
+                "attr": [
+                    "radius":10
+                ]
+            ]]
+        ])
+        script.encode()
+        
         guard let texture2 = makeTexture() else {
             return
         }
