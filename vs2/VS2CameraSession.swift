@@ -20,6 +20,7 @@ class VS2CameraSession: NSObject {
     private var textureCache:CVMetalTextureCache?
     private var texture:MTLTexture?
     private var sampleBuffer: CMSampleBuffer? // retainer
+    private var descriptor:MTLTextureDescriptor?
 
     func startRunning() {
         CVMetalTextureCacheCreate(nil, nil, gpu, nil, &textureCache)
@@ -35,6 +36,10 @@ class VS2CameraSession: NSObject {
         let dimension = CMVideoFormatDescriptionGetDimensions(formatDescription)
         self.dimension = CGSize(width: CGFloat(dimension.width), height: CGFloat(dimension.height))
         print(self.dimension)
+        
+        let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: Int(dimension.width), height: Int(dimension.height), mipmapped: false)
+        descriptor.usage = [.shaderRead, .shaderWrite]
+        self.descriptor = descriptor
         
         let output = AVCaptureVideoDataOutput()
         guard session.canAddOutput(output) else {
@@ -58,6 +63,13 @@ class VS2CameraSession: NSObject {
         session.startRunning()
     }
     
+    func makeTexture() -> MTLTexture? {
+        guard let descriptor = self.descriptor else {
+            return nil
+        }
+        return gpu.makeTexture(descriptor: descriptor)
+    }
+    
     func draw(drawable:CAMetalDrawable?) {
         guard let texture = self.texture,
            let drawable = drawable,
@@ -65,16 +77,34 @@ class VS2CameraSession: NSObject {
            let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
         }
+        
         // Apply filter(s)
+        let script = VSScript(script:[
+            "pipeline": [[
+                "filter": "guaussianBlur",
+                "attr": [
+                    "radius":10
+                ]
+            ]]
+        ])
+        script.encode()
+        
+        guard let texture2 = makeTexture() else {
+            return
+        }
+        let blurFilter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
+        blurFilter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: texture2)
+
+        // Scale it to drawable
         let ratio = min(Double(drawable.texture.width) / Double(texture.width), Double(drawable.texture.height) / Double(texture.height))
         var transform = MPSScaleTransform(scaleX: ratio, scaleY: ratio, translateX: 0.0, translateY: 0.0)
         let filter = MPSImageBilinearScale(device: gpu)
         withUnsafePointer(to: &transform) { (transformPtr: UnsafePointer<MPSScaleTransform>) -> () in
             filter.scaleTransform = transformPtr
-            filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
+            filter.encode(commandBuffer: commandBuffer, sourceTexture: texture2, destinationTexture: drawable.texture)
         }
         //let filter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
-        filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
+        //filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
 
         commandBuffer.present(drawable)
         commandBuffer.commit()
