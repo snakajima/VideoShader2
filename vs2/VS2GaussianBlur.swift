@@ -15,7 +15,7 @@ class VS2GaussianBlur {
 }
 
 extension VS2GaussianBlur: VS2Operator {
-    func encode(stack: VS2TextureStack, commandBuffer: MTLCommandBuffer) {
+    func encode(to commandBuffer: MTLCommandBuffer, stack: VS2TextureStack) {
         if let shader = self.shader,
             let textureSrc = stack.pop(),
             let textureDest = stack.push() {

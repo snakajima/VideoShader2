@@ -11,7 +11,7 @@ import Metal
 
 public protocol VS2Operator {
     func makeFilter(gpu:MTLDevice, props:Any?) -> VS2Operator
-    func encode(stack:VS2TextureStack, commandBuffer:MTLCommandBuffer)
+    func encode(to commandBuffer:MTLCommandBuffer, stack:VS2TextureStack)
 }
 
 public protocol VS2TextureStack {
