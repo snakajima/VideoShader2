@@ -17,12 +17,10 @@ class VS2GaussianBlur: CustomDebugStringConvertible {
         self.debugDescription = description
     }
 
-    static func makeGaussianBlur(props: Any?, gpu:MTLDevice) -> VS2Shader {
+    static func makeGaussianBlur(props: [String:Any], gpu:MTLDevice) -> VS2Shader {
         var sigma:Float = 1.0
-        if let props = props as? [String:Any] {
-            if let value = props["sigma"] as? Double {
-                sigma = Float(value)
-            }
+        if let value = props["sigma"] as? Double {
+            sigma = Float(value)
         }
         return VS2GaussianBlur(shader:MPSImageGaussianBlur(device:gpu, sigma: sigma),
                                description:"GaussianBlur:\(sigma)")
