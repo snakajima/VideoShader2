@@ -14,7 +14,7 @@ class VSScript {
         "gaussianBlur": VS2GausiannFilter()
     ]
     let script:[String:Any]
-    var filters = [VS2Operator]()
+    var operators = [VS2Operator]()
     
     init(script:[String:Any]) {
         self.script = script
@@ -25,17 +25,15 @@ class VSScript {
             print("no or invalid pipeline")
             return
         }
-        var filters = [VS2Operator]()
+        operators.removeAll()
         for element in pipeline {
             if let key = element["filter"] as? String {
                 print("key=", key)
                 if let template = Self.templates[key] {
-                    let filter = template.makeFilter(props: element["props"])
-                    filters.append(filter)
+                    operators.append(template.makeFilter(props: element["props"]))
                 }
             }
         }
-        self.filters = filters
-        print("filters", self.filters)
+        print("operators", operators)
     }
 }
