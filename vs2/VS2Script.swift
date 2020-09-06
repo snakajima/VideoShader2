@@ -11,7 +11,8 @@ import Metal
 
 class VS2Script {
     static let makers:[String:([String:Any], MTLDevice) -> VS2Shader] = [
-        "gaussianBlur": VS2UnaryShader.makeGaussianBlur
+        "gaussianBlur": VS2UnaryShader.makeGaussianBlur,
+        "sobel": VS2UnaryShader.makeSobel
     ]
     let script:[String:Any]
     let gpu:MTLDevice

@@ -22,6 +22,10 @@ class VS2UnaryShader: CustomDebugStringConvertible {
         return VS2UnaryShader(shader:MPSImageGaussianBlur(device:gpu, sigma:Float(sigma)),
                                description:"GaussianBlur:\(sigma)")
     }
+    static func makeSobel(props: [String:Any], gpu:MTLDevice) -> VS2Shader {
+        return VS2UnaryShader(shader:MPSImageSobel(device: gpu),
+                               description:"Sobel")
+    }
 }
 
 extension VS2UnaryShader: VS2Shader {
