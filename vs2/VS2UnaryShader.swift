@@ -20,11 +20,17 @@ class VS2UnaryShader: CustomDebugStringConvertible {
     static func makeGaussianBlur(props: [String:Any], gpu:MTLDevice) -> VS2Shader {
         let sigma = props["sigma"] as? Double ?? 1.0
         return VS2UnaryShader(shader:MPSImageGaussianBlur(device:gpu, sigma:Float(sigma)),
-                               description:"GaussianBlur:\(sigma)")
+                               description:"gaussianBlur:\(sigma)")
     }
     static func makeSobel(props: [String:Any], gpu:MTLDevice) -> VS2Shader {
         return VS2UnaryShader(shader:MPSImageSobel(device: gpu),
-                               description:"Sobel")
+                               description:"sobel")
+    }
+    static func makeAreaMax(props: [String:Any], gpu:MTLDevice) -> VS2Shader {
+        let width = props["width"] as? Int ?? 5
+        let height = props["height"] as? Int ?? 5
+        return VS2UnaryShader(shader:MPSImageAreaMax(device:gpu, kernelWidth: width, kernelHeight: height),
+                               description:"areaMax:\(width), \(height)")
     }
 }
 

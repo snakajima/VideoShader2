@@ -63,12 +63,19 @@ class VS2CameraSession: NSObject {
 
         let script = VS2Script(script:[
             "pipeline": [[
+                "filter":"areaMax",
+                "props": [
+                    "width":15,
+                    "height":15
+                ]
+            /*
                 "filter": "gaussianBlur",
                 "props": [
                     "sigma":3.0
                 ]
             ],[
                 "filter": "sobel",
+            */
             ]]
         ], gpu:gpu, descriptor: descriptor)
         script.compile()
