@@ -24,10 +24,10 @@
 		74B4C2282502D87D0084BF2C /* VS2CameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C20B250265C90084BF2C /* VS2CameraSession.swift */; };
 		74B4C22A2503BB910084BF2C /* VS2Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C2292503BB900084BF2C /* VS2Script.swift */; };
 		74B4C22B2503BB910084BF2C /* VS2Script.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C2292503BB900084BF2C /* VS2Script.swift */; };
-		74B4C22D2503F2BB0084BF2C /* VS2GaussianFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C22C2503F2BB0084BF2C /* VS2GaussianFilter.swift */; };
+		74B4C22D2503F2BB0084BF2C /* VS2GaussianBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C22C2503F2BB0084BF2C /* VS2GaussianBlur.swift */; };
 		74B4C22F2503F36A0084BF2C /* VS2Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C22E2503F36A0084BF2C /* VS2Operator.swift */; };
 		74B4C2302503F36A0084BF2C /* VS2Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C22E2503F36A0084BF2C /* VS2Operator.swift */; };
-		74B4C2312503F5750084BF2C /* VS2GaussianFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C22C2503F2BB0084BF2C /* VS2GaussianFilter.swift */; };
+		74B4C2312503F5750084BF2C /* VS2GaussianBlur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C22C2503F2BB0084BF2C /* VS2GaussianBlur.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +51,7 @@
 		74B4C2222502D7610084BF2C /* vs2Mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = vs2Mac.entitlements; sourceTree = "<group>"; };
 		74B4C2262502D7DB0084BF2C /* VS2CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2CameraViewController.swift; sourceTree = "<group>"; };
 		74B4C2292503BB900084BF2C /* VS2Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2Script.swift; sourceTree = "<group>"; };
-		74B4C22C2503F2BB0084BF2C /* VS2GaussianFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2GaussianFilter.swift; sourceTree = "<group>"; };
+		74B4C22C2503F2BB0084BF2C /* VS2GaussianBlur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2GaussianBlur.swift; sourceTree = "<group>"; };
 		74B4C22E2503F36A0084BF2C /* VS2Operator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2Operator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -102,7 +102,7 @@
 				74B4C205250265A30084BF2C /* Info.plist */,
 				74B4C1FF250265A30084BF2C /* Preview Content */,
 				74B4C20B250265C90084BF2C /* VS2CameraSession.swift */,
-				74B4C22C2503F2BB0084BF2C /* VS2GaussianFilter.swift */,
+				74B4C22C2503F2BB0084BF2C /* VS2GaussianBlur.swift */,
 				74B4C2292503BB900084BF2C /* VS2Script.swift */,
 				74B4C20D25026A420084BF2C /* VS2CameraViewController.swift */,
 				74B4C22E2503F36A0084BF2C /* VS2Operator.swift */,
@@ -245,7 +245,7 @@
 			files = (
 				74B4C20E25026A420084BF2C /* VS2CameraViewController.swift in Sources */,
 				74B4C1F82502659F0084BF2C /* AppDelegate.swift in Sources */,
-				74B4C22D2503F2BB0084BF2C /* VS2GaussianFilter.swift in Sources */,
+				74B4C22D2503F2BB0084BF2C /* VS2GaussianBlur.swift in Sources */,
 				74B4C22F2503F36A0084BF2C /* VS2Operator.swift in Sources */,
 				74B4C22A2503BB910084BF2C /* VS2Script.swift in Sources */,
 				74B4C20C250265C90084BF2C /* VS2CameraSession.swift in Sources */,
@@ -260,7 +260,7 @@
 			files = (
 				74B4C2182502D75E0084BF2C /* ContentView.swift in Sources */,
 				74B4C2282502D87D0084BF2C /* VS2CameraSession.swift in Sources */,
-				74B4C2312503F5750084BF2C /* VS2GaussianFilter.swift in Sources */,
+				74B4C2312503F5750084BF2C /* VS2GaussianBlur.swift in Sources */,
 				74B4C2162502D75E0084BF2C /* AppDelegate.swift in Sources */,
 				74B4C2302503F36A0084BF2C /* VS2Operator.swift in Sources */,
 				74B4C2272502D7DB0084BF2C /* VS2CameraViewController.swift in Sources */,
