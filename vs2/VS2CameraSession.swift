@@ -63,7 +63,7 @@ class VS2CameraSession: NSObject {
 
         let script = VS2Script(script:[
             "pipeline": [[
-                "filter":"areaMax",
+                "filter":"areaMin",
                 "props": [
                     "width":15,
                     "height":15

@@ -32,6 +32,12 @@ class VS2UnaryShader: CustomDebugStringConvertible {
         return VS2UnaryShader(shader:MPSImageAreaMax(device:gpu, kernelWidth: width, kernelHeight: height),
                                description:"areaMax:\(width), \(height)")
     }
+    static func makeAreaMin(props: [String:Any], gpu:MTLDevice) -> VS2Shader {
+        let width = props["width"] as? Int ?? 5
+        let height = props["height"] as? Int ?? 5
+        return VS2UnaryShader(shader:MPSImageAreaMin(device:gpu, kernelWidth: width, kernelHeight: height),
+                               description:"areaMin:\(width), \(height)")
+    }
 }
 
 extension VS2UnaryShader: VS2Shader {

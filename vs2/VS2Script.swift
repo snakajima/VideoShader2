@@ -14,6 +14,7 @@ class VS2Script {
         "gaussianBlur": VS2UnaryShader.makeGaussianBlur,
         "sobel": VS2UnaryShader.makeSobel,
         "areaMax": VS2UnaryShader.makeAreaMax,
+        "areaMin": VS2UnaryShader.makeAreaMin,
     ]
     let script:[String:Any]
     let gpu:MTLDevice
