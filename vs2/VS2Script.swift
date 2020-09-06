@@ -11,7 +11,7 @@ import Metal
 
 class VSScript {
     static let templates:[String:VS2Operator] = [
-        "gaussianBlur": VS2GausianFilter()
+        "gaussianBlur": VS2GaussianFilter()
     ]
     let script:[String:Any]
     var operators = [VS2Operator]()
