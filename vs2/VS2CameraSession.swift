@@ -68,7 +68,7 @@ class VS2CameraSession: NSObject {
                     "sigma":10.0
                 ]
             ]]
-        ])
+        ], gpu:gpu, descriptor: descriptor)
         script.compile()
 
         session.startRunning()

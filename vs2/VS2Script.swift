@@ -14,10 +14,14 @@ class VSScript {
         "gaussianBlur": VS2GaussianBlur()
     ]
     let script:[String:Any]
+    let gpu:MTLDevice
+    let descriptor:MTLTextureDescriptor
     var operators = [VS2Operator]()
-    
-    init(script:[String:Any]) {
+
+    init(script:[String:Any], gpu:MTLDevice, descriptor:MTLTextureDescriptor) {
         self.script = script
+        self.gpu = gpu
+        self.descriptor = descriptor
     }
     
     func compile() {
