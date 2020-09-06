@@ -24,9 +24,8 @@ class VS2GaussianBlur: CustomDebugStringConvertible {
                 sigma = Float(value)
             }
         }
-        let shader = MPSImageGaussianBlur(device:gpu, sigma: sigma)
-        let description = "GaussianBlur:\(sigma)"
-        return VS2GaussianBlur(shader:shader, description:description)
+        return VS2GaussianBlur(shader:MPSImageGaussianBlur(device:gpu, sigma: sigma),
+                               description:"GaussianBlur:\(sigma)")
     }
 }
 
