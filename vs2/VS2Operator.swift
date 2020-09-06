@@ -9,8 +9,8 @@
 import Foundation
 import Metal
 
-public protocol VS2Filter {
-    func makeFilter(props:Any?) -> VS2Filter
+public protocol VS2Operator {
+    func makeFilter(props:Any?) -> VS2Operator
     func encode(stack:VS2TextureStack, gpu:MTLDevice, commandBuffer:MTLCommandBuffer)
 }
 

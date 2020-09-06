@@ -10,11 +10,11 @@ import Foundation
 import Metal
 
 class VSScript {
-    static let templates:[String:VS2Filter] = [
+    static let templates:[String:VS2Operator] = [
         "gaussianBlur": VS2GausiannFilter()
     ]
     let script:[String:Any]
-    var filters = [VS2Filter]()
+    var filters = [VS2Operator]()
     
     init(script:[String:Any]) {
         self.script = script
@@ -25,7 +25,7 @@ class VSScript {
             print("no or invalid pipeline")
             return
         }
-        var filters = [VS2Filter]()
+        var filters = [VS2Operator]()
         for element in pipeline {
             if let key = element["filter"] as? String {
                 print("key=", key)
