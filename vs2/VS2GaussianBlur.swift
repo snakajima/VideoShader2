@@ -9,12 +9,12 @@
 import Foundation
 import MetalPerformanceShaders
 
-class VS2GaussianBlur {
+class VS2GaussianBlur: CustomDebugStringConvertible {
     var shader:MPSUnaryImageKernel
-    var description:String
+    var debugDescription:String
     init(shader:MPSUnaryImageKernel, description:String) {
         self.shader = shader
-        self.description = description
+        self.debugDescription = description
     }
 
     static func makeGaussianBlur(props: Any?, gpu:MTLDevice) -> VS2Shader {
@@ -36,11 +36,5 @@ extension VS2GaussianBlur: VS2Shader {
            let textureDest = stack.push() {
             shader.encode(commandBuffer: commandBuffer, sourceTexture: textureSrc, destinationTexture: textureDest)
         }
-    }
-}
-
-extension VS2GaussianBlur: CustomDebugStringConvertible {
-    var debugDescription: String {
-        return description
     }
 }
