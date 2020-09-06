@@ -15,6 +15,7 @@ class VS2Script {
         "sobel": VS2UnaryShader.makeSobel,
         "areaMax": VS2UnaryShader.makeAreaMax,
         "areaMin": VS2UnaryShader.makeAreaMin,
+        "laplacian": VS2UnaryShader.makeLaplacian,
     ]
     let script:[String:Any]
     let gpu:MTLDevice

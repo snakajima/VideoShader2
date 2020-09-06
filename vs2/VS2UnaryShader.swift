@@ -38,6 +38,10 @@ class VS2UnaryShader: CustomDebugStringConvertible {
         return VS2UnaryShader(shader:MPSImageAreaMin(device:gpu, kernelWidth: width, kernelHeight: height),
                                description:"areaMin:\(width), \(height)")
     }
+    static func makeLaplacian(props: [String:Any], gpu:MTLDevice) -> VS2Shader {
+        return VS2UnaryShader(shader:MPSImageLaplacian(device: gpu),
+                               description:"laplacian")
+    }
 }
 
 extension VS2UnaryShader: VS2Shader {

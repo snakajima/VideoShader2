@@ -63,11 +63,9 @@ class VS2CameraSession: NSObject {
 
         let script = VS2Script(script:[
             "pipeline": [[
-                "filter":"areaMin",
-                "props": [
-                    "width":15,
-                    "height":15
-                ]
+                "filter": "gaussianBlur",
+            ],[
+                "filter":"laplacian",
             /*
                 "filter": "gaussianBlur",
                 "props": [
