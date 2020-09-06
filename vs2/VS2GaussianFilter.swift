@@ -9,18 +9,18 @@
 import Foundation
 import MetalPerformanceShaders
 
-class VS2GausiannFilter {
+class VS2GausianFilter {
     var sigma:Float = 1.0
 }
 
-extension VS2GausiannFilter: VS2Operator {
+extension VS2GausianFilter: VS2Operator {
     func encode(stack: VS2TextureStack, gpu: MTLDevice, commandBuffer: MTLCommandBuffer) {
         let blurFilter = MPSImageGaussianBlur(device:gpu, sigma: sigma)
         blurFilter.encode(commandBuffer: commandBuffer, sourceTexture: stack.pop(), destinationTexture: stack.push())
     }
     
     func makeFilter(props: Any?) -> VS2Operator {
-        let filter = VS2GausiannFilter()
+        let filter = VS2GausianFilter()
         if let props = props as? [String:Any] {
             print("props", props)
             if let sigma = props["sigma"] as? Float {
