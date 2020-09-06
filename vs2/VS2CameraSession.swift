@@ -61,7 +61,7 @@ class VS2CameraSession: NSObject {
         session.addOutput(output)
 
         // Apply filter(s)
-        let script = VSScript(script:[
+        let script = VS2Script(script:[
             "pipeline": [[
                 "filter": "gaussianBlur",
                 "props": [

@@ -9,7 +9,7 @@
 import Foundation
 import Metal
 
-class VSScript {
+class VS2Script {
     static let templates:[String:VS2Operator] = [
         "gaussianBlur": VS2GaussianBlur()
     ]
@@ -17,6 +17,9 @@ class VSScript {
     let gpu:MTLDevice
     let descriptor:MTLTextureDescriptor
     var operators = [VS2Operator]()
+    var textureSrc:MTLTexture?
+    var stack = [MTLTexture]()
+    var pool = [MTLTexture]()
 
     init(script:[String:Any], gpu:MTLDevice, descriptor:MTLTextureDescriptor) {
         self.script = script
@@ -39,5 +42,28 @@ class VSScript {
             }
         }
         print("operators", operators)
+    }
+    
+    func encode(commandBuffer:MTLCommandBuffer, textureSrc:MTLTexture) {
+        self.textureSrc = textureSrc
+    }
+}
+
+extension VS2Script: VS2TextureStack {
+    func pop() -> MTLTexture? {
+        guard let texture = stack.popLast() else {
+            return textureSrc
+        }
+        // LATER: push it to pool for reuse
+        return texture
+    }
+    
+    func push() -> MTLTexture? {
+        // LATER: pop from pool for reuse
+        guard let texture = gpu.makeTexture(descriptor: descriptor) else {
+            return nil
+        }
+        stack.append(texture)
+        return texture
     }
 }

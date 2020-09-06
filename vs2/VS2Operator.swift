@@ -15,7 +15,7 @@ public protocol VS2Operator {
 }
 
 public protocol VS2TextureStack {
-    func pop() -> MTLTexture
-    func push() -> MTLTexture
+    func pop() -> MTLTexture?
+    func push() -> MTLTexture?
 }
 
