@@ -10,13 +10,13 @@ import Foundation
 import Metal
 
 class VS2Script {
-    static let templates:[String:VS2Operator] = [
+    static let templates:[String:VS2Shader] = [
         "gaussianBlur": VS2GaussianBlur()
     ]
     let script:[String:Any]
     let gpu:MTLDevice
     let descriptor:MTLTextureDescriptor
-    var operators = [VS2Operator]()
+    var operators = [VS2Shader]()
     var textureSrc:MTLTexture?
     var stack = [MTLTexture]()
     var pool = [MTLTexture]()

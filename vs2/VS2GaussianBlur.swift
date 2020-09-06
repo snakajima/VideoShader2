@@ -14,7 +14,7 @@ class VS2GaussianBlur {
     var shader:MPSImageGaussianBlur?
 }
 
-extension VS2GaussianBlur: VS2Operator {
+extension VS2GaussianBlur: VS2Shader {
     func encode(to commandBuffer: MTLCommandBuffer, stack: VS2TextureStack) {
         if let shader = self.shader,
             let textureSrc = stack.pop(),
@@ -23,7 +23,7 @@ extension VS2GaussianBlur: VS2Operator {
         }
     }
     
-    func makeFilter(gpu:MTLDevice, props: Any?) -> VS2Operator {
+    func makeFilter(gpu:MTLDevice, props: Any?) -> VS2Shader {
         let newInstance = VS2GaussianBlur()
         if let props = props as? [String:Any] {
             if let sigma = props["sigma"] as? Double {
