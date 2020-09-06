@@ -15,22 +15,24 @@ class VS2GaussianBlur {
 
 extension VS2GaussianBlur: VS2Operator {
     func encode(stack: VS2TextureStack, gpu: MTLDevice, commandBuffer: MTLCommandBuffer) {
-        let blurFilter = MPSImageGaussianBlur(device:gpu, sigma: sigma)
+        print("GuassianBlur:encode", sigma)
+        let blurFilter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
         if let textureSrc = stack.pop(),
             let textureDest = stack.push() {
+            print("GuassianBlur:encode 2")
             blurFilter.encode(commandBuffer: commandBuffer, sourceTexture: textureSrc, destinationTexture: textureDest)
         }
     }
     
     func makeFilter(props: Any?) -> VS2Operator {
-        let filter = VS2GaussianBlur()
+        let newInstance = VS2GaussianBlur()
         if let props = props as? [String:Any] {
             print("props", props)
             if let sigma = props["sigma"] as? Float {
                 print("sigma", sigma)
-                filter.sigma = sigma
+                newInstance.sigma = sigma
             }
         }
-        return filter
+        return newInstance
     }
 }

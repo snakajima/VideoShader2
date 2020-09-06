@@ -21,6 +21,7 @@ class VS2CameraSession: NSObject {
     private var texture:MTLTexture?
     private var sampleBuffer: CMSampleBuffer? // retainer
     private var descriptor:MTLTextureDescriptor?
+    private var script:VS2Script?
 
     func startRunning() {
         CVMetalTextureCacheCreate(nil, nil, gpu, nil, &textureCache)
@@ -70,6 +71,7 @@ class VS2CameraSession: NSObject {
             ]]
         ], gpu:gpu, descriptor: descriptor)
         script.compile()
+        self.script = script
 
         session.startRunning()
     }
@@ -88,12 +90,23 @@ class VS2CameraSession: NSObject {
            let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
         }
-        
+
+        guard let script = self.script else {
+            print("no script")
+            return
+        }
+        script.encode(commandBuffer: commandBuffer, textureSrc: texture)
+        guard let texture2 = script.pop() else {
+            print("stack is empty")
+            return
+        }
+        /*
         guard let texture2 = makeTexture() else {
             return
         }
         let blurFilter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
         blurFilter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: texture2)
+        */
 
         // Scale it to drawable
         let ratio = min(Double(drawable.texture.width) / Double(texture.width), Double(drawable.texture.height) / Double(texture.height))

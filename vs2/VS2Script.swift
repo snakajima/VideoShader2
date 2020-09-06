@@ -46,6 +46,9 @@ class VS2Script {
     
     func encode(commandBuffer:MTLCommandBuffer, textureSrc:MTLTexture) {
         self.textureSrc = textureSrc
+        for item in operators {
+            item.encode(stack: self, gpu: gpu, commandBuffer: commandBuffer)
+        }
     }
 }
 
