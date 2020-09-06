@@ -30,7 +30,6 @@ class VSScript {
             if let key = element["filter"] as? String {
                 print("key=", key)
                 if let template = Self.templates[key] {
-                    print("template=", template, element["props"])
                     let filter = template.makeFilter(props: element["props"])
                     filters.append(filter)
                 }

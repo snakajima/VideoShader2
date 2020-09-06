@@ -7,7 +7,15 @@
 //
 
 import Foundation
+import Metal
 
 public protocol VS2Filter {
     func makeFilter(props:Any?) -> VS2Filter
+    func encode(stack:VS2TextureStack, gpu:MTLDevice, commandBuffer:MTLCommandBuffer)
 }
+
+public protocol VS2TextureStack {
+    func pop() -> MTLTexture
+    func push() -> MTLTexture
+}
+
