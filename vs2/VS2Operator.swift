@@ -10,8 +10,8 @@ import Foundation
 import Metal
 
 public protocol VS2Operator {
-    func makeFilter(props:Any?) -> VS2Operator
-    func encode(stack:VS2TextureStack, gpu:MTLDevice, commandBuffer:MTLCommandBuffer)
+    func makeFilter(gpu:MTLDevice, props:Any?) -> VS2Operator
+    func encode(stack:VS2TextureStack, commandBuffer:MTLCommandBuffer)
 }
 
 public protocol VS2TextureStack {

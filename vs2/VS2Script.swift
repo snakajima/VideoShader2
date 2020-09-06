@@ -37,7 +37,7 @@ class VS2Script {
             if let key = element["filter"] as? String {
                 print("key=", key)
                 if let template = Self.templates[key] {
-                    operators.append(template.makeFilter(props: element["props"]))
+                    operators.append(template.makeFilter(gpu:gpu, props: element["props"]))
                 }
             }
         }
@@ -47,7 +47,7 @@ class VS2Script {
     func encode(commandBuffer:MTLCommandBuffer, textureSrc:MTLTexture) {
         self.textureSrc = textureSrc
         for item in operators {
-            item.encode(stack: self, gpu: gpu, commandBuffer: commandBuffer)
+            item.encode(stack: self, commandBuffer: commandBuffer)
         }
     }
 }
