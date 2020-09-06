@@ -9,15 +9,22 @@
 import Foundation
 import Metal
 
-class VSScript {
-    static let templates:[String:VS2Filter] = [
-        "gaussianBlur": VS2GausiannFilter()
+class VS2Script {
+    static let templates:[String:VS2Shader] = [
+        "gaussianBlur": VS2GaussianBlur()
     ]
     let script:[String:Any]
-    var filters = [VS2Filter]()
-    
-    init(script:[String:Any]) {
+    let gpu:MTLDevice
+    let descriptor:MTLTextureDescriptor
+    var shaders = [VS2Shader]()
+    var textureSrc:MTLTexture?
+    var stack = [MTLTexture]()
+    var pool = [MTLTexture]()
+
+    init(script:[String:Any], gpu:MTLDevice, descriptor:MTLTextureDescriptor) {
         self.script = script
+        self.gpu = gpu
+        self.descriptor = descriptor
     }
     
     func compile() {
@@ -25,18 +32,41 @@ class VSScript {
             print("no or invalid pipeline")
             return
         }
-        var filters = [VS2Filter]()
-        for element in pipeline {
-            if let key = element["filter"] as? String {
+        shaders.removeAll()
+        for shaderInfo in pipeline {
+            if let key = shaderInfo["filter"] as? String {
                 print("key=", key)
                 if let template = Self.templates[key] {
-                    print("template=", template, element["props"])
-                    let filter = template.makeFilter(props: element["props"])
-                    filters.append(filter)
+                    shaders.append(template.makeInstance(props: shaderInfo["props"], gpu:gpu))
                 }
             }
         }
-        self.filters = filters
-        print("filters", self.filters)
+        print("operators", shaders)
+    }
+    
+    func encode(commandBuffer:MTLCommandBuffer, textureSrc:MTLTexture) {
+        self.textureSrc = textureSrc
+        for shader in shaders {
+            shader.encode(to: commandBuffer, stack: self)
+        }
+    }
+}
+
+extension VS2Script: VS2TextureStack {
+    func pop() -> MTLTexture? {
+        guard let texture = stack.popLast() else {
+            return textureSrc
+        }
+        // LATER: push it to pool for reuse
+        return texture
+    }
+    
+    func push() -> MTLTexture? {
+        // LATER: pop from pool for reuse
+        guard let texture = gpu.makeTexture(descriptor: descriptor) else {
+            return nil
+        }
+        stack.append(texture)
+        return texture
     }
 }
