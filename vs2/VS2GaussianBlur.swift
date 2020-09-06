@@ -33,17 +33,6 @@ extension VS2GaussianBlur: VS2Shader {
             shader.encode(commandBuffer: commandBuffer, sourceTexture: textureSrc, destinationTexture: textureDest)
         }
     }
-    
-    func makeInstance(props: Any?, gpu:MTLDevice) -> VS2Shader {
-        let newInstance = VS2GaussianBlur()
-        if let props = props as? [String:Any] {
-            if let sigma = props["sigma"] as? Double {
-                newInstance.sigma = Float(sigma)
-            }
-        }
-        newInstance.shader = MPSImageGaussianBlur(device:gpu, sigma: newInstance.sigma)
-        return newInstance
-    }
 }
 
 extension VS2GaussianBlur: CustomDebugStringConvertible {
