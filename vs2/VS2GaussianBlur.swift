@@ -11,25 +11,27 @@ import MetalPerformanceShaders
 
 class VS2GaussianBlur {
     var sigma:Float = 1.0
-    var shader:MPSUnaryImageKernel?
+    var shader:MPSUnaryImageKernel
+    init(shader:MPSUnaryImageKernel) {
+        self.shader = shader
+    }
 
     static func makeGaussianBlur(props: Any?, gpu:MTLDevice) -> VS2Shader {
-        let newInstance = VS2GaussianBlur()
+        var sigma:Float = 1.0
         if let props = props as? [String:Any] {
-            if let sigma = props["sigma"] as? Double {
-                newInstance.sigma = Float(sigma)
+            if let value = props["sigma"] as? Double {
+                sigma = Float(value)
             }
         }
-        newInstance.shader = MPSImageGaussianBlur(device:gpu, sigma: newInstance.sigma)
-        return newInstance
+        let shader = MPSImageGaussianBlur(device:gpu, sigma: sigma)
+        return VS2GaussianBlur(shader:shader)
     }
 }
 
 extension VS2GaussianBlur: VS2Shader {
     func encode(to commandBuffer: MTLCommandBuffer, stack: VS2TextureStack) {
-        if let shader = self.shader,
-            let textureSrc = stack.pop(),
-            let textureDest = stack.push() {
+        if let textureSrc = stack.pop(),
+           let textureDest = stack.push() {
             shader.encode(commandBuffer: commandBuffer, sourceTexture: textureSrc, destinationTexture: textureDest)
         }
     }
