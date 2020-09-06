@@ -11,7 +11,7 @@ import MetalPerformanceShaders
 
 class VS2GaussianBlur {
     var sigma:Float = 1.0
-    var shader:MPSImageGaussianBlur?
+    var shader:MPSUnaryImageKernel?
 }
 
 extension VS2GaussianBlur: VS2Shader {
