@@ -65,7 +65,7 @@ class VS2CameraSession: NSObject {
             "pipeline": [[
                 "filter": "gaussianBlur",
                 "props": [
-                    "sigma":10.0
+                    "sigma":5.0
                 ]
             ]]
         ], gpu:gpu, descriptor: descriptor)

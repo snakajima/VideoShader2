@@ -16,7 +16,7 @@ class VS2Script {
     let script:[String:Any]
     let gpu:MTLDevice
     let descriptor:MTLTextureDescriptor
-    var operators = [VS2Shader]()
+    var shaders = [VS2Shader]()
     var textureSrc:MTLTexture?
     var stack = [MTLTexture]()
     var pool = [MTLTexture]()
@@ -32,22 +32,22 @@ class VS2Script {
             print("no or invalid pipeline")
             return
         }
-        operators.removeAll()
-        for element in pipeline {
-            if let key = element["filter"] as? String {
+        shaders.removeAll()
+        for shaderInfo in pipeline {
+            if let key = shaderInfo["filter"] as? String {
                 print("key=", key)
                 if let template = Self.templates[key] {
-                    operators.append(template.makeFilter(gpu:gpu, props: element["props"]))
+                    shaders.append(template.makeInstance(props: shaderInfo["props"], gpu:gpu))
                 }
             }
         }
-        print("operators", operators)
+        print("operators", shaders)
     }
     
     func encode(commandBuffer:MTLCommandBuffer, textureSrc:MTLTexture) {
         self.textureSrc = textureSrc
-        for item in operators {
-            item.encode(to: commandBuffer, stack: self)
+        for shader in shaders {
+            shader.encode(to: commandBuffer, stack: self)
         }
     }
 }

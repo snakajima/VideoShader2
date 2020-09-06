@@ -23,7 +23,7 @@ extension VS2GaussianBlur: VS2Shader {
         }
     }
     
-    func makeFilter(gpu:MTLDevice, props: Any?) -> VS2Shader {
+    func makeInstance(props: Any?, gpu:MTLDevice) -> VS2Shader {
         let newInstance = VS2GaussianBlur()
         if let props = props as? [String:Any] {
             if let sigma = props["sigma"] as? Double {
