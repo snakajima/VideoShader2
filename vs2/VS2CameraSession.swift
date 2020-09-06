@@ -61,7 +61,6 @@ class VS2CameraSession: NSObject {
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
 
-        // Apply filter(s)
         let script = VS2Script(script:[
             "pipeline": [[
                 "filter": "gaussianBlur",
@@ -74,13 +73,6 @@ class VS2CameraSession: NSObject {
         self.script = script
 
         session.startRunning()
-    }
-    
-    func makeTexture() -> MTLTexture? {
-        guard let descriptor = self.descriptor else {
-            return nil
-        }
-        return gpu.makeTexture(descriptor: descriptor)
     }
     
     func draw(drawable:CAMetalDrawable?) {
@@ -96,17 +88,10 @@ class VS2CameraSession: NSObject {
             return
         }
         script.encode(commandBuffer: commandBuffer, textureSrc: texture)
-        guard let texture2 = script.pop() else {
+        guard let textureOut = script.pop() else {
             print("stack is empty")
             return
         }
-        /*
-        guard let texture2 = makeTexture() else {
-            return
-        }
-        let blurFilter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
-        blurFilter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: texture2)
-        */
 
         // Scale it to drawable
         let ratio = min(Double(drawable.texture.width) / Double(texture.width), Double(drawable.texture.height) / Double(texture.height))
@@ -114,10 +99,8 @@ class VS2CameraSession: NSObject {
         let filter = MPSImageBilinearScale(device: gpu)
         withUnsafePointer(to: &transform) { (transformPtr: UnsafePointer<MPSScaleTransform>) -> () in
             filter.scaleTransform = transformPtr
-            filter.encode(commandBuffer: commandBuffer, sourceTexture: texture2, destinationTexture: drawable.texture)
+            filter.encode(commandBuffer: commandBuffer, sourceTexture: textureOut, destinationTexture: drawable.texture)
         }
-        //let filter = MPSImageGaussianBlur(device:gpu, sigma: 10.0)
-        //filter.encode(commandBuffer: commandBuffer, sourceTexture: texture, destinationTexture: drawable.texture)
 
         commandBuffer.present(drawable)
         commandBuffer.commit()
