@@ -67,10 +67,10 @@ class VS2CameraSession: NSObject {
 
         let script = VS2Script(script:[
             "pipeline": [[
-                "filter": "gaussianBlur",
+                "filter": "sepiaTone",
+            /*
             ],[
                 "filter":"laplacian",
-            /*
                 "filter": "gaussianBlur",
                 "props": [
                     "sigma":3.0
@@ -95,12 +95,20 @@ class VS2CameraSession: NSObject {
             return
         }
         
+        /*
         let filter = CIFilter(name: "CISepiaTone")!
         filter.setValue(ciImage, forKey: kCIInputImageKey)
         filter.setValue(1, forKey: kCIInputIntensityKey)
         let outputImage = filter.outputImage!
-        
-        ciContext.render(outputImage, to: drawable.texture, commandBuffer: commandBuffer, bounds: CGRect(origin: .zero, size: CGSize(width: dimension.width, height: dimension.height)), colorSpace: CGColorSpaceCreateDeviceRGB())
+        */
+ 
+        guard let script = self.script else {
+            print("no script")
+            return
+        }
+        script.encode(commandBuffer: commandBuffer, ciImageSrc: ciImage)
+
+        ciContext.render(script.pop(), to: drawable.texture, commandBuffer: commandBuffer, bounds: CGRect(origin: .zero, size: CGSize(width: dimension.width, height: dimension.height)), colorSpace: CGColorSpaceCreateDeviceRGB())
         commandBuffer.present(drawable)
         commandBuffer.commit()
         self.ciImage = nil // no need to draw it again
