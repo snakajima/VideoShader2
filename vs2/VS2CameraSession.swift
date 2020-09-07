@@ -22,8 +22,12 @@ class VS2CameraSession: NSObject {
     private var sampleBuffer: CMSampleBuffer? // retainer
     private var descriptor:MTLTextureDescriptor?
     private var script:VS2Script?
+    
+    private var ciContext:CIContext?
+    private var ciImage:CIImage?
 
     func startRunning() {
+        ciContext = CIContext(mtlDevice: gpu)
         CVMetalTextureCacheCreate(nil, nil, gpu, nil, &textureCache)
         guard let camera = camera,
               let input = try? AVCaptureDeviceInput(device: camera) else {
@@ -83,6 +87,21 @@ class VS2CameraSession: NSObject {
     }
     
     func draw(drawable:CAMetalDrawable?) {
+        guard let ciContext = self.ciContext,
+           let ciImage = self.ciImage,
+           let drawable = drawable,
+           let commandQueue = gpu.makeCommandQueue(),
+           let commandBuffer = commandQueue.makeCommandBuffer() else {
+            print("skip")
+            return
+        }
+        print("render")
+        ciContext.render(ciImage, to: drawable.texture, commandBuffer: commandBuffer, bounds: CGRect(origin: .zero, size: CGSize(width: dimension.width, height: dimension.height)), colorSpace: CGColorSpaceCreateDeviceRGB())
+        commandBuffer.present(drawable)
+        commandBuffer.commit()
+        self.ciImage = nil // no need to draw it again
+
+        /*
         guard let texture = self.texture,
            let drawable = drawable,
            let commandQueue = gpu.makeCommandQueue(),
@@ -112,11 +131,16 @@ class VS2CameraSession: NSObject {
         commandBuffer.present(drawable)
         commandBuffer.commit()
         self.texture = nil // no need to draw it again
+        */
     }
 }
 
 extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+            ciImage = CIImage(cvImageBuffer: pixelBuffer)
+        }
+/*
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
            let textureCache = self.textureCache {
             let width = CVPixelBufferGetWidth(pixelBuffer)
@@ -127,6 +151,7 @@ extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
             texture = CVMetalTextureGetTexture(textureRef!)
             self.sampleBuffer = sampleBuffer // to retain the sampleBuffer behind the texture
         }
+*/
     }
 }
 
