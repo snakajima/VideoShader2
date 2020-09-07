@@ -11,8 +11,13 @@ import Metal
 import CoreImage
 
 class VS2Script {
-    static let makers:[String:([String:Any], MTLDevice) -> VS2Shader] = [
-        "sepiaTone": VS2UnaryShader.makeSepiaTone,
+    static let filters:[String:[String:Any]] = [
+        "sepiaTone": [
+            "name":"CISepiaTone",
+            "props":[
+                "intensity":10.0
+            ]
+        ],
     ]
     let script:[String:Any]
     let gpu:MTLDevice
@@ -37,8 +42,12 @@ class VS2Script {
         for shaderInfo in pipeline {
             if let key = shaderInfo["filter"] as? String {
                 print("key=", key)
-                if let maker = Self.makers[key] {
-                    shaders.append(maker(shaderInfo["props"] as? [String:Any] ?? empty, gpu))
+                if let filterInfo = Self.filters[key] {
+                    guard let shader = VS2UnaryShader.makeShader(filterInfo:filterInfo, props:shaderInfo["props"] as? [String:Any] ?? empty, gpu:gpu) else {
+                        print("makeShader returned nil")
+                        continue
+                    }
+                    shaders.append(shader)
                 }
             }
         }

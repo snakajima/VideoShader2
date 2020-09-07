@@ -19,6 +19,26 @@ class VS2UnaryShader: CustomDebugStringConvertible {
         self.debugDescription = description
     }
     
+    static func makeShader(filterInfo:[String:Any], props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
+        guard let name = filterInfo["name"] as? String else {
+            return nil
+        }
+        let filter = CIFilter(name: name)
+        if let samples = filterInfo["props"] as? [String:Any] {
+            for (key, sample) in samples {
+                if let _ = sample as? Double,
+                   let value = props[key] as? Double {
+                    print(name, key, value)
+                    filter?.setValue(value, forKey: kCIInputIntensityKey)
+                }
+            }
+        }
+        // filter.setValue(stack.pop(), forKey: kCIInputImageKey)
+        return VS2UnaryShader(filter:filter,
+                               description:"\(name)")
+    }
+
+    /*
     static func makeSepiaTone(props: [String:Any], gpu:MTLDevice) -> VS2Shader {
         let intensity = props["intensity"] as? Double ?? 1.0
         let filter = CIFilter(name: "CISepiaTone", parameters:[
@@ -26,8 +46,8 @@ class VS2UnaryShader: CustomDebugStringConvertible {
         ])
         return VS2UnaryShader(filter:filter,
                                description:"SepiaTone:\(intensity)")
-
     }
+    */
 }
 
 extension VS2UnaryShader: VS2Shader {
