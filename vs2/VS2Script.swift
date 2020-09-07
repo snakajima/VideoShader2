@@ -29,6 +29,9 @@ class VS2Script {
             "props":[
                 "angle": kCIInputAngleKey
             ]
+        ],
+        "colorInvert": [
+            "name":"CIColorInvert",
         ]
     ]
     let script:[String:Any]

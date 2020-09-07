@@ -72,10 +72,7 @@ class VS2CameraSession: NSObject {
                     "radius":2
                 ]
             ],[
-                "filter": "hueAdjust",
-                "props":[
-                    "angle":3.14
-                ]
+                "filter": "colorInvert",
             /*
             ],[
                 "filter": "sobel",
