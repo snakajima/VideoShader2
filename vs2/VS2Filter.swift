@@ -41,6 +41,10 @@ class VS2Filter:CustomDebugStringConvertible {
         "colorInvert": [
             "name":"CIColorInvert",
         ],
+        "toneCurve": [
+            "name":"CIToneCurve",
+            // TODO: props
+        ],
         "edges": [
             "name":"CIEdges",
             "props":[
