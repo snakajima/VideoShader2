@@ -11,10 +11,10 @@ import Metal
 import CoreImage
 
 public protocol VS2Shader {
-    func encode(to commandBuffer:MTLCommandBuffer, stack:VS2TextureStack)
+    func encode(to commandBuffer:MTLCommandBuffer, stack:VS2CIImageStack)
 }
 
-public protocol VS2TextureStack {
+public protocol VS2CIImageStack {
     func pop() -> CIImage
     func push(_ ciImage:CIImage?)
 }

@@ -53,7 +53,7 @@ class VS2Script {
     }
 }
 
-extension VS2Script: VS2TextureStack {
+extension VS2Script: VS2CIImageStack {
     func pop() -> CIImage {
         guard let ciImage = stack.popLast() else {
             return ciImageSrc!
