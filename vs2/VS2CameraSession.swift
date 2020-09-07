@@ -139,6 +139,7 @@ extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             ciImage = CIImage(cvImageBuffer: pixelBuffer)
+            self.sampleBuffer = sampleBuffer // to retain the sampleBuffer behind the texture
         }
 /*
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
