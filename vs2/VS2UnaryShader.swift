@@ -24,12 +24,12 @@ class VS2UnaryShader: CustomDebugStringConvertible {
             return nil
         }
         let filter = CIFilter(name: name)
-        if let samples = filterInfo["props"] as? [String:Any] {
-            for (key, sample) in samples {
-                if let _ = sample as? Double,
-                   let value = props[key] as? Double {
+        if let propKeys = filterInfo["props"] as? [String:Any] {
+            for (key, inputKey) in propKeys {
+                if let inputKey = inputKey as? String,
+                   let value = props[key] {
                     print(name, key, value)
-                    filter?.setValue(value, forKey: kCIInputIntensityKey)
+                    filter?.setValue(value, forKey: inputKey)
                 }
             }
         }

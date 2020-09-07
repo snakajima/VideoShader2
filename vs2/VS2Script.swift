@@ -15,7 +15,7 @@ class VS2Script {
         "sepiaTone": [
             "name":"CISepiaTone",
             "props":[
-                "intensity":10.0
+                "intensity": kCIInputIntensityKey
             ]
         ],
     ]

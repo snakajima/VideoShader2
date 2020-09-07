@@ -69,7 +69,7 @@ class VS2CameraSession: NSObject {
             "pipeline": [[
                 "filter": "sepiaTone",
                 "props":[
-                    "intensity":0.4
+                    "intensity":0.8
                 ]
             /*
             ],[
