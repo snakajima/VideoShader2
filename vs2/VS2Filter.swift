@@ -11,7 +11,7 @@ import MetalPerformanceShaders
 import CoreImage
 
 class VS2Filter: CustomDebugStringConvertible {
-    static let filters:[String:[String:Any]] = [
+    private static let filters:[String:[String:Any]] = [
         "sepiaTone": [
             "name":"CISepiaTone",
             "props":[
@@ -48,8 +48,8 @@ class VS2Filter: CustomDebugStringConvertible {
         self.debugDescription = description
     }
     
-    static func makeShader(name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
-        guard let filterInfo = Self.filters[name],
+    private static func makeShader(filters:[String:[String:Any]], name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
+        guard let filterInfo = filters[name],
             let ciName = filterInfo["name"] as? String else {
             print("no filter", name)
             return nil
@@ -66,6 +66,10 @@ class VS2Filter: CustomDebugStringConvertible {
         }
         return VS2Filter(filter:filter,
                                description:"\(name)")
+    }
+    
+    static func makeShader(name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
+        return VS2Filter.makeShader(filters:VS2Filter.filters, name:name, props:props, gpu:gpu)
     }
 }
 
