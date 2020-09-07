@@ -72,6 +72,8 @@ class VS2CameraSession: NSObject {
                     "radius":2
                 ]
             ],[
+                "controller": "fork",
+            ],[
                 "filter": "edges",
             /*
             ],[

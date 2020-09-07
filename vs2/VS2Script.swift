@@ -40,6 +40,9 @@ class VS2Script {
                     }
                     shaders.append(shader)
                 }
+            } else if let name = shaderInfo["controller"] as? String {
+                let controller = VS2Controller(name: name)
+                shaders.append(controller)
             }
         }
         print("operators", shaders)
