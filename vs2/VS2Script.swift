@@ -11,35 +11,6 @@ import Metal
 import CoreImage
 
 class VS2Script {
-    static let filters:[String:[String:Any]] = [
-        "sepiaTone": [
-            "name":"CISepiaTone",
-            "props":[
-                "intensity": kCIInputIntensityKey
-            ]
-        ],
-        "gaussianBlur": [
-            "name":"CIGaussianBlur",
-            "props":[
-                "radius": kCIInputRadiusKey
-            ]
-        ],
-        "hueAdjust": [
-            "name":"CIHueAdjust",
-            "props":[
-                "angle": kCIInputAngleKey
-            ]
-        ],
-        "colorInvert": [
-            "name":"CIColorInvert",
-        ],
-        "edges": [
-            "name":"CIEdges",
-            "props":[
-                "intensity": kCIInputIntensityKey
-            ]
-        ]
-    ]
     let script:[String:Any]
     let gpu:MTLDevice
     let descriptor:MTLTextureDescriptor
@@ -62,8 +33,7 @@ class VS2Script {
         let empty = [String:Any]()
         for shaderInfo in pipeline {
             if let key = shaderInfo["filter"] as? String {
-                print("key=", key)
-                if let filterInfo = Self.filters[key] {
+                if let filterInfo = VS2UnaryShader.filters[key] {
                     guard let shader = VS2UnaryShader.makeShader(filterInfo:filterInfo, props:shaderInfo["props"] as? [String:Any] ?? empty, gpu:gpu) else {
                         print("makeShader returned nil")
                         continue

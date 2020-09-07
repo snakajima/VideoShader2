@@ -11,6 +11,35 @@ import MetalPerformanceShaders
 import CoreImage
 
 class VS2UnaryShader: CustomDebugStringConvertible {
+    static let filters:[String:[String:Any]] = [
+        "sepiaTone": [
+            "name":"CISepiaTone",
+            "props":[
+                "intensity": kCIInputIntensityKey
+            ]
+        ],
+        "gaussianBlur": [
+            "name":"CIGaussianBlur",
+            "props":[
+                "radius": kCIInputRadiusKey
+            ]
+        ],
+        "hueAdjust": [
+            "name":"CIHueAdjust",
+            "props":[
+                "angle": kCIInputAngleKey
+            ]
+        ],
+        "colorInvert": [
+            "name":"CIColorInvert",
+        ],
+        "edges": [
+            "name":"CIEdges",
+            "props":[
+                "intensity": kCIInputIntensityKey
+            ]
+        ]
+    ]
     var filter:CIFilter?
     var debugDescription:String
     
