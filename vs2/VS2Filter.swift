@@ -10,7 +10,37 @@ import Foundation
 import MetalPerformanceShaders
 import CoreImage
 
-class VS2Filter: CustomDebugStringConvertible {
+class VS2ShaderBase : CustomDebugStringConvertible {
+    var filter:CIFilter?
+    var debugDescription:String
+    
+    init(filter:CIFilter?, description:String) {
+        self.filter = filter
+        self.debugDescription = description
+    }
+
+    static func makeShader(filters:[String:[String:Any]], name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
+        guard let filterInfo = filters[name],
+            let ciName = filterInfo["name"] as? String else {
+            print("no filter", name)
+            return nil
+        }
+        let filter = CIFilter(name: ciName)
+        if let propKeys = filterInfo["props"] as? [String:Any] {
+            for (key, inputKey) in propKeys {
+                if let inputKey = inputKey as? String,
+                   let value = props[key] {
+                    print(name, key, value)
+                    filter?.setValue(value, forKey: inputKey)
+                }
+            }
+        }
+        return VS2Filter(filter:filter,
+                               description:"\(name)")
+    }
+}
+
+class VS2Filter: VS2ShaderBase {
     private static let filters:[String:[String:Any]] = [
         "sepiaTone": [
             "name":"CISepiaTone",
@@ -40,36 +70,9 @@ class VS2Filter: CustomDebugStringConvertible {
             ]
         ]
     ]
-    var filter:CIFilter?
-    var debugDescription:String
-    
-    init(filter:CIFilter?, description:String) {
-        self.filter = filter
-        self.debugDescription = description
-    }
-    
-    private static func makeShader(filters:[String:[String:Any]], name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
-        guard let filterInfo = filters[name],
-            let ciName = filterInfo["name"] as? String else {
-            print("no filter", name)
-            return nil
-        }
-        let filter = CIFilter(name: ciName)
-        if let propKeys = filterInfo["props"] as? [String:Any] {
-            for (key, inputKey) in propKeys {
-                if let inputKey = inputKey as? String,
-                   let value = props[key] {
-                    print(name, key, value)
-                    filter?.setValue(value, forKey: inputKey)
-                }
-            }
-        }
-        return VS2Filter(filter:filter,
-                               description:"\(name)")
-    }
     
     static func makeShader(name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
-        return VS2Filter.makeShader(filters:VS2Filter.filters, name:name, props:props, gpu:gpu)
+        return VS2ShaderBase.makeShader(filters:Self.filters, name:name, props:props, gpu:gpu)
     }
 }
 

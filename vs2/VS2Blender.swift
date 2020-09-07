@@ -10,36 +10,15 @@ import Foundation
 import Metal
 import CoreImage
 
-class VS2Blender: CustomDebugStringConvertible {
+class VS2Blender: VS2ShaderBase {
     static let filters:[String:[String:Any]] = [
         "additionCompositing": [
-            "name":"CIAdditionCOmpositing",
+            "name":"CIAdditionCompositing",
         ],
     ]
-    var filter:CIFilter?
-    var debugDescription:String
     
-    init(filter:CIFilter?, description:String) {
-        self.filter = filter
-        self.debugDescription = description
-    }
-    
-    static func makeShader(filterInfo:[String:Any], props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
-        guard let name = filterInfo["name"] as? String else {
-            return nil
-        }
-        let filter = CIFilter(name: name)
-        if let propKeys = filterInfo["props"] as? [String:Any] {
-            for (key, inputKey) in propKeys {
-                if let inputKey = inputKey as? String,
-                   let value = props[key] {
-                    print(name, key, value)
-                    filter?.setValue(value, forKey: inputKey)
-                }
-            }
-        }
-        return VS2Filter(filter:filter,
-                               description:"\(name)")
+    static func makeShader(name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
+        return VS2ShaderBase.makeShader(filters:Self.filters, name:name, props:props, gpu:gpu)
     }
 }
 
