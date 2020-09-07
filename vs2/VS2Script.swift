@@ -8,22 +8,18 @@
 
 import Foundation
 import Metal
+import CoreImage
 
 class VS2Script {
     static let makers:[String:([String:Any], MTLDevice) -> VS2Shader] = [
-        "gaussianBlur": VS2UnaryShader.makeGaussianBlur,
-        "sobel": VS2UnaryShader.makeSobel,
-        "areaMax": VS2UnaryShader.makeAreaMax,
-        "areaMin": VS2UnaryShader.makeAreaMin,
-        "laplacian": VS2UnaryShader.makeLaplacian,
+        "sepiaTone": VS2UnaryShader.makeSepiaTone,
     ]
     let script:[String:Any]
     let gpu:MTLDevice
     let descriptor:MTLTextureDescriptor
     var shaders = [VS2Shader]()
-    var textureSrc:MTLTexture?
-    var stack = [MTLTexture]()
-    var pool = [MTLTexture]()
+    var ciImageSrc:CIImage?
+    var stack = [CIImage]()
 
     init(script:[String:Any], gpu:MTLDevice, descriptor:MTLTextureDescriptor) {
         self.script = script
@@ -49,8 +45,8 @@ class VS2Script {
         print("operators", shaders)
     }
     
-    func encode(commandBuffer:MTLCommandBuffer, textureSrc:MTLTexture) {
-        self.textureSrc = textureSrc
+    func encode(commandBuffer:MTLCommandBuffer, ciImageSrc:CIImage) {
+        self.ciImageSrc = ciImageSrc
         for shader in shaders {
             shader.encode(to: commandBuffer, stack: self)
         }
@@ -58,20 +54,16 @@ class VS2Script {
 }
 
 extension VS2Script: VS2TextureStack {
-    func pop() -> MTLTexture? {
-        guard let texture = stack.popLast() else {
-            return textureSrc
+    func pop() -> CIImage {
+        guard let ciImage = stack.popLast() else {
+            return ciImageSrc!
         }
-        // LATER: push it to pool for reuse
-        return texture
+        return ciImage
     }
     
-    func push() -> MTLTexture? {
-        // LATER: pop from pool for reuse
-        guard let texture = gpu.makeTexture(descriptor: descriptor) else {
-            return nil
+    func push(_ ciImage:CIImage?) {
+        if let ciImage = ciImage {
+            stack.append(ciImage)
         }
-        stack.append(texture)
-        return texture
     }
 }

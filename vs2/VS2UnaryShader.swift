@@ -8,14 +8,26 @@
 
 import Foundation
 import MetalPerformanceShaders
+import CoreImage
 
 class VS2UnaryShader: CustomDebugStringConvertible {
-    var shader:MPSUnaryImageKernel
+    var filter:CIFilter
     var debugDescription:String
-    init(shader:MPSUnaryImageKernel, description:String) {
-        self.shader = shader
+    init(filter:CIFilter, description:String) {
+        self.filter = filter
         self.debugDescription = description
     }
+    
+    static func makeSepiaTone(props: [String:Any], gpu:MTLDevice) -> VS2Shader {
+        let intensity = props["intensity"] as? Double ?? 1.0
+        let filter = CIFilter(name: "CISepiaTone")!
+        //filter.setValue(ciImage, forKey: kCIInputImageKey)
+        filter.setValue(1, forKey: kCIInputIntensityKey)
+        return VS2UnaryShader(filter:filter,
+                               description:"SepiaTone:\(intensity)")
+
+    }
+    /*
 
     static func makeGaussianBlur(props: [String:Any], gpu:MTLDevice) -> VS2Shader {
         let sigma = props["sigma"] as? Double ?? 1.0
@@ -42,13 +54,12 @@ class VS2UnaryShader: CustomDebugStringConvertible {
         return VS2UnaryShader(shader:MPSImageLaplacian(device: gpu),
                                description:"laplacian")
     }
+ */
 }
 
 extension VS2UnaryShader: VS2Shader {
     func encode(to commandBuffer: MTLCommandBuffer, stack: VS2TextureStack) {
-        if let textureSrc = stack.pop(),
-           let textureDest = stack.push() {
-            shader.encode(commandBuffer: commandBuffer, sourceTexture: textureSrc, destinationTexture: textureDest)
-        }
+        filter.setValue(stack.pop(), forKey: kCIInputImageKey)
+        stack.push(filter.outputImage)
     }
 }
