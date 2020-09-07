@@ -67,12 +67,23 @@ class VS2CameraSession: NSObject {
 
         let script = VS2Script(script:[
             "pipeline": [[
-                "filter": "gaussianBlur",
+                "Xfilter": "gaussianBlur",
                 "props":[
                     "radius":2
                 ]
             ],[
+                "Xcontroller": "fork",
+            ],[
                 "filter": "edges",
+            ],[
+                "filter": "hueAdjust",
+                "props":[
+                    "angle":3.14
+                ]
+            ],[
+                "Xfilter": "colorInvert",
+            ],[
+                "Xblender": "darkenBlendMode",
             /*
             ],[
                 "filter": "sobel",

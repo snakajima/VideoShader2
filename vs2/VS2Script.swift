@@ -32,14 +32,17 @@ class VS2Script {
         shaders.removeAll()
         let empty = [String:Any]()
         for shaderInfo in pipeline {
-            if let key = shaderInfo["filter"] as? String {
-                if let filterInfo = VS2Filter.filters[key] {
-                    guard let shader = VS2Filter.makeShader(filterInfo:filterInfo, props:shaderInfo["props"] as? [String:Any] ?? empty, gpu:gpu) else {
-                        print("makeShader returned nil")
-                        continue
-                    }
+            if let name = shaderInfo["filter"] as? String {
+                if let shader = VS2Filter.makeShader(name:name, props:shaderInfo["props"] as? [String:Any] ?? empty, gpu:gpu) {
                     shaders.append(shader)
                 }
+            } else if let name = shaderInfo["blender"] as? String {
+                if let shader = VS2Blender.makeShader(name:name, props:shaderInfo["props"] as? [String:Any] ?? empty, gpu:gpu) {
+                    shaders.append(shader)
+                }
+            } else if let name = shaderInfo["controller"] as? String {
+                let controller = VS2Controller(name: name)
+                shaders.append(controller)
             }
         }
         print("operators", shaders)
@@ -64,6 +67,8 @@ extension VS2Script: VS2CIImageStack {
     func push(_ ciImage:CIImage?) {
         if let ciImage = ciImage {
             stack.append(ciImage)
+        } else {
+            print("no ciImage")
         }
     }
 }
