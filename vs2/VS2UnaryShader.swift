@@ -22,7 +22,7 @@ class VS2UnaryShader: CustomDebugStringConvertible {
         let intensity = props["intensity"] as? Double ?? 1.0
         let filter = CIFilter(name: "CISepiaTone")!
         //filter.setValue(ciImage, forKey: kCIInputImageKey)
-        filter.setValue(1, forKey: kCIInputIntensityKey)
+        filter.setValue(intensity, forKey: kCIInputIntensityKey)
         return VS2UnaryShader(filter:filter,
                                description:"SepiaTone:\(intensity)")
 
