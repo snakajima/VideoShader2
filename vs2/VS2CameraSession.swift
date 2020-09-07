@@ -72,9 +72,9 @@ class VS2CameraSession: NSObject {
                     "radius":2
                 ]
             ],[
-                "filter": "sepiaTone",
+                "filter": "hueAdjust",
                 "props":[
-                    "intensity":1
+                    "angle":3.14
                 ]
             /*
             ],[

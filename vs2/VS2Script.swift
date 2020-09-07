@@ -23,6 +23,12 @@ class VS2Script {
             "props":[
                 "radius": kCIInputRadiusKey
             ]
+        ],
+        "hueAdjust": [
+            "name":"CIHueAdjust",
+            "props":[
+                "angle": kCIInputAngleKey
+            ]
         ]
     ]
     let script:[String:Any]
