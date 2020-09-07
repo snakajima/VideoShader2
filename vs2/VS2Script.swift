@@ -53,13 +53,11 @@ class VS2Script {
         for shader in shaders {
             shader.encode(to: commandBuffer, stack: self)
         }
-        print(stack.count)
     }
 }
 
 extension VS2Script: VS2CIImageStack {
     func pop() -> CIImage {
-        print("pop", stack.count)
         guard let ciImage = stack.popLast() else {
             return ciImageSrc!
         }
@@ -67,7 +65,6 @@ extension VS2Script: VS2CIImageStack {
     }
     
     func push(_ ciImage:CIImage?) {
-        print("push", stack.count)
         if let ciImage = ciImage {
             stack.append(ciImage)
         } else {
