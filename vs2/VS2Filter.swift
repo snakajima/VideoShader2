@@ -53,10 +53,8 @@ class VS2Filter:CustomDebugStringConvertible {
         ]
     ]
     
-    static func makeShader(name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
-        guard let filterInfo = Self.filters[name],
-            let ciName = filterInfo["name"] as? String else {
-            print("no filter", name)
+    static func makeCIFilter(filterInfo:[String:Any], props: [String:Any]) -> CIFilter? {
+        guard let ciName = filterInfo["name"] as? String else {
             return nil
         }
         let filter = CIFilter(name: ciName)
@@ -67,13 +65,21 @@ class VS2Filter:CustomDebugStringConvertible {
             for (key, inputKey) in propKeys {
                 if let inputKey = inputKey as? String,
                    let value = props[key] {
-                    print(name, key, value)
+                    print(ciName, key, value)
                     filter?.setValue(value, forKey: inputKey)
                 }
             }
         }
-        return VS2Filter(filter:filter,
-                               description:"\(name)")
+        return filter
+    }
+
+    static func makeShader(name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
+        guard let filterInfo = Self.filters[name] else {
+            print("no filter", name)
+            return nil
+        }
+        let filter = VS2Filter.makeCIFilter(filterInfo:filterInfo, props:props)
+        return VS2Filter(filter:filter, description:"\(name)")
     }
 }
 
