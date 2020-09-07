@@ -96,7 +96,13 @@ class VS2CameraSession: NSObject {
             return
         }
         print("render")
-        ciContext.render(ciImage, to: drawable.texture, commandBuffer: commandBuffer, bounds: CGRect(origin: .zero, size: CGSize(width: dimension.width, height: dimension.height)), colorSpace: CGColorSpaceCreateDeviceRGB())
+        
+        let filter = CIFilter(name: "CISepiaTone")!
+        filter.setValue(ciImage, forKey: kCIInputImageKey)
+        filter.setValue(1, forKey: kCIInputIntensityKey)
+        let outputImage = filter.outputImage!
+        
+        ciContext.render(outputImage, to: drawable.texture, commandBuffer: commandBuffer, bounds: CGRect(origin: .zero, size: CGSize(width: dimension.width, height: dimension.height)), colorSpace: CGColorSpaceCreateDeviceRGB())
         commandBuffer.present(drawable)
         commandBuffer.commit()
         self.ciImage = nil // no need to draw it again
