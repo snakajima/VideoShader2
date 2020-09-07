@@ -10,8 +10,12 @@ import Foundation
 import Metal
 
 class VS2Script {
-    static let templates:[String:VS2Shader] = [
-        "gaussianBlur": VS2GaussianBlur()
+    static let makers:[String:([String:Any], MTLDevice) -> VS2Shader] = [
+        "gaussianBlur": VS2UnaryShader.makeGaussianBlur,
+        "sobel": VS2UnaryShader.makeSobel,
+        "areaMax": VS2UnaryShader.makeAreaMax,
+        "areaMin": VS2UnaryShader.makeAreaMin,
+        "laplacian": VS2UnaryShader.makeLaplacian,
     ]
     let script:[String:Any]
     let gpu:MTLDevice
@@ -33,11 +37,12 @@ class VS2Script {
             return
         }
         shaders.removeAll()
+        let empty = [String:Any]()
         for shaderInfo in pipeline {
             if let key = shaderInfo["filter"] as? String {
                 print("key=", key)
-                if let template = Self.templates[key] {
-                    shaders.append(template.makeInstance(props: shaderInfo["props"], gpu:gpu))
+                if let maker = Self.makers[key] {
+                    shaders.append(maker(shaderInfo["props"] as? [String:Any] ?? empty, gpu))
                 }
             }
         }

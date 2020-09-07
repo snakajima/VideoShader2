@@ -10,7 +10,6 @@ import Foundation
 import Metal
 
 public protocol VS2Shader {
-    func makeInstance(props:Any?, gpu:MTLDevice) -> VS2Shader
     func encode(to commandBuffer:MTLCommandBuffer, stack:VS2TextureStack)
 }
 
