@@ -92,10 +92,8 @@ class VS2CameraSession: NSObject {
            let drawable = drawable,
            let commandQueue = gpu.makeCommandQueue(),
            let commandBuffer = commandQueue.makeCommandBuffer() else {
-            print("skip")
             return
         }
-        print("render")
         
         let filter = CIFilter(name: "CISepiaTone")!
         filter.setValue(ciImage, forKey: kCIInputImageKey)
