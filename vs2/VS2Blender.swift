@@ -10,7 +10,15 @@ import Foundation
 import Metal
 import CoreImage
 
-class VS2Blender: VS2ShaderBase {
+class VS2Blender {
+    var filter:CIFilter?
+    var debugDescription:String
+    
+    init(filter:CIFilter?, description:String) {
+        self.filter = filter
+        self.debugDescription = description
+    }
+
     static let filters:[String:[String:Any]] = [
         "additionCompositing": [
             "name":"CIAdditionCompositing",
