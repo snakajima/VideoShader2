@@ -32,6 +32,12 @@ class VS2Script {
         ],
         "colorInvert": [
             "name":"CIColorInvert",
+        ],
+        "edges": [
+            "name":"CIEdges",
+            "props":[
+                "intensity": kCIInputIntensityKey
+            ]
         ]
     ]
     let script:[String:Any]

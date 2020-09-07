@@ -72,7 +72,7 @@ class VS2CameraSession: NSObject {
                     "radius":2
                 ]
             ],[
-                "filter": "colorInvert",
+                "filter": "edges",
             /*
             ],[
                 "filter": "sobel",
