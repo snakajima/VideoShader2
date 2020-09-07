@@ -11,9 +11,6 @@ import Metal
 import CoreImage
 
 class VS2Script {
-    static let makers:[String:([String:Any], MTLDevice) -> VS2Shader] = [
-        "sepiaTone": VS2UnaryShader.makeSepiaTone,
-    ]
     let script:[String:Any]
     let gpu:MTLDevice
     let descriptor:MTLTextureDescriptor
@@ -36,9 +33,12 @@ class VS2Script {
         let empty = [String:Any]()
         for shaderInfo in pipeline {
             if let key = shaderInfo["filter"] as? String {
-                print("key=", key)
-                if let maker = Self.makers[key] {
-                    shaders.append(maker(shaderInfo["props"] as? [String:Any] ?? empty, gpu))
+                if let filterInfo = VS2UnaryShader.filters[key] {
+                    guard let shader = VS2UnaryShader.makeShader(filterInfo:filterInfo, props:shaderInfo["props"] as? [String:Any] ?? empty, gpu:gpu) else {
+                        print("makeShader returned nil")
+                        continue
+                    }
+                    shaders.append(shader)
                 }
             }
         }
@@ -53,7 +53,7 @@ class VS2Script {
     }
 }
 
-extension VS2Script: VS2TextureStack {
+extension VS2Script: VS2CIImageStack {
     func pop() -> CIImage {
         guard let ciImage = stack.popLast() else {
             return ciImageSrc!

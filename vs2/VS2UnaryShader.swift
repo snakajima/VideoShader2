@@ -11,28 +11,67 @@ import MetalPerformanceShaders
 import CoreImage
 
 class VS2UnaryShader: CustomDebugStringConvertible {
-    var filter:CIFilter
+    static let filters:[String:[String:Any]] = [
+        "sepiaTone": [
+            "name":"CISepiaTone",
+            "props":[
+                "intensity": kCIInputIntensityKey
+            ]
+        ],
+        "gaussianBlur": [
+            "name":"CIGaussianBlur",
+            "props":[
+                "radius": kCIInputRadiusKey
+            ]
+        ],
+        "hueAdjust": [
+            "name":"CIHueAdjust",
+            "props":[
+                "angle": kCIInputAngleKey
+            ]
+        ],
+        "colorInvert": [
+            "name":"CIColorInvert",
+        ],
+        "edges": [
+            "name":"CIEdges",
+            "props":[
+                "intensity": kCIInputIntensityKey
+            ]
+        ]
+    ]
+    var filter:CIFilter?
     var debugDescription:String
     
-    init(filter:CIFilter, description:String) {
+    init(filter:CIFilter?, description:String) {
         self.filter = filter
         self.debugDescription = description
     }
     
-    static func makeSepiaTone(props: [String:Any], gpu:MTLDevice) -> VS2Shader {
-        let intensity = props["intensity"] as? Double ?? 1.0
-        let filter = CIFilter(name: "CISepiaTone")!
-        //filter.setValue(ciImage, forKey: kCIInputImageKey)
-        filter.setValue(intensity, forKey: kCIInputIntensityKey)
+    static func makeShader(filterInfo:[String:Any], props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
+        guard let name = filterInfo["name"] as? String else {
+            return nil
+        }
+        let filter = CIFilter(name: name)
+        if let propKeys = filterInfo["props"] as? [String:Any] {
+            for (key, inputKey) in propKeys {
+                if let inputKey = inputKey as? String,
+                   let value = props[key] {
+                    print(name, key, value)
+                    filter?.setValue(value, forKey: inputKey)
+                }
+            }
+        }
         return VS2UnaryShader(filter:filter,
-                               description:"SepiaTone:\(intensity)")
-
+                               description:"\(name)")
     }
 }
 
 extension VS2UnaryShader: VS2Shader {
-    func encode(to commandBuffer: MTLCommandBuffer, stack: VS2TextureStack) {
-        filter.setValue(stack.pop(), forKey: kCIInputImageKey)
-        stack.push(filter.outputImage)
+    func encode(to commandBuffer: MTLCommandBuffer, stack: VS2CIImageStack) {
+        if let filter = self.filter {
+            filter.setValue(stack.pop(), forKey: kCIInputImageKey)
+            stack.push(filter.outputImage)
+        }
     }
 }
