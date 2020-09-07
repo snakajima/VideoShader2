@@ -22,8 +22,12 @@ class VS2CameraSession: NSObject {
     private var sampleBuffer: CMSampleBuffer? // retainer
     private var descriptor:MTLTextureDescriptor?
     private var script:VS2Script?
+    
+    private var ciContext:CIContext?
+    private var ciImage:CIImage?
 
     func startRunning() {
+        ciContext = CIContext(mtlDevice: gpu)
         CVMetalTextureCacheCreate(nil, nil, gpu, nil, &textureCache)
         guard let camera = camera,
               let input = try? AVCaptureDeviceInput(device: camera) else {
@@ -63,14 +67,11 @@ class VS2CameraSession: NSObject {
 
         let script = VS2Script(script:[
             "pipeline": [[
-                "filter": "gaussianBlur",
-            ],[
-                "filter":"laplacian",
-            /*
-                "filter": "gaussianBlur",
-                "props": [
-                    "sigma":3.0
+                "filter": "sepiaTone",
+                "props":[
+                    "intensity":0.7
                 ]
+            /*
             ],[
                 "filter": "sobel",
             */
@@ -83,48 +84,31 @@ class VS2CameraSession: NSObject {
     }
     
     func draw(drawable:CAMetalDrawable?) {
-        guard let texture = self.texture,
+        guard let ciContext = self.ciContext,
+           let ciImage = self.ciImage,
            let drawable = drawable,
            let commandQueue = gpu.makeCommandQueue(),
            let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
         }
-
+        
         guard let script = self.script else {
             print("no script")
             return
         }
-        script.encode(commandBuffer: commandBuffer, textureSrc: texture)
-        guard let textureOut = script.pop() else {
-            print("stack is empty")
-            return
-        }
+        script.encode(commandBuffer: commandBuffer, ciImageSrc: ciImage)
 
-        // Scale it to drawable
-        let ratio = min(Double(drawable.texture.width) / Double(texture.width), Double(drawable.texture.height) / Double(texture.height))
-        var transform = MPSScaleTransform(scaleX: ratio, scaleY: ratio, translateX: 0.0, translateY: 0.0)
-        let filter = MPSImageBilinearScale(device: gpu)
-        withUnsafePointer(to: &transform) { (transformPtr: UnsafePointer<MPSScaleTransform>) -> () in
-            filter.scaleTransform = transformPtr
-            filter.encode(commandBuffer: commandBuffer, sourceTexture: textureOut, destinationTexture: drawable.texture)
-        }
-
+        ciContext.render(script.pop(), to: drawable.texture, commandBuffer: commandBuffer, bounds: CGRect(origin: .zero, size: CGSize(width: dimension.width, height: dimension.height)), colorSpace: CGColorSpaceCreateDeviceRGB())
         commandBuffer.present(drawable)
         commandBuffer.commit()
-        self.texture = nil // no need to draw it again
+        self.ciImage = nil // no need to draw it again
     }
 }
 
 extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
-           let textureCache = self.textureCache {
-            let width = CVPixelBufferGetWidth(pixelBuffer)
-            let height = CVPixelBufferGetHeight(pixelBuffer)
-            var textureRef:CVMetalTexture?
-            CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache, pixelBuffer, nil,
-                                                      .bgra8Unorm, width, height, 0, &textureRef)
-            texture = CVMetalTextureGetTexture(textureRef!)
+        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+            ciImage = CIImage(cvImageBuffer: pixelBuffer)
             self.sampleBuffer = sampleBuffer // to retain the sampleBuffer behind the texture
         }
     }

@@ -8,13 +8,14 @@
 
 import Foundation
 import Metal
+import CoreImage
 
 public protocol VS2Shader {
     func encode(to commandBuffer:MTLCommandBuffer, stack:VS2TextureStack)
 }
 
 public protocol VS2TextureStack {
-    func pop() -> MTLTexture?
-    func push() -> MTLTexture?
+    func pop() -> CIImage
+    func push(_ ciImage:CIImage?)
 }
 
