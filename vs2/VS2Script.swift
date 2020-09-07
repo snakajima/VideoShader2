@@ -18,6 +18,12 @@ class VS2Script {
                 "intensity": kCIInputIntensityKey
             ]
         ],
+        "gaussianBlur": [
+            "name":"CIGaussianBlur",
+            "props":[
+                "radius": kCIInputRadiusKey
+            ]
+        ]
     ]
     let script:[String:Any]
     let gpu:MTLDevice

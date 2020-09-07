@@ -67,9 +67,14 @@ class VS2CameraSession: NSObject {
 
         let script = VS2Script(script:[
             "pipeline": [[
+                "filter": "gaussianBlur",
+                "props":[
+                    "radius":2
+                ]
+            ],[
                 "filter": "sepiaTone",
                 "props":[
-                    "intensity":0.8
+                    "intensity":1
                 ]
             /*
             ],[
