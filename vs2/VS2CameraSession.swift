@@ -73,12 +73,6 @@ class VS2CameraSession: NSObject {
                 ]
             /*
             ],[
-                "filter":"laplacian",
-                "filter": "gaussianBlur",
-                "props": [
-                    "sigma":3.0
-                ]
-            ],[
                 "filter": "sobel",
             */
             ]]
@@ -98,13 +92,6 @@ class VS2CameraSession: NSObject {
             return
         }
         
-        /*
-        let filter = CIFilter(name: "CISepiaTone")!
-        filter.setValue(ciImage, forKey: kCIInputImageKey)
-        filter.setValue(1, forKey: kCIInputIntensityKey)
-        let outputImage = filter.outputImage!
-        */
- 
         guard let script = self.script else {
             print("no script")
             return
@@ -115,38 +102,6 @@ class VS2CameraSession: NSObject {
         commandBuffer.present(drawable)
         commandBuffer.commit()
         self.ciImage = nil // no need to draw it again
-
-        /*
-        guard let texture = self.texture,
-           let drawable = drawable,
-           let commandQueue = gpu.makeCommandQueue(),
-           let commandBuffer = commandQueue.makeCommandBuffer() else {
-            return
-        }
-
-        guard let script = self.script else {
-            print("no script")
-            return
-        }
-        script.encode(commandBuffer: commandBuffer, textureSrc: texture)
-        guard let textureOut = script.pop() else {
-            print("stack is empty")
-            return
-        }
-
-        // Scale it to drawable
-        let ratio = min(Double(drawable.texture.width) / Double(texture.width), Double(drawable.texture.height) / Double(texture.height))
-        var transform = MPSScaleTransform(scaleX: ratio, scaleY: ratio, translateX: 0.0, translateY: 0.0)
-        let filter = MPSImageBilinearScale(device: gpu)
-        withUnsafePointer(to: &transform) { (transformPtr: UnsafePointer<MPSScaleTransform>) -> () in
-            filter.scaleTransform = transformPtr
-            filter.encode(commandBuffer: commandBuffer, sourceTexture: textureOut, destinationTexture: drawable.texture)
-        }
-
-        commandBuffer.present(drawable)
-        commandBuffer.commit()
-        self.texture = nil // no need to draw it again
-        */
     }
 }
 
@@ -156,18 +111,6 @@ extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
             ciImage = CIImage(cvImageBuffer: pixelBuffer)
             self.sampleBuffer = sampleBuffer // to retain the sampleBuffer behind the texture
         }
-/*
-        if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
-           let textureCache = self.textureCache {
-            let width = CVPixelBufferGetWidth(pixelBuffer)
-            let height = CVPixelBufferGetHeight(pixelBuffer)
-            var textureRef:CVMetalTexture?
-            CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, textureCache, pixelBuffer, nil,
-                                                      .bgra8Unorm, width, height, 0, &textureRef)
-            texture = CVMetalTextureGetTexture(textureRef!)
-            self.sampleBuffer = sampleBuffer // to retain the sampleBuffer behind the texture
-        }
-*/
     }
 }
 
