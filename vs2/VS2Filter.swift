@@ -10,7 +10,7 @@ import Foundation
 import MetalPerformanceShaders
 import CoreImage
 
-class VS2Filter {
+class VS2Filter:CustomDebugStringConvertible {
     var filter:CIFilter?
     var debugDescription:String
     

@@ -10,7 +10,7 @@ import Foundation
 import Metal
 import CoreImage
 
-class VS2Blender {
+class VS2Blender: CustomDebugStringConvertible {
     var filter:CIFilter?
     var debugDescription:String
     
