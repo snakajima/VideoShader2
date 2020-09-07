@@ -10,7 +10,7 @@ import Foundation
 import MetalPerformanceShaders
 import CoreImage
 
-class VS2UnaryShader: CustomDebugStringConvertible {
+class VS2Filter: CustomDebugStringConvertible {
     static let filters:[String:[String:Any]] = [
         "sepiaTone": [
             "name":"CISepiaTone",
@@ -62,12 +62,12 @@ class VS2UnaryShader: CustomDebugStringConvertible {
                 }
             }
         }
-        return VS2UnaryShader(filter:filter,
+        return VS2Filter(filter:filter,
                                description:"\(name)")
     }
 }
 
-extension VS2UnaryShader: VS2Shader {
+extension VS2Filter: VS2Shader {
     func encode(to commandBuffer: MTLCommandBuffer, stack: VS2CIImageStack) {
         if let filter = self.filter {
             filter.setValue(stack.pop(), forKey: kCIInputImageKey)

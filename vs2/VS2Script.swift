@@ -33,8 +33,8 @@ class VS2Script {
         let empty = [String:Any]()
         for shaderInfo in pipeline {
             if let key = shaderInfo["filter"] as? String {
-                if let filterInfo = VS2UnaryShader.filters[key] {
-                    guard let shader = VS2UnaryShader.makeShader(filterInfo:filterInfo, props:shaderInfo["props"] as? [String:Any] ?? empty, gpu:gpu) else {
+                if let filterInfo = VS2Filter.filters[key] {
+                    guard let shader = VS2Filter.makeShader(filterInfo:filterInfo, props:shaderInfo["props"] as? [String:Any] ?? empty, gpu:gpu) else {
                         print("makeShader returned nil")
                         continue
                     }
