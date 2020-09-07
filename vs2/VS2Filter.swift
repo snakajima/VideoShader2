@@ -26,6 +26,9 @@ class VS2ShaderBase : CustomDebugStringConvertible {
             return nil
         }
         let filter = CIFilter(name: ciName)
+        if filter == nil {
+            print("CIFilter() failed with ", ciName)
+        }
         if let propKeys = filterInfo["props"] as? [String:Any] {
             for (key, inputKey) in propKeys {
                 if let inputKey = inputKey as? String,

@@ -33,11 +33,13 @@ class VS2Script {
         let empty = [String:Any]()
         for shaderInfo in pipeline {
             if let name = shaderInfo["filter"] as? String {
-                guard let shader = VS2Filter.makeShader(name:name, props:shaderInfo["props"] as? [String:Any] ?? empty, gpu:gpu) else {
-                    print("makeShader returned nil")
-                    continue
+                if let shader = VS2Filter.makeShader(name:name, props:shaderInfo["props"] as? [String:Any] ?? empty, gpu:gpu) {
+                    shaders.append(shader)
                 }
-                shaders.append(shader)
+            } else if let name = shaderInfo["blender"] as? String {
+                if let shader = VS2Blender.makeShader(name:name, props:shaderInfo["props"] as? [String:Any] ?? empty, gpu:gpu) {
+                    shaders.append(shader)
+                }
             } else if let name = shaderInfo["controller"] as? String {
                 let controller = VS2Controller(name: name)
                 shaders.append(controller)
@@ -51,6 +53,7 @@ class VS2Script {
         for shader in shaders {
             shader.encode(to: commandBuffer, stack: self)
         }
+        print(stack.count)
     }
 }
 

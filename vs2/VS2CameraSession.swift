@@ -75,6 +75,8 @@ class VS2CameraSession: NSObject {
                 "controller": "fork",
             ],[
                 "filter": "edges",
+            ],[
+                "blender": "darkenBlendMode",
             /*
             ],[
                 "filter": "sobel",

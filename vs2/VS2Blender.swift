@@ -15,6 +15,12 @@ class VS2Blender: VS2ShaderBase {
         "additionCompositing": [
             "name":"CIAdditionCompositing",
         ],
+        "darkenBlendMode": [
+            "name":"CIDarkenBlendMode",
+        ],
+        "differenceBlendMode": [
+            "name":"CIDifferenceBlendMode",
+        ],
     ]
     
     static func makeShader(name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {

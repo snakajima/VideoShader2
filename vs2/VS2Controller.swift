@@ -32,8 +32,8 @@ extension VS2Controller: VS2Shader {
         case .fork:
             let ciImage = stack.pop()
             stack.push(ciImage)
-            //stack.push(ciImage)
-            print("fork")
+            stack.push(ciImage)
+            //print("fork")
         default:
             break
         }
