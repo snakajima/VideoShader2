@@ -9,6 +9,7 @@
 
 import AVFoundation
 import MetalPerformanceShaders
+import CoreImage
 
 class VS2CameraSession: NSObject {
     let gpu = MTLCreateSystemDefaultDevice()!
@@ -83,6 +84,13 @@ class VS2CameraSession: NSObject {
             return
         }
         pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: ciImage)
+        
+        let scale = min(Double(drawable.texture.width) / Double(dimension.width), Double(drawable.texture.height) / Double(dimension.height))
+        let filterScale = CIFilter(name: "CILanczosScaleTransform", parameters: [
+            kCIInputScaleKey:scale,
+            kCIInputImageKey:pipeline.pop()
+        ])
+        pipeline.push(filterScale?.outputImage)
 
         ciContext.render(pipeline.pop(), to: drawable.texture, commandBuffer: commandBuffer, bounds: CGRect(origin: .zero, size: CGSize(width: dimension.width, height: dimension.height)), colorSpace: CGColorSpaceCreateDeviceRGB())
 
