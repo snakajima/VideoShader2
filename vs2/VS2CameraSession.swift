@@ -24,10 +24,13 @@ class VS2CameraSession: NSObject {
     private var script:VS2Script?
     
     private var ciContext:CIContext?
+    private var commandQueue:MTLCommandQueue?
     private var ciImage:CIImage?
 
     func startRunning() {
         ciContext = CIContext(mtlDevice: gpu)
+        commandQueue = gpu.makeCommandQueue()
+        
         CVMetalTextureCacheCreate(nil, nil, gpu, nil, &textureCache)
         guard let camera = camera,
               let input = try? AVCaptureDeviceInput(device: camera) else {
@@ -104,8 +107,8 @@ class VS2CameraSession: NSObject {
     func draw(drawable:CAMetalDrawable?) {
         guard let ciContext = self.ciContext,
            let ciImage = self.ciImage,
+           let commandQueue = self.commandQueue,
            let drawable = drawable,
-           let commandQueue = gpu.makeCommandQueue(),
            let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
         }
@@ -117,6 +120,7 @@ class VS2CameraSession: NSObject {
         script.encode(commandBuffer: commandBuffer, ciImageSrc: ciImage)
 
         ciContext.render(script.pop(), to: drawable.texture, commandBuffer: commandBuffer, bounds: CGRect(origin: .zero, size: CGSize(width: dimension.width, height: dimension.height)), colorSpace: CGColorSpaceCreateDeviceRGB())
+
         commandBuffer.present(drawable)
         commandBuffer.commit()
         self.ciImage = nil // no need to draw it again
