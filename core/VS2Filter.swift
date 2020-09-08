@@ -35,7 +35,7 @@ class VS2Filter:CustomDebugStringConvertible {
         "gaussianBlur": [
             "name":"CIGaussianBlur",
             "props":[
-                "radius": kCIInputRadiusKey
+                "radius": "inputRadius", // DEBUGGING: kCIInputRadiusKey
             ]
         ],
         "medianFilter": [
@@ -52,7 +52,7 @@ class VS2Filter:CustomDebugStringConvertible {
         "noiseReduction": [
             "name":"CINoiseReduction",
             "props":[
-                "noiseLevel": "noiseLevel", // BUGBUG: missing KCInput..Key
+                "noiseLevel": "inputNoiseLevel", // BUGBUG: missing KCInput..Key
                 "angle": kCIInputSharpnessKey,
             ]
         ],
@@ -64,7 +64,14 @@ class VS2Filter:CustomDebugStringConvertible {
             ]
         ],
 
-        
+        "colorClamp": [
+            "name":"CIColorClamp",
+            "props":[
+                "minComponents": "inputMinComponents", // BUGBUG: missing KCInput..Key
+                "maxComponents": "inputMaxComponents", // BUGBUG: missing KCInput..Key
+            ]
+        ],
+
         "sepiaTone": [
             "name":"CISepiaTone",
             "props":[
@@ -119,13 +126,21 @@ class VS2Filter:CustomDebugStringConvertible {
             for (key, inputKey) in propKeys {
                 if let inputKey = inputKey as? String,
                    let value = props[key] {
-                    print(ciName, key, value)
+                    print(ciName, key, inputKey, value)
                     switch(inputKey) {
                     case kCIInputCenterKey:
                         if let array = value as? [Any], array.count == 2 {
                             filter?.setValue(CIVector(
                                 x: Self.asCGFloat(array[0]),
                                 y: Self.asCGFloat(array[1])), forKey: inputKey)
+                        }
+                    case "inputMinComponents":
+                        if let array = value as? [Any], array.count == 4 {
+                            filter?.setValue(CIVector(
+                                x: Self.asCGFloat(array[0]),
+                                y: Self.asCGFloat(array[1]),
+                                z: Self.asCGFloat(array[2]),
+                                w: Self.asCGFloat(array[3])), forKey: inputKey)
                         }
                     default:
                         filter?.setValue(value, forKey: inputKey)
