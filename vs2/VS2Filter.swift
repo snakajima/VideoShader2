@@ -41,6 +41,12 @@ class VS2Filter:CustomDebugStringConvertible {
         "colorInvert": [
             "name":"CIColorInvert",
         ],
+        "exposureAdjust": [
+            "name":"CIExposureAdjust",
+            "props":[
+                "ev": kCIInputEVKey
+            ]
+        ],
         "toneCurve": [
             "name":"CIToneCurve",
             // TODO: props

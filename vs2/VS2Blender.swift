@@ -29,6 +29,9 @@ class VS2Blender: CustomDebugStringConvertible {
         "differenceBlendMode": [
             "name":"CIDifferenceBlendMode",
         ],
+        "maximumCompositing": [
+            "name":"CIMaximumCompositing",
+        ],
     ]
     
     static func makeShader(name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
