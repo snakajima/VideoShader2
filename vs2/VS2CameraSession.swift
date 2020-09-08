@@ -18,8 +18,8 @@ class VS2CameraSession: NSObject {
     private let session = AVCaptureSession()
     private let camera = AVCaptureDevice.default(for: .video)
     private var sampleBuffer: CMSampleBuffer? // retainer
-    private var pipeline:VS2Pipeline?
-    
+    private let pipeline = VS2Pipeline()
+
     private var ciContext:CIContext?
     private var commandQueue:MTLCommandQueue?
     private var ciImage:CIImage?
@@ -64,9 +64,7 @@ class VS2CameraSession: NSObject {
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
 
-        let pipeline = VS2Pipeline(script:script)
-        pipeline.compile(gpu:gpu)
-        self.pipeline = pipeline
+        pipeline.compile(script, gpu:gpu)
 
         session.startRunning()
     }
@@ -81,12 +79,8 @@ class VS2CameraSession: NSObject {
             return
         }
         
-        guard let pipeline = self.pipeline else {
-            print("no pipeline")
-            return
-        }
         pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: ciImage)
-        
+ 
         let scale = min(Double(drawable.texture.width) / Double(dimension.width), Double(drawable.texture.height) / Double(dimension.height))
         filterScale.setValue(scale, forKey: kCIInputScaleKey)
         filterScale.setValue(pipeline.pop(), forKey: kCIInputImageKey)
