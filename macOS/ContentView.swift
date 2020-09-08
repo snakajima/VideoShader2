@@ -10,10 +10,10 @@ import SwiftUI
 
 let s_script0 = [
     "pipeline":[[
-        "filter": "zoomBlur",
+        "filter": "colorClamp",
         "props":[
-            "amount":10.0,
-            "center":[800, 500]
+            "minComponents":[0.0, 0.0, 0.0, 0.0],
+            "maxComponents":[0.5, 1.0, 1.0, 1.0]
         ]
     ]]
 ]
@@ -39,7 +39,8 @@ struct Foo: View {
         "pipeline": [[
             "filter": "colorClamp",
             "props":[
-                "minComponents":[0.0, 0.0, 0.5, 0.0]
+                "minComponents":[0.0, 0.0, 0.0, 0.0],
+                "maxComponents":[0.2, 1.0, 1.0, 1.0]
             ]
         ]]
     ]

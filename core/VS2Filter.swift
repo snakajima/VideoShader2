@@ -134,7 +134,7 @@ class VS2Filter:CustomDebugStringConvertible {
                                 x: Self.asCGFloat(array[0]),
                                 y: Self.asCGFloat(array[1])), forKey: inputKey)
                         }
-                    case "inputMinComponents":
+                    case "inputMinComponents", "inputMaxComponents":
                         if let array = value as? [Any], array.count == 4 {
                             filter?.setValue(CIVector(
                                 x: Self.asCGFloat(array[0]),
