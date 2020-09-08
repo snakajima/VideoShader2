@@ -145,6 +145,10 @@ class VS2Filter:CustomDebugStringConvertible {
             "name":"VS2TooneFilter",
             // TODO: props
         ],
+        "mono": [
+            "name":"VS2MonoFilter",
+            // TODO: props
+        ],
     ]
     
     static func asCGFloat(_ value:Any) -> CGFloat {
@@ -165,6 +169,8 @@ class VS2Filter:CustomDebugStringConvertible {
             switch(ciName) {
             case "VS2TooneFilter":
                 filter = VS2TooneFilter()
+            case "VS2MonoFilter":
+                filter = VS2MonoFilter()
             default:
                 print("CIFilter(): no filter with ", ciName)
             }
