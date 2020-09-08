@@ -11,6 +11,7 @@
 		746F80DA2506DFD80073C306 /* VS2Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80D82506DFD80073C306 /* VS2Controller.swift */; };
 		746F80DC2506DFE70073C306 /* VS2Blender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80DB2506DFE70073C306 /* VS2Blender.swift */; };
 		746F80DD2506DFE70073C306 /* VS2Blender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80DB2506DFE70073C306 /* VS2Blender.swift */; };
+		746F80E12507AACF0073C306 /* VS2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80E02507AACE0073C306 /* VS2View.swift */; };
 		74B4C1F82502659F0084BF2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1F72502659F0084BF2C /* AppDelegate.swift */; };
 		74B4C1FA2502659F0084BF2C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1F92502659F0084BF2C /* SceneDelegate.swift */; };
 		74B4C1FC2502659F0084BF2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1FB2502659F0084BF2C /* ContentView.swift */; };
@@ -37,6 +38,7 @@
 /* Begin PBXFileReference section */
 		746F80D82506DFD80073C306 /* VS2Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2Controller.swift; sourceTree = "<group>"; };
 		746F80DB2506DFE70073C306 /* VS2Blender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2Blender.swift; sourceTree = "<group>"; };
+		746F80E02507AACE0073C306 /* VS2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2View.swift; sourceTree = "<group>"; };
 		74B4C1F42502659F0084BF2C /* vs2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vs2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74B4C1F72502659F0084BF2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74B4C1F92502659F0084BF2C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				74B4C2222502D7610084BF2C /* vs2Mac.entitlements */,
 				74B4C21B2502D7610084BF2C /* Preview Content */,
 				74B4C2262502D7DB0084BF2C /* VS2CameraViewController.swift */,
+				746F80E02507AACE0073C306 /* VS2View.swift */,
 			);
 			path = vs2Mac;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				74B4C2182502D75E0084BF2C /* ContentView.swift in Sources */,
 				74B4C2282502D87D0084BF2C /* VS2CameraSession.swift in Sources */,
 				74B4C2312503F5750084BF2C /* VS2Filter.swift in Sources */,
+				746F80E12507AACF0073C306 /* VS2View.swift in Sources */,
 				74B4C2162502D75E0084BF2C /* AppDelegate.swift in Sources */,
 				74B4C2302503F36A0084BF2C /* VS2Shader.swift in Sources */,
 				746F80DA2506DFD80073C306 /* VS2Controller.swift in Sources */,
