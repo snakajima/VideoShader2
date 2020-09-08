@@ -57,7 +57,7 @@ struct ContentView_Previews: PreviewProvider {
 struct Foo: View {
     @State var script1:[String:Any] = [
         "pipeline": [[
-            "filter": "boxBlur",
+            "filter": "motionBlur",
             "props":[
                 "radius":30.0
             ]
@@ -65,7 +65,7 @@ struct Foo: View {
     ]
     @State var script2:[String:Any] = [
         "pipeline": [[
-            "filter": "discBlur",
+            "filter": "noiseReduction",
             "props":[
                 "radius":10.0
             ]
@@ -73,9 +73,9 @@ struct Foo: View {
     ]
     @State var script3:[String:Any] = [
         "pipeline": [[
-            "filter": "gaussianBlur",
+            "filter": "zoomBlur",
             "props":[
-                "radius":10.0
+                "amount":10.0
             ]
         ]]
     ]

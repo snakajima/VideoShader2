@@ -41,6 +41,30 @@ class VS2Filter:CustomDebugStringConvertible {
         "medianFilter": [
             "name":"CIMedianFilter",
         ],
+        
+        "motionBlur": [
+            "name":"CIMotionBlur",
+            "props":[
+                "radius": kCIInputRadiusKey,
+                "angle": kCIInputAngleKey,
+            ]
+        ],
+        "noiseReduction": [
+            "name":"CINoiseReduction",
+            "props":[
+                "noiseLevel": "noiseLevel", // BUGBUG: missing KCInput..Key
+                "angle": kCIInputSharpnessKey,
+            ]
+        ],
+        "zoomBlur": [
+            "name":"CIZoomBlur",
+            "props":[
+                "center": kCIInputCenterKey,
+                "amount": kCIInputAmountKey,
+            ]
+        ],
+
+        
         "sepiaTone": [
             "name":"CISepiaTone",
             "props":[
