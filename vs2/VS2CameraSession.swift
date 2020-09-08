@@ -12,15 +12,11 @@ import MetalPerformanceShaders
 
 class VS2CameraSession: NSObject {
     let gpu = MTLCreateSystemDefaultDevice()!
-    var orientation = AVCaptureVideoOrientation.landscapeLeft
     var dimension = CGSize.zero
 
     private let session = AVCaptureSession()
     private let camera = AVCaptureDevice.default(for: .video)
-    private var textureCache:CVMetalTextureCache?
-    private var texture:MTLTexture?
     private var sampleBuffer: CMSampleBuffer? // retainer
-    private var descriptor:MTLTextureDescriptor?
     private var script:VS2Script?
     
     private var ciContext:CIContext?
@@ -28,10 +24,12 @@ class VS2CameraSession: NSObject {
     private var ciImage:CIImage?
 
     func startRunning() {
-        ciContext = CIContext(mtlDevice: gpu)
+        // This CIContext allows us to mix regular metal shaders along with CIFilters (in future)
         commandQueue = gpu.makeCommandQueue()
-        
-        CVMetalTextureCacheCreate(nil, nil, gpu, nil, &textureCache)
+        ciContext = CIContext(mtlCommandQueue: commandQueue!, options: [
+            .cacheIntermediates : false,
+        ])
+
         guard let camera = camera,
               let input = try? AVCaptureDeviceInput(device: camera) else {
             return
@@ -44,10 +42,6 @@ class VS2CameraSession: NSObject {
         let dimension = CMVideoFormatDescriptionGetDimensions(formatDescription)
         self.dimension = CGSize(width: CGFloat(dimension.width), height: CGFloat(dimension.height))
         print(self.dimension)
-        
-        let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: Int(dimension.width), height: Int(dimension.height), mipmapped: false)
-        descriptor.usage = [.shaderRead, .shaderWrite]
-        self.descriptor = descriptor
         
         let output = AVCaptureVideoDataOutput()
         guard session.canAddOutput(output) else {
@@ -97,7 +91,7 @@ class VS2CameraSession: NSObject {
                 "filter": "sobel",
             */
             ]]
-        ], gpu:gpu, descriptor: descriptor)
+        ], gpu:gpu)
         script.compile()
         self.script = script
 

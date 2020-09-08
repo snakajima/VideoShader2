@@ -13,15 +13,13 @@ import CoreImage
 class VS2Script {
     let script:[String:Any]
     let gpu:MTLDevice
-    let descriptor:MTLTextureDescriptor
     var shaders = [VS2Shader]()
     var ciImageSrc:CIImage?
     var stack = [CIImage]()
 
-    init(script:[String:Any], gpu:MTLDevice, descriptor:MTLTextureDescriptor) {
+    init(script:[String:Any], gpu:MTLDevice) {
         self.script = script
         self.gpu = gpu
-        self.descriptor = descriptor
     }
     
     func compile() {
