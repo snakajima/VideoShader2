@@ -77,6 +77,13 @@ struct Foo: View {
                 "radius":1.5,
             ]
         ],[
+            "controller": "swap"
+        ],[
+            "filter": "hueAdjust",
+            "props":[
+                "angle":3.14,
+            ]
+        ],[
             "blender": "minimum"
         ]]
     ]

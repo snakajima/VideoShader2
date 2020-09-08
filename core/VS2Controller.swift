@@ -13,6 +13,7 @@ class VS2Controller {
     enum Instruction: String {
         case noop = "noop"
         case fork = "fork"
+        case swap = "swap"
     }
     let instruction:Instruction
     
@@ -20,6 +21,8 @@ class VS2Controller {
         switch(name) {
         case Instruction.fork.rawValue:
             self.instruction = .fork
+        case Instruction.swap.rawValue:
+            self.instruction = .swap
         default:
             self.instruction = .noop
         }
@@ -33,7 +36,11 @@ extension VS2Controller: VS2Shader {
             let ciImage = stack.pop()
             stack.push(ciImage)
             stack.push(ciImage)
-            //print("fork")
+        case .swap:
+            let ciImage1 = stack.pop()
+            let ciImage2 = stack.pop()
+            stack.push(ciImage1)
+            stack.push(ciImage2)
         default:
             break
         }
