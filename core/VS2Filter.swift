@@ -98,6 +98,15 @@ class VS2Filter:CustomDebugStringConvertible {
         ]
     ]
     
+    static func asCGFloat(_ value:Any) -> CGFloat {
+        if let intValue = value as? Int {
+            return CGFloat(intValue)
+        } else if let doubleValue = value as? Double {
+            return CGFloat(doubleValue)
+        }
+        return 0.0
+    }
+    
     static func makeCIFilter(filterInfo:[String:Any], props: [String:Any]) -> CIFilter? {
         guard let ciName = filterInfo["name"] as? String else {
             return nil
@@ -111,7 +120,16 @@ class VS2Filter:CustomDebugStringConvertible {
                 if let inputKey = inputKey as? String,
                    let value = props[key] {
                     print(ciName, key, value)
-                    filter?.setValue(value, forKey: inputKey)
+                    switch(inputKey) {
+                    case kCIInputCenterKey:
+                        if let array = value as? [Any], array.count == 2 {
+                            filter?.setValue(CIVector(
+                                x: Self.asCGFloat(array[0]),
+                                y: Self.asCGFloat(array[1])), forKey: inputKey)
+                        }
+                    default:
+                        filter?.setValue(value, forKey: inputKey)
+                    }
                 }
             }
         }

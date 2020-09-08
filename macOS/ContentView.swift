@@ -8,37 +8,17 @@
 
 import SwiftUI
 
+let s_script0 = [
+    "pipeline":[[
+        "filter": "zoomBlur",
+        "props":[
+            "amount":10.0,
+            "center":[800, 500]
+        ]
+    ]]
+]
 struct ContentView: View {
-    @State var script:[String:Any] = [
-        "pipeline": [[
-            "controller": "fork",
-        ],[
-            "filter": "hueAdjust",
-            "props":[
-                "angle":3.14
-            ]
-        ],[
-            "filter": "edges",
-        ],[
-            "Xfilter": "gaussianBlur",
-            "props":[
-                "radius":10
-            ]
-        ],[
-            "filter": "exposureAdjust",
-            "props":[
-                "ev":5.0
-            ]
-        ],[
-            "Xfilter": "colorInvert",
-        ],[
-            "blender": "maximumCompositing",
-        /*
-        ],[
-            "filter": "sobel",
-        */
-        ]]
-    ]
+    @State var script:[String:Any] = s_script0
     var body: some View {
         VStack {
             VS2View(script:$script)
@@ -76,7 +56,7 @@ struct Foo: View {
             "filter": "zoomBlur",
             "props":[
                 "amount":10.0,
-                "center":CIVector(x: 800, y: 500)
+                "center":[800, 500]
             ]
         ]]
     ]
