@@ -10,8 +10,10 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VS2CameraViewController()
-            .edgesIgnoringSafeArea(.top)
+        VStack {
+            VS2View()
+                .edgesIgnoringSafeArea(.top)
+        }
     }
 }
 
