@@ -69,11 +69,9 @@ struct Foo: View {
     ]
     @State var script2:[String:Any] = [
         "pipeline": [[
-            "filter": "toneCurve",
+            "filter": "monochrome",
             "props":[
-                "point1":[0.25, 0.5],
-                "point2":[0.5, 0.75],
-                "point3":[0.75, 0.88],
+                "color":[0.0, 1.0, 0.0],
             ]
         ]]
     ]

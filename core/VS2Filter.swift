@@ -132,7 +132,14 @@ class VS2Filter:CustomDebugStringConvertible {
                 "intensity": kCIInputIntensityKey
             ]
         ],
-        
+        "monochrome": [
+            "name":"CIColorMonochrome",
+            "props":[
+                "color": kCIInputColorKey,
+                "intensity": kCIInputIntensityKey
+            ]
+        ],
+
         // Filters with custom kernels
         "toone": [
             "name":"VS2TooneFilter",
@@ -182,6 +189,13 @@ class VS2Filter:CustomDebugStringConvertible {
                                 y: Self.asCGFloat(array[1]),
                                 z: Self.asCGFloat(array[2]),
                                 w: Self.asCGFloat(array[3])), forKey: inputKey)
+                        }
+                    case kCIInputColorKey:
+                        if let array = value as? [Any], array.count == 3 {
+                            filter?.setValue(CIColor(
+                                red: Self.asCGFloat(array[0]),
+                                green: Self.asCGFloat(array[1]),
+                                blue: Self.asCGFloat(array[2])), forKey: inputKey)
                         }
                     default:
                         filter?.setValue(value, forKey: inputKey)
