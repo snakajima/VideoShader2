@@ -11,10 +11,6 @@ import SwiftUI
 let s_script0 = [
     "pipeline":[[
         "filter": "toone",
-        "props":[
-            "minComponents":[0.0, 0.0, 0.0, 0.0],
-            "maxComponents":[0.5, 1.0, 1.0, 1.0]
-        ]
     ]]
 ]
 struct ContentView: View {
@@ -37,11 +33,9 @@ struct ContentView_Previews: PreviewProvider {
 struct Foo: View {
     @State var script1:[String:Any] = [
         "pipeline": [[
+            "filtter":"gaussianBlur",
+        ],[
             "filter": "colorClamp",
-            "props":[
-                "minComponents":[0.0, 0.0, 0.0, 0.0],
-                "maxComponents":[0.2, 1.0, 1.0, 1.0]
-            ]
         ]]
     ]
     @State var script2:[String:Any] = [

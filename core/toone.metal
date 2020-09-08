@@ -13,8 +13,20 @@ using namespace metal;
 extern "C" { namespace coreimage {
 
     half4 toone(sample_h s) {
-        return step(half4(0.5h, 0.5h, 0.5h, 0.5h), s);
-        //return s.grba;
+        half y = dot(s.rbg, half3(0.3, 0.59, 0.11));
+        half z = 1.0h;
+        z = (y < 9.2h/10.0h) ? 8.0h/10.0h+(y-9.0h/10.0h)*10.0h : z;
+        z = (y < 9.0h/10.0h) ? 8.0h/10.0h : z;
+        z = (y < 7.2h/10.0h) ? 6.0h/10.0h+(y-7.0h/10.0h)*10.0h : z;
+        z = (y < 7.0h/10.0h) ? 6.0h/10.0h : z;
+        z = (y < 5.2h/10.0h) ? 4.0h/10.0h+(y-5.0h/10.0h)*10.0h : z;
+        z = (y < 5.0h/10.0h) ? 4.0h/10.0h : z;
+        z = (y < 3.2h/10.0h) ? 2.0h/10.0h+(y-3.0h/10.0h)*10.0h : z;
+        z = (y < 3.0h/10.0h) ? 2.0h/10.0h : z;
+        z = (y < 1.2h/10.0h) ? (y-1.0/10.0h)*10.0h : z;
+        z = (y < 1.0h/10.0h) ? 0.0h : z;
+        z = z / y;
+        return half4(s.rgb * z, s.a);
     }
 
 }}
