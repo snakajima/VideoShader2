@@ -33,6 +33,13 @@ struct ContentView_Previews: PreviewProvider {
 struct Foo: View {
     @State var script1:[String:Any] = [
         "pipeline": [[
+            "filter": "toneCurve",
+            "props":[
+                "point1":[0.25, 0.5],
+                "point2":[0.5, 0.75],
+                "point3":[0.75, 0.88],
+            ]
+        ],[
             "filter": "gloom",
             "props":[
                 "radius":20.0,
@@ -44,11 +51,11 @@ struct Foo: View {
     ]
     @State var script2:[String:Any] = [
         "pipeline": [[
-            "filter": "colorControls",
+            "filter": "toneCurve",
             "props":[
-                "saturation":1.0,
-                "Xbrightness":0.5,
-                "contrast":1.5
+                "point1":[0.25, 0.5],
+                "point2":[0.5, 0.75],
+                "point3":[0.75, 0.88],
             ]
         ]]
     ]

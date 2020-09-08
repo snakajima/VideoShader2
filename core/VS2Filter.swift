@@ -118,7 +118,13 @@ class VS2Filter:CustomDebugStringConvertible {
         ],
         "toneCurve": [
             "name":"CIToneCurve",
-            // TODO: props
+            "props":[
+                "point0": "inputPoint0",
+                "point1": "inputPoint1",
+                "point2": "inputPoint2",
+                "point3": "inputPoint3",
+                "point4": "inputPoint4",
+            ]
         ],
         "edges": [
             "name":"CIEdges",
@@ -162,7 +168,8 @@ class VS2Filter:CustomDebugStringConvertible {
                    let value = props[key] {
                     print(ciName, key, inputKey, value)
                     switch(inputKey) {
-                    case kCIInputCenterKey:
+                    case kCIInputCenterKey,
+                         "inputPoint0", "inputPoint1", "inputPoint2", "inputPoint3", "inputPoint4":
                         if let array = value as? [Any], array.count == 2 {
                             filter?.setValue(CIVector(
                                 x: Self.asCGFloat(array[0]),
