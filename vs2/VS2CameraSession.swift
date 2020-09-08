@@ -23,7 +23,7 @@ class VS2CameraSession: NSObject {
     private var commandQueue:MTLCommandQueue?
     private var ciImage:CIImage?
 
-    func startRunning() {
+    func startRunning(script:[String:Any]) {
         // This CIContext allows us to mix regular metal shaders along with CIFilters (in future)
         commandQueue = gpu.makeCommandQueue()
         ciContext = CIContext(mtlCommandQueue: commandQueue!, options: [
@@ -62,36 +62,7 @@ class VS2CameraSession: NSObject {
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
 
-        let pipeline = VS2Pipeline(script:[
-            "pipeline": [[
-                "controller": "fork",
-            ],[
-                "filter": "hueAdjust",
-                "props":[
-                    "angle":3.14
-                ]
-            ],[
-                "filter": "edges",
-            ],[
-                "Xfilter": "gaussianBlur",
-                "props":[
-                    "radius":10
-                ]
-            ],[
-                "filter": "exposureAdjust",
-                "props":[
-                    "ev":5.0
-                ]
-            ],[
-                "Xfilter": "colorInvert",
-            ],[
-                "blender": "maximumCompositing",
-            /*
-            ],[
-                "filter": "sobel",
-            */
-            ]]
-        ])
+        let pipeline = VS2Pipeline(script:script)
         pipeline.compile(gpu:gpu)
         self.pipeline = pipeline
 

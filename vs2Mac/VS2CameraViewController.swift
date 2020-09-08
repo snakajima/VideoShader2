@@ -31,7 +31,36 @@ final class VS2CameraViewController: NSViewController {
     }
     
     override func viewDidLoad() {
-        cameraSession.startRunning()
+        cameraSession.startRunning(script:[
+            "pipeline": [[
+                "controller": "fork",
+            ],[
+                "filter": "hueAdjust",
+                "props":[
+                    "angle":3.14
+                ]
+            ],[
+                "filter": "edges",
+            ],[
+                "Xfilter": "gaussianBlur",
+                "props":[
+                    "radius":10
+                ]
+            ],[
+                "filter": "exposureAdjust",
+                "props":[
+                    "ev":5.0
+                ]
+            ],[
+                "Xfilter": "colorInvert",
+            ],[
+                "blender": "maximumCompositing",
+            /*
+            ],[
+                "filter": "sobel",
+            */
+            ]]
+        ])
         metalView.frame = CGRect(origin: .zero, size: CGSize(width:cameraSession.dimension.width, height:cameraSession.dimension.height))
         metalView.device = self.cameraSession.gpu
         metalView.delegate = self
