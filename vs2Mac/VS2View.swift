@@ -36,7 +36,8 @@ struct VS2View: NSViewRepresentable {
         let view: VS2View
         init(_ view: VS2View) {
             self.view = view
-            cameraSession.startRunning(script:[
+            cameraSession.startRunning()
+            cameraSession.update(script:[
                 "pipeline": [[
                     "controller": "fork",
                 ],[

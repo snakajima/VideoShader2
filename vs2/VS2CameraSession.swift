@@ -25,7 +25,7 @@ class VS2CameraSession: NSObject {
     private var ciImage:CIImage?
     private let filterScale = CIFilter(name: "CILanczosScaleTransform")
 
-    func startRunning(script:[String:Any]) {
+    func startRunning() {
         // This CIContext allows us to mix regular metal shaders along with CIFilters (in future)
         commandQueue = gpu.makeCommandQueue()
         ciContext = CIContext(mtlCommandQueue: commandQueue!, options: [
@@ -64,9 +64,11 @@ class VS2CameraSession: NSObject {
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
 
-        pipeline.compile(script, gpu:gpu)
-
         session.startRunning()
+    }
+    
+    func update(script:[String:Any]) {
+        pipeline.compile(script, gpu:gpu)
     }
     
     func draw(drawable:CAMetalDrawable?) {
