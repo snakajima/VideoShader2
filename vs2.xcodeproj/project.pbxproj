@@ -12,6 +12,7 @@
 		746F80DC2506DFE70073C306 /* VS2Blender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80DB2506DFE70073C306 /* VS2Blender.swift */; };
 		746F80DD2506DFE70073C306 /* VS2Blender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80DB2506DFE70073C306 /* VS2Blender.swift */; };
 		746F80E12507AACF0073C306 /* VS2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80E02507AACE0073C306 /* VS2View.swift */; };
+		746F80E42507D16F0073C306 /* VS2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80E32507D16F0073C306 /* VS2View.swift */; };
 		74B4C1F82502659F0084BF2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1F72502659F0084BF2C /* AppDelegate.swift */; };
 		74B4C1FA2502659F0084BF2C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1F92502659F0084BF2C /* SceneDelegate.swift */; };
 		74B4C1FC2502659F0084BF2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1FB2502659F0084BF2C /* ContentView.swift */; };
@@ -19,7 +20,6 @@
 		74B4C201250265A30084BF2C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74B4C200250265A30084BF2C /* Preview Assets.xcassets */; };
 		74B4C204250265A30084BF2C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74B4C202250265A30084BF2C /* LaunchScreen.storyboard */; };
 		74B4C20C250265C90084BF2C /* VS2CameraSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C20B250265C90084BF2C /* VS2CameraSession.swift */; };
-		74B4C20E25026A420084BF2C /* VS2CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C20D25026A420084BF2C /* VS2CameraViewController.swift */; };
 		74B4C2162502D75E0084BF2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C2152502D75E0084BF2C /* AppDelegate.swift */; };
 		74B4C2182502D75E0084BF2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C2172502D75E0084BF2C /* ContentView.swift */; };
 		74B4C21A2502D7610084BF2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74B4C2192502D7610084BF2C /* Assets.xcassets */; };
@@ -38,6 +38,7 @@
 		746F80D82506DFD80073C306 /* VS2Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2Controller.swift; sourceTree = "<group>"; };
 		746F80DB2506DFE70073C306 /* VS2Blender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2Blender.swift; sourceTree = "<group>"; };
 		746F80E02507AACE0073C306 /* VS2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2View.swift; sourceTree = "<group>"; };
+		746F80E32507D16F0073C306 /* VS2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2View.swift; sourceTree = "<group>"; };
 		74B4C1F42502659F0084BF2C /* vs2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vs2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74B4C1F72502659F0084BF2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74B4C1F92502659F0084BF2C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,7 +48,6 @@
 		74B4C203250265A30084BF2C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		74B4C205250265A30084BF2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		74B4C20B250265C90084BF2C /* VS2CameraSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2CameraSession.swift; sourceTree = "<group>"; };
-		74B4C20D25026A420084BF2C /* VS2CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2CameraViewController.swift; sourceTree = "<group>"; };
 		74B4C2132502D75E0084BF2C /* vs2Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vs2Mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74B4C2152502D75E0084BF2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74B4C2172502D75E0084BF2C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -121,7 +121,7 @@
 				74B4C202250265A30084BF2C /* LaunchScreen.storyboard */,
 				74B4C205250265A30084BF2C /* Info.plist */,
 				74B4C1FF250265A30084BF2C /* Preview Content */,
-				74B4C20D25026A420084BF2C /* VS2CameraViewController.swift */,
+				746F80E32507D16F0073C306 /* VS2View.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -260,12 +260,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				746F80DC2506DFE70073C306 /* VS2Blender.swift in Sources */,
-				74B4C20E25026A420084BF2C /* VS2CameraViewController.swift in Sources */,
 				746F80D92506DFD80073C306 /* VS2Controller.swift in Sources */,
 				74B4C1F82502659F0084BF2C /* AppDelegate.swift in Sources */,
 				74B4C22D2503F2BB0084BF2C /* VS2Filter.swift in Sources */,
 				74B4C22F2503F36A0084BF2C /* VS2Shader.swift in Sources */,
 				74B4C22A2503BB910084BF2C /* VS2Pipeline.swift in Sources */,
+				746F80E42507D16F0073C306 /* VS2View.swift in Sources */,
 				74B4C20C250265C90084BF2C /* VS2CameraSession.swift in Sources */,
 				74B4C1FA2502659F0084BF2C /* SceneDelegate.swift in Sources */,
 				74B4C1FC2502659F0084BF2C /* ContentView.swift in Sources */,

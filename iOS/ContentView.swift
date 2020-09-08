@@ -9,11 +9,42 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var script:[String:Any] = [
+        "pipeline": [[
+            "controller": "fork",
+        ],[
+            "filter": "hueAdjust",
+            "props":[
+                "angle":3.14
+            ]
+        ],[
+            "filter": "edges",
+        ],[
+            "Xfilter": "gaussianBlur",
+            "props":[
+                "radius":10
+            ]
+        ],[
+            "filter": "exposureAdjust",
+            "props":[
+                "ev":5.0
+            ]
+        ],[
+            "Xfilter": "colorInvert",
+        ],[
+            "blender": "maximumCompositing",
+        /*
+        ],[
+            "filter": "sobel",
+        */
+        ]]
+    ]
     var body: some View {
-        VS2CameraViewController()
-            .edgesIgnoringSafeArea(.top)
-    }
-}
+        VStack {
+            VS2View(script:$script)
+                .edgesIgnoringSafeArea(.top)
+        }
+    }}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
