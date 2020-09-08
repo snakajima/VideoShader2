@@ -8,37 +8,18 @@
 
 import SwiftUI
 
+let s_script0 = [
+    "pipeline":[[
+        "filter": "toone",
+        "props":[
+            "minComponents":[0.0, 0.0, 0.0, 0.0],
+            "maxComponents":[0.5, 1.0, 1.0, 1.0]
+        ]
+    ]]
+]
+
 struct ContentView: View {
-    @State var script:[String:Any] = [
-        "pipeline": [[
-            "controller": "fork",
-        ],[
-            "filter": "hueAdjust",
-            "props":[
-                "angle":3.14
-            ]
-        ],[
-            "filter": "edges",
-        ],[
-            "Xfilter": "gaussianBlur",
-            "props":[
-                "radius":10
-            ]
-        ],[
-            "filter": "exposureAdjust",
-            "props":[
-                "ev":5.0
-            ]
-        ],[
-            "Xfilter": "colorInvert",
-        ],[
-            "blender": "maximumCompositing",
-        /*
-        ],[
-            "filter": "sobel",
-        */
-        ]]
-    ]
+    @State var script:[String:Any] = s_script0
     var body: some View {
         VStack {
             VS2View(script:$script)
