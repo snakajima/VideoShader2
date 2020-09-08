@@ -12,17 +12,16 @@ import CoreImage
 
 class VS2Pipeline {
     let script:[String:Any]
-    let gpu:MTLDevice
+
     var shaders = [VS2Shader]()
     var ciImageSrc:CIImage?
     var stack = [CIImage]()
 
-    init(script:[String:Any], gpu:MTLDevice) {
+    init(script:[String:Any]) {
         self.script = script
-        self.gpu = gpu
     }
     
-    func compile() {
+    func compile(gpu:MTLDevice) {
         guard let pipeline = script["pipeline"] as? [[String:Any]] else {
             print("no or invalid pipeline")
             return

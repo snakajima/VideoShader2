@@ -91,8 +91,8 @@ class VS2CameraSession: NSObject {
                 "filter": "sobel",
             */
             ]]
-        ], gpu:gpu)
-        pipeline.compile()
+        ])
+        pipeline.compile(gpu:gpu)
         self.pipeline = pipeline
 
         session.startRunning()
@@ -107,13 +107,13 @@ class VS2CameraSession: NSObject {
             return
         }
         
-        guard let script = self.pipeline else {
-            print("no script")
+        guard let pipeline = self.pipeline else {
+            print("no pipeline")
             return
         }
-        script.encode(commandBuffer: commandBuffer, ciImageSrc: ciImage)
+        pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: ciImage)
 
-        ciContext.render(script.pop(), to: drawable.texture, commandBuffer: commandBuffer, bounds: CGRect(origin: .zero, size: CGSize(width: dimension.width, height: dimension.height)), colorSpace: CGColorSpaceCreateDeviceRGB())
+        ciContext.render(pipeline.pop(), to: drawable.texture, commandBuffer: commandBuffer, bounds: CGRect(origin: .zero, size: CGSize(width: dimension.width, height: dimension.height)), colorSpace: CGColorSpaceCreateDeviceRGB())
 
         commandBuffer.present(drawable)
         commandBuffer.commit()
