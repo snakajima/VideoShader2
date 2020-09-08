@@ -17,7 +17,7 @@ class VS2CameraSession: NSObject {
     private let session = AVCaptureSession()
     private let camera = AVCaptureDevice.default(for: .video)
     private var sampleBuffer: CMSampleBuffer? // retainer
-    private var script:VS2Script?
+    private var pipeline:VS2Pipeline?
     
     private var ciContext:CIContext?
     private var commandQueue:MTLCommandQueue?
@@ -62,7 +62,7 @@ class VS2CameraSession: NSObject {
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
 
-        let script = VS2Script(script:[
+        let pipeline = VS2Pipeline(script:[
             "pipeline": [[
                 "controller": "fork",
             ],[
@@ -92,8 +92,8 @@ class VS2CameraSession: NSObject {
             */
             ]]
         ], gpu:gpu)
-        script.compile()
-        self.script = script
+        pipeline.compile()
+        self.pipeline = pipeline
 
         session.startRunning()
     }
@@ -107,7 +107,7 @@ class VS2CameraSession: NSObject {
             return
         }
         
-        guard let script = self.script else {
+        guard let script = self.pipeline else {
             print("no script")
             return
         }

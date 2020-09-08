@@ -10,7 +10,7 @@ import Foundation
 import Metal
 import CoreImage
 
-class VS2Script {
+class VS2Pipeline {
     let script:[String:Any]
     let gpu:MTLDevice
     var shaders = [VS2Shader]()
@@ -54,7 +54,7 @@ class VS2Script {
     }
 }
 
-extension VS2Script: VS2CIImageStack {
+extension VS2Pipeline: VS2CIImageStack {
     func pop() -> CIImage {
         guard let ciImage = stack.popLast() else {
             return ciImageSrc!
