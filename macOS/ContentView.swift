@@ -13,8 +13,26 @@ let s_script0 = [
         "filter": "toone",
     ]]
 ]
+let s_script4 = [
+    "pipeline": [[
+        "controller": "fork"
+    ],[
+        "filter": "edgeWork",
+        "props":[
+            "radius":1.5,
+        ]
+    ],[
+        "controller": "swap"
+    ],[
+        "filter": "toone",
+    ],[
+        "controller": "swap"
+    ],[
+        "blender": "maskedVariableBlur"
+    ]]
+]
 struct ContentView: View {
-    @State var script:[String:Any] = s_script0
+    @State var script:[String:Any] = s_script4
     var body: some View {
         VStack {
             VS2View(script:$script)
