@@ -23,6 +23,7 @@ class VS2CameraSession: NSObject {
     private var ciContext:CIContext?
     private var commandQueue:MTLCommandQueue?
     private var ciImage:CIImage?
+    private let filterScale = CIFilter(name: "CILanczosScaleTransform")
 
     func startRunning(script:[String:Any]) {
         // This CIContext allows us to mix regular metal shaders along with CIFilters (in future)
@@ -75,6 +76,7 @@ class VS2CameraSession: NSObject {
            let ciImage = self.ciImage,
            let commandQueue = self.commandQueue,
            let drawable = drawable,
+           let filterScale = filterScale,
            let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
         }
@@ -86,11 +88,9 @@ class VS2CameraSession: NSObject {
         pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: ciImage)
         
         let scale = min(Double(drawable.texture.width) / Double(dimension.width), Double(drawable.texture.height) / Double(dimension.height))
-        let filterScale = CIFilter(name: "CILanczosScaleTransform", parameters: [
-            kCIInputScaleKey:scale,
-            kCIInputImageKey:pipeline.pop()
-        ])
-        pipeline.push(filterScale?.outputImage)
+        filterScale.setValue(scale, forKey: kCIInputScaleKey)
+        filterScale.setValue(pipeline.pop(), forKey: kCIInputImageKey)
+        pipeline.push(filterScale.outputImage)
 
         ciContext.render(pipeline.pop(), to: drawable.texture, commandBuffer: commandBuffer, bounds: CGRect(origin: .zero, size: CGSize(width: dimension.width, height: dimension.height)), colorSpace: CGColorSpaceCreateDeviceRGB())
 
