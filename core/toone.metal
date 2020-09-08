@@ -12,7 +12,7 @@ using namespace metal;
 
 extern "C" { namespace coreimage {
 
-    float4 myColor(sample_t s) {
+    half4 myColor(sample_h s) {
 
         return s.grba;
     }
