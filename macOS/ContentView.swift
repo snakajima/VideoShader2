@@ -79,10 +79,7 @@ struct Foo: View {
         ],[
             "controller": "swap"
         ],[
-            "filter": "hueAdjust",
-            "props":[
-                "angle":3.14,
-            ]
+            "filter": "toone",
         ],[
             "blender": "minimum"
         ]]
