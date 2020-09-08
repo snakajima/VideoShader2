@@ -24,9 +24,20 @@ class VS2TooneFilter: CIFilter {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    func outputImage() -> CIImage? {
-        guard let inputImage = inputImage else {return nil}
-        return kernel.apply(extent: inputImage.extent, arguments: [inputImage])
+    
+    override var outputImage: CIImage? {
+        get {
+            guard let inputImage = inputImage else {return nil}
+            return kernel.apply(extent: inputImage.extent, arguments: [inputImage])
+        }
+    }
+    
+    override func setValue(_ value: Any?, forKey key: String) {
+        switch key {
+        case "inputImage":
+            inputImage = value as? CIImage
+        default:
+            break
+        }
     }
 }

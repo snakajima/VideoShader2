@@ -56,7 +56,7 @@ struct Foo: View {
     ]
     @State var script3:[String:Any] = [
         "pipeline": [[
-            "filter": "zoomBlur",
+            "filter": "toone",
             "props":[
                 "amount":10.0,
                 "center":[800, 500]
