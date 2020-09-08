@@ -79,11 +79,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		746F80E22507CFC30073C306 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				74B4C20B250265C90084BF2C /* VS2CameraSession.swift */,
+				74B4C22C2503F2BB0084BF2C /* VS2Filter.swift */,
+				746F80D82506DFD80073C306 /* VS2Controller.swift */,
+				746F80DB2506DFE70073C306 /* VS2Blender.swift */,
+				74B4C2292503BB900084BF2C /* VS2Pipeline.swift */,
+				74B4C22E2503F36A0084BF2C /* VS2Shader.swift */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
 		74B4C1EB2502659F0084BF2C = {
 			isa = PBXGroup;
 			children = (
-				74B4C1F62502659F0084BF2C /* vs2 */,
-				74B4C2142502D75E0084BF2C /* vs2Mac */,
+				746F80E22507CFC30073C306 /* core */,
+				74B4C1F62502659F0084BF2C /* iOS */,
+				74B4C2142502D75E0084BF2C /* macOS */,
 				74B4C1F52502659F0084BF2C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -97,7 +111,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		74B4C1F62502659F0084BF2C /* vs2 */ = {
+		74B4C1F62502659F0084BF2C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
 				74B4C1F72502659F0084BF2C /* AppDelegate.swift */,
@@ -107,15 +121,9 @@
 				74B4C202250265A30084BF2C /* LaunchScreen.storyboard */,
 				74B4C205250265A30084BF2C /* Info.plist */,
 				74B4C1FF250265A30084BF2C /* Preview Content */,
-				74B4C20B250265C90084BF2C /* VS2CameraSession.swift */,
-				74B4C22C2503F2BB0084BF2C /* VS2Filter.swift */,
-				746F80D82506DFD80073C306 /* VS2Controller.swift */,
-				746F80DB2506DFE70073C306 /* VS2Blender.swift */,
-				74B4C2292503BB900084BF2C /* VS2Pipeline.swift */,
 				74B4C20D25026A420084BF2C /* VS2CameraViewController.swift */,
-				74B4C22E2503F36A0084BF2C /* VS2Shader.swift */,
 			);
-			path = vs2;
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		74B4C1FF250265A30084BF2C /* Preview Content */ = {
@@ -126,7 +134,7 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		74B4C2142502D75E0084BF2C /* vs2Mac */ = {
+		74B4C2142502D75E0084BF2C /* macOS */ = {
 			isa = PBXGroup;
 			children = (
 				74B4C2152502D75E0084BF2C /* AppDelegate.swift */,
@@ -138,7 +146,7 @@
 				74B4C21B2502D7610084BF2C /* Preview Content */,
 				746F80E02507AACE0073C306 /* VS2View.swift */,
 			);
-			path = vs2Mac;
+			path = macOS;
 			sourceTree = "<group>";
 		};
 		74B4C21B2502D7610084BF2C /* Preview Content */ = {
@@ -460,14 +468,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = vs2Mac/vs2Mac.entitlements;
+				CODE_SIGN_ENTITLEMENTS = macOS/vs2Mac.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"vs2Mac/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"macOS/Preview Content\"";
 				DEVELOPMENT_TEAM = H34BY2CCCD;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = vs2Mac/Info.plist;
+				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -484,14 +492,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = vs2Mac/vs2Mac.entitlements;
+				CODE_SIGN_ENTITLEMENTS = macOS/vs2Mac.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"vs2Mac/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"macOS/Preview Content\"";
 				DEVELOPMENT_TEAM = H34BY2CCCD;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = vs2Mac/Info.plist;
+				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
