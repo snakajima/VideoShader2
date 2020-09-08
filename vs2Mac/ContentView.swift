@@ -71,9 +71,31 @@ struct Foo: View {
             ]
         ]]
     ]
+    @State var script3:[String:Any] = [
+        "pipeline": [[
+            "filter": "hueAdjust",
+            "props":[
+                "angle":4.14
+            ]
+        ]]
+    ]
+    @State var script4:[String:Any] = [
+        "pipeline": [[
+            "filter": "hueAdjust",
+            "props":[
+                "angle":3.14
+            ]
+        ]]
+    ]
     var body: some View {
         VStack {
-            VS2View(script:$script1)
-            VS2View(script:$script2)
+            HStack {
+                VS2View(script:$script1)
+                VS2View(script:$script2)
+            }
+            HStack {
+                VS2View(script:$script3)
+                VS2View(script:$script4)
+            }
         }
     }}
