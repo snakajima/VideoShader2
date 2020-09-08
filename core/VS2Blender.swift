@@ -20,17 +20,53 @@ class VS2Blender: CustomDebugStringConvertible {
     }
 
     static let filters:[String:[String:Any]] = [
-        "additionCompositing": [
+        "addition": [
             "name":"CIAdditionCompositing",
         ],
-        "darkenBlendMode": [
+        "colorBlend": [
+            "name":"CIColorBlendMode",
+        ],
+        "colorBurnBlend": [
+            "name":"CIColorBurnBlendMode",
+        ],
+        "colorDodgeBlend": [
+            "name":"CIColorDodgeBlendMode",
+        ],
+        "darkenBlend": [
             "name":"CIDarkenBlendMode",
         ],
-        "differenceBlendMode": [
+        "differenceBlend": [
             "name":"CIDifferenceBlendMode",
         ],
-        "maximumCompositing": [
+        "divideBlend": [
+            "name":"CIDivideBlendMode",
+        ],
+        "exclusionBlend": [
+            "name":"CIExclusionBlendMode",
+        ],
+        "hardLightBlend": [
+            "name":"CIHardLightBlendMode",
+        ],
+        "hueBlend": [
+            "name":"CIHueBlendMode",
+        ],
+        "lightenBlend": [
+            "name":"CILightenBlendMode",
+        ],
+        "linearBurnBlend": [
+            "name":"CILinearBurnBlendMode",
+        ],
+        "linearDodgeBlend": [
+            "name":"CILinearDodgeBlendMode",
+        ],
+        "luminosityDodgeBlend": [
+            "name":"CILuminosityDodgeBlendMode",
+        ],
+        "maximum": [
             "name":"CIMaximumCompositing",
+        ],
+        "minimum": [
+            "name":"CIMinimumCompositing",
         ],
     ]
     

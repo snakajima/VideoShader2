@@ -70,10 +70,14 @@ struct Foo: View {
     ]
     @State var script4:[String:Any] = [
         "pipeline": [[
+            "controller": "fork"
+        ],[
             "filter": "edgeWork",
             "props":[
-                "radius":2.5,
+                "radius":1.5,
             ]
+        ],[
+            "blender": "minimum"
         ]]
     ]
     var body: some View {
