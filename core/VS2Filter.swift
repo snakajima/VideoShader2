@@ -20,16 +20,31 @@ class VS2Filter:CustomDebugStringConvertible {
     }
 
     private static let filters:[String:[String:Any]] = [
-        "sepiaTone": [
-            "name":"CISepiaTone",
+        "boxBlur": [
+            "name":"CIBoxBlur",
             "props":[
-                "intensity": kCIInputIntensityKey
+                "radius": kCIInputRadiusKey
+            ]
+        ],
+        "discBlur": [
+            "name":"CIDiscBlur",
+            "props":[
+                "radius": kCIInputRadiusKey
             ]
         ],
         "gaussianBlur": [
             "name":"CIGaussianBlur",
             "props":[
                 "radius": kCIInputRadiusKey
+            ]
+        ],
+        "medianFilter": [
+            "name":"CIMedianFilter",
+        ],
+        "sepiaTone": [
+            "name":"CISepiaTone",
+            "props":[
+                "intensity": kCIInputIntensityKey
             ]
         ],
         "hueAdjust": [
