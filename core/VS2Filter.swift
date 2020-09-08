@@ -71,6 +71,14 @@ class VS2Filter:CustomDebugStringConvertible {
                 "maxComponents": "inputMaxComponents", // BUGBUG: missing KCInput..Key
             ]
         ],
+        "colorControls": [
+            "name":"CIColorControls",
+            "props":[
+                "saturation": kCIInputSaturationKey,
+                "brightness": kCIInputBrightnessKey,
+                "contrast": kCIInputContrastKey
+            ]
+        ],
 
         "sepiaTone": [
             "name":"CISepiaTone",
