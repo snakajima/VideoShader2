@@ -10,7 +10,7 @@ import SwiftUI
 
 let s_script0 = [
     "pipeline":[[
-        "filter": "colorClamp",
+        "filter": "toone",
         "props":[
             "minComponents":[0.0, 0.0, 0.0, 0.0],
             "maxComponents":[0.5, 1.0, 1.0, 1.0]
