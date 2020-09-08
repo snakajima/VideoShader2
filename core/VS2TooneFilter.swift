@@ -17,7 +17,7 @@ class VS2TooneFilter: CIFilter {
     override init() {
         let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
         let data = try! Data(contentsOf: url)
-        kernel = try! CIColorKernel(functionName: "myColor", fromMetalLibraryData: data)
+        kernel = try! CIColorKernel(functionName: "toone", fromMetalLibraryData: data)
         super.init()
     }
 

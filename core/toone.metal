@@ -12,9 +12,9 @@ using namespace metal;
 
 extern "C" { namespace coreimage {
 
-    half4 myColor(sample_h s) {
-
-        return s.grba;
+    half4 toone(sample_h s) {
+        return step(half4(0.5h, 0.5h, 0.5h, 0.5h), s);
+        //return s.grba;
     }
 
 }}
