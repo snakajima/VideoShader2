@@ -88,6 +88,13 @@ class VS2Filter:CustomDebugStringConvertible {
                 "radius": kCIInputRadiusKey
             ]
         ],
+        "gloom": [
+            "name":"CIGloom",
+            "props":[
+                "radius": kCIInputRadiusKey,
+                "intensity": kCIInputIntensityKey
+            ]
+        ],
         "sepiaTone": [
             "name":"CISepiaTone",
             "props":[
