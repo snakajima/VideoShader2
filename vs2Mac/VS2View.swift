@@ -11,6 +11,7 @@ import SwiftUI
 import MetalKit
 
 struct VS2View: NSViewRepresentable {
+    @Binding var script:[String:Any]
     
     func makeCoordinator() -> Coordinator {
         return Coordinator(self)
@@ -29,36 +30,7 @@ struct VS2View: NSViewRepresentable {
     }
     
     func updateNSView(_ nsView: MTKView, context: NSViewRepresentableContext<VS2View>) {
-        context.coordinator.cameraSession.update(script:[
-            "pipeline": [[
-                "controller": "fork",
-            ],[
-                "filter": "hueAdjust",
-                "props":[
-                    "angle":3.14
-                ]
-            ],[
-                "filter": "edges",
-            ],[
-                "Xfilter": "gaussianBlur",
-                "props":[
-                    "radius":10
-                ]
-            ],[
-                "filter": "exposureAdjust",
-                "props":[
-                    "ev":5.0
-                ]
-            ],[
-                "Xfilter": "colorInvert",
-            ],[
-                "blender": "maximumCompositing",
-            /*
-            ],[
-                "filter": "sobel",
-            */
-            ]]
-        ])
+        context.coordinator.cameraSession.update(script:script)
     }
     
     class Coordinator: NSObject, MTKViewDelegate {

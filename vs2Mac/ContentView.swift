@@ -9,9 +9,39 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var script:[String:Any] = [
+        "pipeline": [[
+            "controller": "fork",
+        ],[
+            "filter": "hueAdjust",
+            "props":[
+                "angle":3.14
+            ]
+        ],[
+            "filter": "edges",
+        ],[
+            "Xfilter": "gaussianBlur",
+            "props":[
+                "radius":10
+            ]
+        ],[
+            "filter": "exposureAdjust",
+            "props":[
+                "ev":5.0
+            ]
+        ],[
+            "Xfilter": "colorInvert",
+        ],[
+            "blender": "maximumCompositing",
+        /*
+        ],[
+            "filter": "sobel",
+        */
+        ]]
+    ]
     var body: some View {
         VStack {
-            VS2View()
+            VS2View(script:$script)
                 .edgesIgnoringSafeArea(.top)
         }
     }
@@ -20,6 +50,30 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        Foo()
     }
 }
+
+struct Foo: View {
+    @State var script1:[String:Any] = [
+        "pipeline": [[
+            "filter": "hueAdjust",
+            "props":[
+                "angle":4.14
+            ]
+        ]]
+    ]
+    @State var script2:[String:Any] = [
+        "pipeline": [[
+            "filter": "hueAdjust",
+            "props":[
+                "angle":3.14
+            ]
+        ]]
+    ]
+    var body: some View {
+        VStack {
+            VS2View(script:$script1)
+            VS2View(script:$script2)
+        }
+    }}
