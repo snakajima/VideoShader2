@@ -82,6 +82,12 @@ class VS2Filter:CustomDebugStringConvertible {
 
         
         
+        "edgeWork": [
+            "name":"CIEdgeWork",
+            "props":[
+                "radius": kCIInputRadiusKey
+            ]
+        ],
         "sepiaTone": [
             "name":"CISepiaTone",
             "props":[
