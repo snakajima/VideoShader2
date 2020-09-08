@@ -11,22 +11,17 @@ import Metal
 import CoreImage
 
 class VS2Pipeline {
-    let script:[String:Any]
-
     var shaders = [VS2Shader]()
     var ciImageSrc:CIImage?
     var stack = [CIImage]()
 
-    init(script:[String:Any]) {
-        self.script = script
-    }
-    
-    func compile(gpu:MTLDevice) {
+    func compile(_ script:[String:Any], gpu:MTLDevice) {
+        shaders.removeAll()
         guard let pipeline = script["pipeline"] as? [[String:Any]] else {
             print("no or invalid pipeline")
             return
         }
-        shaders.removeAll()
+        
         let empty = [String:Any]()
         for shaderInfo in pipeline {
             if let name = shaderInfo["filter"] as? String {
