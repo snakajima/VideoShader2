@@ -75,7 +75,8 @@ struct Foo: View {
         "pipeline": [[
             "filter": "zoomBlur",
             "props":[
-                "amount":10.0
+                "amount":10.0,
+                "center":CIVector(x: 800, y: 500)
             ]
         ]]
     ]
