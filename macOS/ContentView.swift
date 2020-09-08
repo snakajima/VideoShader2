@@ -10,7 +10,7 @@ import SwiftUI
 
 let s_script0 = [
     "pipeline":[[
-        "filter": "colorClamp",
+        "filter": "toone",
         "props":[
             "minComponents":[0.0, 0.0, 0.0, 0.0],
             "maxComponents":[0.5, 1.0, 1.0, 1.0]
@@ -56,7 +56,7 @@ struct Foo: View {
     ]
     @State var script3:[String:Any] = [
         "pipeline": [[
-            "filter": "zoomBlur",
+            "filter": "toone",
             "props":[
                 "amount":10.0,
                 "center":[800, 500]

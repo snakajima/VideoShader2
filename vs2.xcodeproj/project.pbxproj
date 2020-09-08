@@ -13,6 +13,10 @@
 		746F80DD2506DFE70073C306 /* VS2Blender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80DB2506DFE70073C306 /* VS2Blender.swift */; };
 		746F80E12507AACF0073C306 /* VS2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80E02507AACE0073C306 /* VS2View.swift */; };
 		746F80E42507D16F0073C306 /* VS2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80E32507D16F0073C306 /* VS2View.swift */; };
+		746F80E72507EE430073C306 /* toone.metal in Sources */ = {isa = PBXBuildFile; fileRef = 746F80E62507EE430073C306 /* toone.metal */; };
+		746F80E82507EE430073C306 /* toone.metal in Sources */ = {isa = PBXBuildFile; fileRef = 746F80E62507EE430073C306 /* toone.metal */; };
+		746F80EA2507EEED0073C306 /* VS2TooneFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80E92507EEED0073C306 /* VS2TooneFilter.swift */; };
+		746F80EB2507EEED0073C306 /* VS2TooneFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80E92507EEED0073C306 /* VS2TooneFilter.swift */; };
 		74B4C1F82502659F0084BF2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1F72502659F0084BF2C /* AppDelegate.swift */; };
 		74B4C1FA2502659F0084BF2C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1F92502659F0084BF2C /* SceneDelegate.swift */; };
 		74B4C1FC2502659F0084BF2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1FB2502659F0084BF2C /* ContentView.swift */; };
@@ -39,6 +43,8 @@
 		746F80DB2506DFE70073C306 /* VS2Blender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2Blender.swift; sourceTree = "<group>"; };
 		746F80E02507AACE0073C306 /* VS2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2View.swift; sourceTree = "<group>"; };
 		746F80E32507D16F0073C306 /* VS2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2View.swift; sourceTree = "<group>"; };
+		746F80E62507EE430073C306 /* toone.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = toone.metal; sourceTree = "<group>"; };
+		746F80E92507EEED0073C306 /* VS2TooneFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2TooneFilter.swift; sourceTree = "<group>"; };
 		74B4C1F42502659F0084BF2C /* vs2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vs2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74B4C1F72502659F0084BF2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74B4C1F92502659F0084BF2C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -88,8 +94,18 @@
 				746F80DB2506DFE70073C306 /* VS2Blender.swift */,
 				74B4C2292503BB900084BF2C /* VS2Pipeline.swift */,
 				74B4C22E2503F36A0084BF2C /* VS2Shader.swift */,
+				746F80E52507EE1C0073C306 /* shaders */,
 			);
 			path = core;
+			sourceTree = "<group>";
+		};
+		746F80E52507EE1C0073C306 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				746F80E62507EE430073C306 /* toone.metal */,
+				746F80E92507EEED0073C306 /* VS2TooneFilter.swift */,
+			);
+			name = shaders;
 			sourceTree = "<group>";
 		};
 		74B4C1EB2502659F0084BF2C = {
@@ -264,9 +280,11 @@
 				74B4C1F82502659F0084BF2C /* AppDelegate.swift in Sources */,
 				74B4C22D2503F2BB0084BF2C /* VS2Filter.swift in Sources */,
 				74B4C22F2503F36A0084BF2C /* VS2Shader.swift in Sources */,
+				746F80EA2507EEED0073C306 /* VS2TooneFilter.swift in Sources */,
 				74B4C22A2503BB910084BF2C /* VS2Pipeline.swift in Sources */,
 				746F80E42507D16F0073C306 /* VS2View.swift in Sources */,
 				74B4C20C250265C90084BF2C /* VS2CameraSession.swift in Sources */,
+				746F80E72507EE430073C306 /* toone.metal in Sources */,
 				74B4C1FA2502659F0084BF2C /* SceneDelegate.swift in Sources */,
 				74B4C1FC2502659F0084BF2C /* ContentView.swift in Sources */,
 			);
@@ -279,8 +297,10 @@
 				746F80DD2506DFE70073C306 /* VS2Blender.swift in Sources */,
 				74B4C2182502D75E0084BF2C /* ContentView.swift in Sources */,
 				74B4C2282502D87D0084BF2C /* VS2CameraSession.swift in Sources */,
+				746F80E82507EE430073C306 /* toone.metal in Sources */,
 				74B4C2312503F5750084BF2C /* VS2Filter.swift in Sources */,
 				746F80E12507AACF0073C306 /* VS2View.swift in Sources */,
+				746F80EB2507EEED0073C306 /* VS2TooneFilter.swift in Sources */,
 				74B4C2162502D75E0084BF2C /* AppDelegate.swift in Sources */,
 				74B4C2302503F36A0084BF2C /* VS2Shader.swift in Sources */,
 				746F80DA2506DFD80073C306 /* VS2Controller.swift in Sources */,
@@ -437,6 +457,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MTLLINKER_FLAGS = "-cikernel";
+				MTL_COMPILER_FLAGS = "-fcikernel";
 				PRODUCT_BUNDLE_IDENTIFIER = org.singularitysociety.vs2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -457,6 +479,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MTLLINKER_FLAGS = "-cikernel";
+				MTL_COMPILER_FLAGS = "-fcikernel";
 				PRODUCT_BUNDLE_IDENTIFIER = org.singularitysociety.vs2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -481,6 +505,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTLLINKER_FLAGS = "-cikernel";
+				MTL_COMPILER_FLAGS = "-fcikernel";
 				PRODUCT_BUNDLE_IDENTIFIER = org.singularitysociety.vs2Mac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -505,6 +531,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTLLINKER_FLAGS = "-cikernel";
+				MTL_COMPILER_FLAGS = "-fcikernel";
 				PRODUCT_BUNDLE_IDENTIFIER = org.singularitysociety.vs2Mac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;

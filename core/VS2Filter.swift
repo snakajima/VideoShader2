@@ -80,6 +80,8 @@ class VS2Filter:CustomDebugStringConvertible {
             ]
         ],
 
+        
+        
         "sepiaTone": [
             "name":"CISepiaTone",
             "props":[
@@ -110,7 +112,13 @@ class VS2Filter:CustomDebugStringConvertible {
             "props":[
                 "intensity": kCIInputIntensityKey
             ]
-        ]
+        ],
+        
+        // Filters with custom kernels
+        "toone": [
+            "name":"VS2TooneFilter",
+            // TODO: props
+        ],
     ]
     
     static func asCGFloat(_ value:Any) -> CGFloat {
@@ -126,9 +134,14 @@ class VS2Filter:CustomDebugStringConvertible {
         guard let ciName = filterInfo["name"] as? String else {
             return nil
         }
-        let filter = CIFilter(name: ciName)
+        var filter = CIFilter(name: ciName)
         if filter == nil {
-            print("CIFilter() failed with ", ciName)
+            switch(ciName) {
+            case "VS2TooneFilter":
+                filter = VS2TooneFilter()
+            default:
+                print("CIFilter(): no filter with ", ciName)
+            }
         }
         if let propKeys = filterInfo["props"] as? [String:Any] {
             for (key, inputKey) in propKeys {
