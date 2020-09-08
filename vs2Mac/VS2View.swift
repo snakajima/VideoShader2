@@ -29,6 +29,36 @@ struct VS2View: NSViewRepresentable {
     }
     
     func updateNSView(_ nsView: MTKView, context: NSViewRepresentableContext<VS2View>) {
+        context.coordinator.cameraSession.update(script:[
+            "pipeline": [[
+                "controller": "fork",
+            ],[
+                "filter": "hueAdjust",
+                "props":[
+                    "angle":3.14
+                ]
+            ],[
+                "filter": "edges",
+            ],[
+                "Xfilter": "gaussianBlur",
+                "props":[
+                    "radius":10
+                ]
+            ],[
+                "filter": "exposureAdjust",
+                "props":[
+                    "ev":5.0
+                ]
+            ],[
+                "Xfilter": "colorInvert",
+            ],[
+                "blender": "maximumCompositing",
+            /*
+            ],[
+                "filter": "sobel",
+            */
+            ]]
+        ])
     }
     
     class Coordinator: NSObject, MTKViewDelegate {
@@ -37,36 +67,6 @@ struct VS2View: NSViewRepresentable {
         init(_ view: VS2View) {
             self.view = view
             cameraSession.startRunning()
-            cameraSession.update(script:[
-                "pipeline": [[
-                    "controller": "fork",
-                ],[
-                    "filter": "hueAdjust",
-                    "props":[
-                        "angle":3.14
-                    ]
-                ],[
-                    "filter": "edges",
-                ],[
-                    "Xfilter": "gaussianBlur",
-                    "props":[
-                        "radius":10
-                    ]
-                ],[
-                    "filter": "exposureAdjust",
-                    "props":[
-                        "ev":5.0
-                    ]
-                ],[
-                    "Xfilter": "colorInvert",
-                ],[
-                    "blender": "maximumCompositing",
-                /*
-                ],[
-                    "filter": "sobel",
-                */
-                ]]
-            ])
         }
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
