@@ -39,11 +39,9 @@ extern "C" { namespace coreimage {
         half4 s = src.sample(coord);
         half v = dot(s.rbg, half3(0.3, 0.59, 0.11));
 
-        uint d = uint(radius) * 2;
-        uint x = coord.x;
-        uint y = coord.y;
-        float cx = coord.x - float(uint(x % d)) + radius;
-        float cy = coord.y - float(uint(y % d)) + radius;
+        float diag = radius * 2;
+        float cx = rint(coord.x / diag) * diag;
+        float cy = rint(coord.y / diag) * diag;
         float dx = (coord.x - cx) / radius;
         float dy = (coord.y - cy) / radius;
         float k = sqrt(dx * dx + dy * dy);
