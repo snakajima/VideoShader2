@@ -30,7 +30,8 @@ extern "C" { namespace coreimage {
     }
 
     half4 mono(sample_h s, float3 color) {
-        return half4(color.x, color.y, color.z, 1.0); // s.bgra;
+        half v = dot(s.rbg, half3(0.3, 0.59, 0.11));
+        return half4(v * color.x, v * color.y, v * color.z, 1.0); // s.bgra;
     }
 }}
 
