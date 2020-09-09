@@ -13,7 +13,7 @@ class VS2HalfTone: CIFilter {
     private let kernel: CIKernel
 
     var inputImage: CIImage?
-    var inputColor = CIColor.white
+    var inputRadius = Float(6.0)
 
     override init() {
         let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
@@ -30,7 +30,7 @@ class VS2HalfTone: CIFilter {
         get {
             guard let inputImage = inputImage else {return nil}
             //return kernel.apply(extent: inputImage.extent, arguments: [inputImage, Float(0.2)])
-            return kernel.apply(extent: inputImage.extent, roiCallback: { i, r in r }, arguments:[inputImage, Float(6.0)])
+            return kernel.apply(extent: inputImage.extent, roiCallback: { i, r in r }, arguments:[inputImage, inputRadius])
         }
     }
     
@@ -38,8 +38,8 @@ class VS2HalfTone: CIFilter {
         switch key {
         case "inputImage":
             inputImage = value as? CIImage
-        case "inputColor":
-            inputColor = value as? CIColor ?? CIColor.white
+        case "inputRadius":
+            inputRadius = value as? Float ?? 6.0
         default:
             break
         }

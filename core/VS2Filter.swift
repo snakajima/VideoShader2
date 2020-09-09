@@ -154,7 +154,7 @@ class VS2Filter:CustomDebugStringConvertible {
         "halftone": [
             "name":"VS2HalfTone",
             "props":[
-                "color": kCIInputColorKey,
+                "radius": kCIInputRadiusKey,
             ]
         ],
     ]

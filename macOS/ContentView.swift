@@ -54,20 +54,10 @@ struct ContentView_Previews: PreviewProvider {
 struct Foo: View {
     @State var script1:[String:Any] = [
         "pipeline": [[
-            "filter": "toneCurve",
+            "filter": "halftone",
             "props":[
-                "point1":[0.25, 0.5],
-                "point2":[0.5, 0.75],
-                "point3":[0.75, 0.88],
+                "radius":10,
             ]
-        ],[
-            "filter": "gloom",
-            "props":[
-                "radius":20.0,
-                "intensity":1.0,
-            ]
-        ],[
-            "filter": "toone",
         ]]
     ]
     @State var script2:[String:Any] = [
@@ -80,10 +70,9 @@ struct Foo: View {
     ]
     @State var script3:[String:Any] = [
         "pipeline": [[
-            "filter": "toone",
+            "filter": "hueAdjust",
             "props":[
-                "amount":10.0,
-                "center":[800, 500]
+                "angle":3.14,
             ]
         ]]
     ]
