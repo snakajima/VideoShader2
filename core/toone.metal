@@ -43,7 +43,14 @@ extern "C" { namespace coreimage {
         return half4(b, b, b, 1.0);
     }
     
-    half calcHue(half3 s) {
+    struct HLS_h {
+        half hue;
+        half lum;
+        half sat;
+        half mi;
+    };
+    
+    HLS_h colorHLS_h(half3 s) {
         half ma = max(s.r, max(s.g, s.b));
         half mi = min(s.r, min(s.g, s.b));
         half c = ma - mi;
@@ -51,14 +58,17 @@ extern "C" { namespace coreimage {
                     (ma == s.r) ? (s.g - s.b) / c :
                     (ma == s.g) ? (s.b - s.r) / c + 2.0 :
                                   (s.r - s.g) / c + 4.0;
-        return 60.0 * ((hue < 0.0) ? hue + 6.0 : hue);
+        HLS_h hls;
+        hls.hue = 60.0 * ((hue < 0.0) ? hue + 6.0 : hue);
+        hls.lum = ma;
+        hls.mi = mi;
+        hls.sat = (ma < 0.5h) ? (ma - mi) / (ma + mi) : (ma - mi) / (2.0h - ma - mi);
+        return hls;
     }
     
     half4 chromaKey(sample_h s, float hueMin, float hueMax, float minMax) {
-        half mi = min(s.r, min(s.g, s.b));
-        //half sat = (ma < 0.5h) ? (ma - mi) / (ma + mi) : (ma - mi) / (2.0h - ma - mi);
-        half hue = calcHue(s.rgb);
-        return (hueMin <= hue && hue <= hueMax && mi < minMax) ? half4(0,0,0,0) : s.rgba;
+        HLS_h hls = colorHLS_h(s.rgb);
+        return (hueMin <= hls.hue && hls.hue <= hueMax && hls.mi < minMax) ? half4(0,0,0,0) : s.rgba;
     }
 }}
 
