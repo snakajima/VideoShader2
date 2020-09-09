@@ -151,6 +151,12 @@ class VS2Filter:CustomDebugStringConvertible {
                 "color": kCIInputColorKey,
             ]
         ],
+        "mosaic": [
+            "name":"VS2Mosaic",
+            "props":[
+                "color": kCIInputColorKey,
+            ]
+        ],
     ]
     
     static func asCGFloat(_ value:Any) -> CGFloat {
@@ -173,6 +179,8 @@ class VS2Filter:CustomDebugStringConvertible {
                 filter = VS2TooneFilter()
             case "VS2MonoFilter":
                 filter = VS2MonoFilter()
+            case "VS2Mosaic":
+                filter = VS2Mosaic()
             default:
                 print("CIFilter(): no filter with ", ciName)
             }
