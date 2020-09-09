@@ -42,8 +42,7 @@ extern "C" { namespace coreimage {
         float diag = radius * 2;
         float2 center = rint(coord / diag) * diag;
         float2 d = (coord - center) / radius;
-        float k = sqrt(d.x * d.x + d.y * d.y);
-        float b = (1.0 - v > k) ? 0.0f : 1.0f;
+        float b = (1.0 - v > length(d)) ? 0.0f : 1.0f;
         return half4(b, b, b, 1.0);
     }
 }}
