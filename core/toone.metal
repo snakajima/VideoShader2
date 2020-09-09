@@ -34,14 +34,21 @@ extern "C" { namespace coreimage {
         return half4(v * color.x, v * color.y, v * color.z, 1.0); // s.bgra;
     }
 
-    half4 mosaic(sampler_h src, float length) {
+    half4 mosaic(sampler_h src, float radius) {
         float2 coord = src.coord();
+        half4 s = src.sample(coord);
+        half v = dot(s.rbg, half3(0.3, 0.59, 0.11));
+
+        uint d = uint(radius) * 2;
         uint x = coord.x;
         uint y = coord.y;
-        x = x - x % uint(length);
-        y = y - y % uint(length);
-        half4 s = src.sample(float2(x, y));
-        return s;
+        float cx = coord.x - float(uint(x % d)) + radius;
+        float cy = coord.y - float(uint(y % d)) + radius;
+        float dx = (coord.x - cx) / radius;
+        float dy = (coord.y - cy) / radius;
+        float k = sqrt(dx * dx + dy * dy);
+        float b = (1.0 - v > k) ? 0.0f : 1.0f;
+        return half4(b, b, b, 1.0);
     }
 }}
 

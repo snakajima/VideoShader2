@@ -30,7 +30,7 @@ class VS2Mosaic: CIFilter {
         get {
             guard let inputImage = inputImage else {return nil}
             //return kernel.apply(extent: inputImage.extent, arguments: [inputImage, Float(0.2)])
-            return kernel.apply(extent: inputImage.extent, roiCallback: { i, r in r }, arguments:[inputImage, Float(10.0)])
+            return kernel.apply(extent: inputImage.extent, roiCallback: { i, r in r }, arguments:[inputImage, Float(6.0)])
         }
     }
     
