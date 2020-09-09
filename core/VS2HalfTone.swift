@@ -9,7 +9,7 @@
 import Foundation
 import CoreImage
 
-class VS2Mosaic: CIFilter {
+class VS2HalfTone: CIFilter {
     private let kernel: CIKernel
 
     var inputImage: CIImage?

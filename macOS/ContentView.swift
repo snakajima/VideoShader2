@@ -10,7 +10,7 @@ import SwiftUI
 
 let s_script0 = [
     "pipeline":[[
-        "filter": "mosaic",
+        "filter": "halftone",
         "props":[
             "color":[1.0, 0.5, 0.0],
         ]

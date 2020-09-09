@@ -151,8 +151,8 @@ class VS2Filter:CustomDebugStringConvertible {
                 "color": kCIInputColorKey,
             ]
         ],
-        "mosaic": [
-            "name":"VS2Mosaic",
+        "halftone": [
+            "name":"VS2HalfTone",
             "props":[
                 "color": kCIInputColorKey,
             ]
@@ -179,8 +179,8 @@ class VS2Filter:CustomDebugStringConvertible {
                 filter = VS2TooneFilter()
             case "VS2MonoFilter":
                 filter = VS2MonoFilter()
-            case "VS2Mosaic":
-                filter = VS2Mosaic()
+            case "VS2HalfTone":
+                filter = VS2HalfTone()
             default:
                 print("CIFilter(): no filter with ", ciName)
             }
