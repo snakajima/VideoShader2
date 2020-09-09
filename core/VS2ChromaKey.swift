@@ -15,6 +15,7 @@ class VS2ChromaKey: CIFilter {
     var inputImage: CIImage?
     var inputHueMin = Float(100.0)
     var inputHueMax = Float(144.0)
+    var inputMinMax = Float(0.3)
 
     override init() {
         let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
@@ -31,7 +32,7 @@ class VS2ChromaKey: CIFilter {
         get {
             guard let inputImage = inputImage else {return nil}
             //return kernel.apply(extent: inputImage.extent, arguments: [inputImage, Float(0.2)])
-            return kernel.apply(extent: inputImage.extent, roiCallback: { i, r in r }, arguments:[inputImage, inputHueMin, inputHueMax])
+            return kernel.apply(extent: inputImage.extent, roiCallback: { i, r in r }, arguments:[inputImage, inputHueMin, inputHueMax, inputMinMax])
         }
     }
     
@@ -43,6 +44,8 @@ class VS2ChromaKey: CIFilter {
             inputHueMin = value as? Float ?? 100.0
         case "inputHueMax":
             inputHueMax = value as? Float ?? 140.0
+        case "inputMinMax":
+            inputMinMax = value as? Float ?? 0.3
         default:
             break
         }

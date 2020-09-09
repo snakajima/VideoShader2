@@ -66,14 +66,17 @@ struct Foo: View {
             "props":[
                 "hueMin":100.0,
                 "hueMax":144.0,
+                "minMax":0.4,
             ]
         ]]
     ]
     @State var script3:[String:Any] = [
         "pipeline": [[
-            "filter": "hueAdjust",
+            "filter": "chromaKey",
             "props":[
-                "angle":3.14,
+                "hueMin":100.0,
+                "hueMax":144.0,
+                "minMax":1.0,
             ]
         ]]
     ]

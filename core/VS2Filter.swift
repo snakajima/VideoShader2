@@ -162,6 +162,7 @@ class VS2Filter:CustomDebugStringConvertible {
             "props":[
                 "hueMin": "inputHueMin",
                 "hueMax": "inputHueMax",
+                "minMax": "inputMinMax",
             ]
         ],
     ]

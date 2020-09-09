@@ -54,11 +54,11 @@ extern "C" { namespace coreimage {
         return 60.0 * ((hue < 0.0) ? hue + 6.0 : hue);
     }
     
-    half4 chromaKey(sample_h s, float hueMin, float hueMax) {
+    half4 chromaKey(sample_h s, float hueMin, float hueMax, float minMax) {
         half mi = min(s.r, min(s.g, s.b));
         //half sat = (ma < 0.5h) ? (ma - mi) / (ma + mi) : (ma - mi) / (2.0h - ma - mi);
         half hue = calcHue(s.rgb);
-        return (hueMin <= hue && hue <= hueMax && mi < 0.3h) ? half4(0,0,0,0) : s.rgba;
+        return (hueMin <= hue && hue <= hueMax && mi < minMax) ? half4(0,0,0,0) : s.rgba;
     }
 }}
 
