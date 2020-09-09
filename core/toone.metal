@@ -39,7 +39,7 @@ extern "C" { namespace coreimage {
         half4 s = src.sample(coord);
         half v = dot(s.rbg, half3(0.3, 0.59, 0.11));
         float2 center = rint(coord / radius / 2) * radius * 2;
-        float b = (1.0 - v > distance(coord, center) / radius) ? 0.0f : 1.0f;
+        half b = (1.0h - v > distance(coord, center) / radius) ? 0.0f : 1.0f;
         return half4(b, b, b, 1.0);
     }
 }}
