@@ -34,12 +34,12 @@ extern "C" { namespace coreimage {
         return half4(v * color.x, v * color.y, v * color.z, 1.0); // s.bgra;
     }
 
-    half4 mosaic(sampler_h src, float3 color) {
+    half4 mosaic(sampler_h src, float length) {
         float2 coord = src.coord();
         uint x = coord.x;
         uint y = coord.y;
-        x = x - x % 32;
-        y = y - y % 32;
+        x = x - x % uint(length);
+        y = y - y % uint(length);
         half4 s = src.sample(float2(x, y));
         return s;
     }
