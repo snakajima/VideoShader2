@@ -43,7 +43,7 @@ extern "C" { namespace coreimage {
         return half4(b, b, b, 1.0);
     }
     
-    half4 chromaKey(sample_h s, float hueMin, float hueMax) {
+    half calcHue(half3 s) {
         half ma = max(s.r, max(s.g, s.b));
         half mi = min(s.r, min(s.g, s.b));
         half c = ma - mi;
@@ -51,7 +51,11 @@ extern "C" { namespace coreimage {
                     (ma == s.r) ? (s.g - s.b) / c :
                     (ma == s.g) ? (s.b - s.r) / c + 2.0 :
                                   (s.r - s.g) / c + 4.0;
-        hue = 60.0 * ((hue < 0.0) ? hue + 6.0 : hue);
+        return 60.0 * ((hue < 0.0) ? hue + 6.0 : hue);
+    }
+    
+    half4 chromaKey(sample_h s, float hueMin, float hueMax) {
+        half hue = calcHue(s.rgb);
         return (hueMin <= hue && hue <= hueMax) ? half4(0,0,0,0) : s.rgba;
     }
 }}
