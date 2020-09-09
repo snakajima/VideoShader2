@@ -38,11 +38,8 @@ extern "C" { namespace coreimage {
         float2 coord = src.coord();
         half4 s = src.sample(coord);
         half v = dot(s.rbg, half3(0.3, 0.59, 0.11));
-
-        float diag = radius * 2;
-        float2 center = rint(coord / diag) * diag;
-        float2 d = (coord - center) / radius;
-        float b = (1.0 - v > length(d)) ? 0.0f : 1.0f;
+        float2 center = rint(coord / radius / 2) * radius * 2;
+        float b = (1.0 - v > distance(coord, center) / radius) ? 0.0f : 1.0f;
         return half4(b, b, b, 1.0);
     }
 }}
