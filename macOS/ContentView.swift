@@ -64,7 +64,8 @@ struct Foo: View {
         "pipeline": [[
             "filter": "chromaKey",
             "props":[
-                "color":[0.0, 1.0, 0.0],
+                "hueMin":100.0,
+                "hueMax":144.0,
             ]
         ]]
     ]
