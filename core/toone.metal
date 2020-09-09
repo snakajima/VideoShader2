@@ -40,11 +40,9 @@ extern "C" { namespace coreimage {
         half v = dot(s.rbg, half3(0.3, 0.59, 0.11));
 
         float diag = radius * 2;
-        float cx = rint(coord.x / diag) * diag;
-        float cy = rint(coord.y / diag) * diag;
-        float dx = (coord.x - cx) / radius;
-        float dy = (coord.y - cy) / radius;
-        float k = sqrt(dx * dx + dy * dy);
+        float2 center = rint(coord / diag) * diag;
+        float2 d = (coord - center) / radius;
+        float k = sqrt(d.x * d.x + d.y * d.y);
         float b = (1.0 - v > k) ? 0.0f : 1.0f;
         return half4(b, b, b, 1.0);
     }
