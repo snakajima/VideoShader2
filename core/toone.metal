@@ -42,5 +42,17 @@ extern "C" { namespace coreimage {
         half b = (1.0h - v > distance(coord, center) / radius) ? 0.0f : 1.0f;
         return half4(b, b, b, 1.0);
     }
+    
+    half4 chromaKey(sample_h s, float hueMin, float hueMax) {
+        half ma = max(s.r, max(s.g, s.b));
+        half mi = min(s.r, min(s.g, s.b));
+        half c = ma - mi;
+        half hue = (ma == mi) ? 0.0 :
+                    (ma == s.r) ? (s.g - s.b) / c :
+                    (ma == s.g) ? (s.b - s.r) / c + 2.0 :
+                                  (s.r - s.g) / c + 4.0;
+        hue = 60.0 * ((hue < 0.0) ? hue + 6.0 : hue);
+        return (hueMin <= hue && hue <= hueMax) ? half4(0,0,0,0) : s.rgba;
+    }
 }}
 

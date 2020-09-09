@@ -157,6 +157,13 @@ class VS2Filter:CustomDebugStringConvertible {
                 "radius": kCIInputRadiusKey,
             ]
         ],
+        "chromaKey": [
+            "name":"VS2ChromaKey",
+            "props":[
+                "hueMin": "inputHueMin",
+                "hueMax": "inputHueMax",
+            ]
+        ],
     ]
     
     static func asCGFloat(_ value:Any) -> CGFloat {
@@ -181,6 +188,8 @@ class VS2Filter:CustomDebugStringConvertible {
                 filter = VS2MonoFilter()
             case "VS2HalfTone":
                 filter = VS2HalfTone()
+            case "VS2ChromaKey":
+                filter = VS2ChromaKey()
             default:
                 print("CIFilter(): no filter with ", ciName)
             }

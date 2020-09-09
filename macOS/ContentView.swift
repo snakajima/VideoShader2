@@ -10,7 +10,7 @@ import SwiftUI
 
 let s_script0 = [
     "pipeline":[[
-        "filter": "halftone",
+        "filter": "chromaKey",
         "props":[
             "color":[1.0, 0.5, 0.0],
         ]
@@ -62,7 +62,7 @@ struct Foo: View {
     ]
     @State var script2:[String:Any] = [
         "pipeline": [[
-            "filter": "mono",
+            "filter": "chromaKey",
             "props":[
                 "color":[0.0, 1.0, 0.0],
             ]
