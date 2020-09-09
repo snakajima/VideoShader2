@@ -18,7 +18,7 @@ class VS2Mosaic: CIFilter {
     override init() {
         let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
         let data = try! Data(contentsOf: url)
-        kernel = try! CIKernel(functionName: "mosaic", fromMetalLibraryData: data)
+        kernel = try! CIKernel(functionName: "halftone", fromMetalLibraryData: data)
         super.init()
     }
 
