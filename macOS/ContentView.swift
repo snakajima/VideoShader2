@@ -10,7 +10,7 @@ import SwiftUI
 
 let s_script0 = [
     "pipeline":[[
-        "filter": "toone",
+        "filter": "mono",
     ]]
 ]
 let s_script4 = [
@@ -32,7 +32,7 @@ let s_script4 = [
     ]]
 ]
 struct ContentView: View {
-    @State var script:[String:Any] = s_script4
+    @State var script:[String:Any] = s_script0
     var body: some View {
         VStack {
             VS2View(script:$script)

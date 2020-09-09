@@ -12,6 +12,7 @@ class VS2MonoFilter: CIFilter {
     private let kernel: CIColorKernel
 
     var inputImage: CIImage?
+    var inputColor = CIColor.white
 
     override init() {
         let url = Bundle.main.url(forResource: "default", withExtension: "metallib")!
@@ -27,7 +28,8 @@ class VS2MonoFilter: CIFilter {
     override var outputImage: CIImage? {
         get {
             guard let inputImage = inputImage else {return nil}
-            return kernel.apply(extent: inputImage.extent, arguments: [inputImage])
+            return kernel.apply(extent: inputImage.extent, arguments: [inputImage, Float(0.2)])
+            //return kernel.apply(extent: inputImage.extent, arguments: [inputImage, [CIVector(x: inputColor.red, y: inputColor.green, z: inputColor.blue)]])
         }
     }
     
@@ -35,6 +37,8 @@ class VS2MonoFilter: CIFilter {
         switch key {
         case "inputImage":
             inputImage = value as? CIImage
+        case "inputColor":
+            inputColor = value as? CIColor ?? CIColor.white
         default:
             break
         }
