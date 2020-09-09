@@ -147,7 +147,9 @@ class VS2Filter:CustomDebugStringConvertible {
         ],
         "mono": [
             "name":"VS2MonoFilter",
-            // TODO: props
+            "props":[
+                "color": kCIInputColorKey,
+            ]
         ],
     ]
     

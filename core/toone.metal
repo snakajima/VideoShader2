@@ -29,8 +29,8 @@ extern "C" { namespace coreimage {
         return half4(s.rgb * z, s.a);
     }
 
-    half4 mono(sample_h s, float x) {
-        return half4(x, x, x, 1.0); // s.bgra;
+    half4 mono(sample_h s, float3 color) {
+        return half4(color.x, color.y, color.z, 1.0); // s.bgra;
     }
 }}
 

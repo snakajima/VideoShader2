@@ -28,8 +28,8 @@ class VS2MonoFilter: CIFilter {
     override var outputImage: CIImage? {
         get {
             guard let inputImage = inputImage else {return nil}
-            return kernel.apply(extent: inputImage.extent, arguments: [inputImage, Float(0.2)])
-            //return kernel.apply(extent: inputImage.extent, arguments: [inputImage, [CIVector(x: inputColor.red, y: inputColor.green, z: inputColor.blue)]])
+            //return kernel.apply(extent: inputImage.extent, arguments: [inputImage, Float(0.2)])
+            return kernel.apply(extent: inputImage.extent, arguments: [inputImage, CIVector(x: inputColor.red, y: inputColor.green, z: inputColor.blue)])
         }
     }
     

@@ -11,6 +11,9 @@ import SwiftUI
 let s_script0 = [
     "pipeline":[[
         "filter": "mono",
+        "props":[
+            "color":[1.0, 0.5, 0.0],
+        ]
     ]]
 ]
 let s_script4 = [
