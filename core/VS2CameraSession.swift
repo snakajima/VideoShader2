@@ -87,11 +87,9 @@ class VS2CameraSession: NSObject {
         filterScale.setValue(ciImage, forKey: kCIInputImageKey)
         pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: filterScale.outputImage!)
  
-        let size = (scale.width > scale.height) ?
-            CGSize(width: scale.width * CGFloat(dimension.width), height: scale.width * CGFloat(dimension.height))
-            : CGSize(width: scale.height * CGFloat(dimension.width), height: scale.height * CGFloat(dimension.height))
-        let bounds = CGRect(origin: .zero, size: size)
-        ciContext.render(pipeline.pop(), to: drawable.texture, commandBuffer: commandBuffer, bounds: bounds, colorSpace: CGColorSpaceCreateDeviceRGB())
+        ciContext.render(pipeline.pop(), to: drawable.texture, commandBuffer: commandBuffer,
+                         bounds: CGRect(origin: .zero, size: CGSize(width: drawable.texture.width, height: drawable.texture.height)),
+                         colorSpace: CGColorSpaceCreateDeviceRGB())
 
         commandBuffer.present(drawable)
         commandBuffer.commit()
