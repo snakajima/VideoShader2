@@ -9,14 +9,36 @@
 import SwiftUI
 
 let s_script0 = [
-    "pipeline":[[
-        "filter": "chromaKey",
+    "pipeline": [[
+        "filter": "halftone",
         "props":[
-            "color":[1.0, 0.5, 0.0],
+            "radius":10,
         ]
     ]]
 ]
-let s_script4 = [
+let s_script1 = [
+    "pipeline": [[
+        "filter": "chromaKey",
+        "props":[
+            "hueMin":100.0,
+            "hueMax":144.0,
+            "minMax":0.4,
+        ]
+    ]]
+]
+let s_script2 = [
+    "pipeline": [[
+        "controller": "fork"
+    ],[
+        "filter": "gaussianBlur",
+    "props":[
+        "radius":10.0,
+    ]
+    ],[
+        "blender": "differenceBlend"
+    ]]
+]
+let s_script3 = [
     "pipeline": [[
         "controller": "fork"
     ],[
@@ -29,13 +51,11 @@ let s_script4 = [
     ],[
         "filter": "toone",
     ],[
-        "controller": "swap"
-    ],[
-        "blender": "maskedVariableBlur"
+        "blender": "minimum"
     ]]
 ]
 struct ContentView: View {
-    @State var script:[String:Any] = s_script0
+    @State var script:[String:Any] = s_script2
     var body: some View {
         VStack {
             VS2View(script:$script)
@@ -52,59 +72,21 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct Foo: View {
-    @State var script1:[String:Any] = [
-        "pipeline": [[
-            "filter": "halftone",
-            "props":[
-                "radius":10,
-            ]
-        ]]
-    ]
-    @State var script2:[String:Any] = [
-        "pipeline": [[
-            "filter": "chromaKey",
-            "props":[
-                "hueMin":100.0,
-                "hueMax":144.0,
-                "minMax":0.4,
-            ]
-        ]]
-    ]
-    @State var script3:[String:Any] = [
-        "pipeline": [[
-            "filter": "chromaKey",
-            "props":[
-                "hueMin":100.0,
-                "hueMax":144.0,
-                "minMax":1.0,
-            ]
-        ]]
-    ]
-    @State var script4:[String:Any] = [
-        "pipeline": [[
-            "controller": "fork"
-        ],[
-            "filter": "edgeWork",
-            "props":[
-                "radius":1.5,
-            ]
-        ],[
-            "controller": "swap"
-        ],[
-            "filter": "toone",
-        ],[
-            "blender": "minimum"
-        ]]
-    ]
+    @State var script0:[String:Any] = s_script0
+    @State var script1:[String:Any] = s_script1
+    @State var script2:[String:Any] = s_script2
+    @State var script3:[String:Any] = s_script3
+    @State var script4:[String:Any] = s_script2
+    @State var script5:[String:Any] = s_script3
     var body: some View {
         VStack {
             HStack {
+                VS2View(script:$script0)
                 VS2View(script:$script1)
-                VS2View(script:$script2)
             }
             HStack {
+                VS2View(script:$script2)
                 VS2View(script:$script3)
-                VS2View(script:$script4)
             }
         }
     }}
