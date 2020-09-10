@@ -41,7 +41,8 @@ class VS2Pipeline {
     }
     
     func encode(commandBuffer:MTLCommandBuffer, ciImageSrc:CIImage) {
-        self.ciImageSrc = ciImageSrc
+        self.ciImageSrc = ciImageSrc // for underflow
+        stack.append(ciImageSrc)
         for shader in shaders {
             shader.encode(to: commandBuffer, stack: self)
         }
@@ -51,6 +52,7 @@ class VS2Pipeline {
 extension VS2Pipeline: VS2CIImageStack {
     func pop() -> CIImage {
         guard let ciImage = stack.popLast() else {
+            print("under flow")
             return ciImageSrc!
         }
         return ciImage
