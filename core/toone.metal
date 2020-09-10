@@ -29,18 +29,23 @@ extern "C" { namespace coreimage {
         return half4(s.rgb * z, s.a);
     }
 
-    half4 mono(sample_h s, float3 color) {
+    half4 mono(sample_h s, half3 color) {
         half v = dot(s.rbg, half3(0.3, 0.59, 0.11));
         return half4(v * color.x, v * color.y, v * color.z, 1.0); // s.bgra;
     }
 
-    half4 halftone(sampler_h src, float radius) {
+    half4 halftone(sampler_h src, half radius) {
         float2 coord = src.coord();
         half4 s = src.sample(coord);
         half v = dot(s.rbg, half3(0.3, 0.59, 0.11));
         float2 center = rint(coord / radius / 2) * radius * 2;
         half b = (1.0h - v > distance(coord, center) / radius) ? 0.0f : 1.0f;
         return half4(b, b, b, 1.0);
+    }
+    
+    half4 boolean(sample_h s, half2 range, half4 color1, half4 color2) {
+        half v = dot(s.rbg, half3(0.3, 0.59, 0.11));
+        return (range.x < v && v < range.y) ? color1 : color2;
     }
     
     struct HLS_h {
