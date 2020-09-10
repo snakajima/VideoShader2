@@ -80,9 +80,10 @@ class VS2CameraSession: NSObject {
            let commandBuffer = commandQueue.makeCommandBuffer() else {
             return
         }
-        
-        let scale = min(Double(drawable.texture.width) / Double(dimension.width), Double(drawable.texture.height) / Double(dimension.height))
-        filterScale.setValue(scale, forKey: kCIInputScaleKey)
+
+        let scale = CGSize(width: CGFloat(drawable.texture.width) / CGFloat(dimension.width), height: CGFloat(drawable.texture.height) / CGFloat(dimension.height))
+        let scaleMin = min(scale.width, scale.height)
+        filterScale.setValue(scaleMin, forKey: kCIInputScaleKey)
         filterScale.setValue(ciImage, forKey: kCIInputImageKey)
         pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: filterScale.outputImage!)
  
