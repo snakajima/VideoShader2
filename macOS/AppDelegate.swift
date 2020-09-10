@@ -8,14 +8,26 @@
 
 import Cocoa
 import SwiftUI
+import ImageCaptureCore
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var window: NSWindow!
-
+    var deviceBrowser = ICDeviceBrowser()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        let masks = ICDeviceTypeMask.camera.rawValue
+            | ICDeviceLocationTypeMask.local.rawValue
+            | ICDeviceLocationTypeMask.shared.rawValue
+            | ICDeviceLocationTypeMask.bonjour.rawValue
+            | ICDeviceLocationTypeMask.bluetooth.rawValue
+        print("masks", masks)
+        deviceBrowser.browsedDeviceTypeMask = ICDeviceTypeMask(rawValue: masks)!
+        deviceBrowser.delegate = self
+        deviceBrowser.start()
+        print("###deviceBrowser: browsing", deviceBrowser.isBrowsing)
+
         // Create the SwiftUI view that provides the window contents.
         let contentView = ContentView()
 
@@ -37,3 +49,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 }
 
+extension AppDelegate: ICDeviceBrowserDelegate {
+    func deviceBrowser(_ browser: ICDeviceBrowser, didAdd device: ICDevice, moreComing: Bool) {
+        print("###deviceBrowser: didAdd", device.name)
+    }
+    
+    func deviceBrowser(_ browser: ICDeviceBrowser, didRemove device: ICDevice, moreGoing: Bool) {
+        print("###deviceBrowser: didRemove")
+    }
+    
+    
+}
