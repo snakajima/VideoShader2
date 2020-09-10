@@ -31,11 +31,18 @@ let s_script2 = [
         "controller": "fork"
     ],[
         "filter": "gaussianBlur",
-    "props":[
-        "radius":10.0,
-    ]
+        "props":[
+            "radius":10.0,
+        ]
     ],[
         "blender": "differenceBlend"
+    ],[
+        "filter": "boolean",
+        "props":[
+            "range":[0.0, 0.2],
+            "color1":[1, 1, 0, 1],
+            "color2":[0, 0, 1, 1],
+        ]
     ]]
 ]
 let s_script3 = [

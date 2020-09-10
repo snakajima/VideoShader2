@@ -23,6 +23,8 @@
 		746F80F225088E290073C306 /* VS2HalfTone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80F025088E290073C306 /* VS2HalfTone.swift */; };
 		746F80F425096DBF0073C306 /* VS2ChromaKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80F325096DBF0073C306 /* VS2ChromaKey.swift */; };
 		746F80F525096DBF0073C306 /* VS2ChromaKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80F325096DBF0073C306 /* VS2ChromaKey.swift */; };
+		746F80F7250A84370073C306 /* VS2Boolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80F6250A84370073C306 /* VS2Boolean.swift */; };
+		746F80F8250A84370073C306 /* VS2Boolean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746F80F6250A84370073C306 /* VS2Boolean.swift */; };
 		74B4C1F82502659F0084BF2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1F72502659F0084BF2C /* AppDelegate.swift */; };
 		74B4C1FA2502659F0084BF2C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1F92502659F0084BF2C /* SceneDelegate.swift */; };
 		74B4C1FC2502659F0084BF2C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C1FB2502659F0084BF2C /* ContentView.swift */; };
@@ -55,6 +57,7 @@
 		746F80ED25084F440073C306 /* VS2MonoFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2MonoFilter.swift; sourceTree = "<group>"; };
 		746F80F025088E290073C306 /* VS2HalfTone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2HalfTone.swift; sourceTree = "<group>"; };
 		746F80F325096DBF0073C306 /* VS2ChromaKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2ChromaKey.swift; sourceTree = "<group>"; };
+		746F80F6250A84370073C306 /* VS2Boolean.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2Boolean.swift; sourceTree = "<group>"; };
 		74B4C1F42502659F0084BF2C /* vs2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vs2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74B4C1F72502659F0084BF2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74B4C1F92502659F0084BF2C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +120,7 @@
 				746F80ED25084F440073C306 /* VS2MonoFilter.swift */,
 				746F80F025088E290073C306 /* VS2HalfTone.swift */,
 				746F80F325096DBF0073C306 /* VS2ChromaKey.swift */,
+				746F80F6250A84370073C306 /* VS2Boolean.swift */,
 			);
 			name = shaders;
 			sourceTree = "<group>";
@@ -295,6 +299,7 @@
 				74B4C1F82502659F0084BF2C /* AppDelegate.swift in Sources */,
 				746F80EE25084F440073C306 /* VS2MonoFilter.swift in Sources */,
 				74B4C22D2503F2BB0084BF2C /* VS2Filter.swift in Sources */,
+				746F80F7250A84370073C306 /* VS2Boolean.swift in Sources */,
 				74B4C22F2503F36A0084BF2C /* VS2Shader.swift in Sources */,
 				746F80EA2507EEED0073C306 /* VS2TooneFilter.swift in Sources */,
 				74B4C22A2503BB910084BF2C /* VS2Pipeline.swift in Sources */,
@@ -324,6 +329,7 @@
 				74B4C2302503F36A0084BF2C /* VS2Shader.swift in Sources */,
 				746F80F525096DBF0073C306 /* VS2ChromaKey.swift in Sources */,
 				746F80DA2506DFD80073C306 /* VS2Controller.swift in Sources */,
+				746F80F8250A84370073C306 /* VS2Boolean.swift in Sources */,
 				74B4C22B2503BB910084BF2C /* VS2Pipeline.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

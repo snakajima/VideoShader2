@@ -165,6 +165,14 @@ class VS2Filter:CustomDebugStringConvertible {
                 "minMax": "inputMinMax",
             ]
         ],
+        "boolean": [
+            "name":"VS2Boolean",
+            "props":[
+                "range": "inputRange",
+                "color1": "inputColor1",
+                "color2": "inputColor2",
+            ]
+        ],
     ]
     
     static func asCGFloat(_ value:Any) -> CGFloat {
@@ -191,6 +199,8 @@ class VS2Filter:CustomDebugStringConvertible {
                 filter = VS2HalfTone()
             case "VS2ChromaKey":
                 filter = VS2ChromaKey()
+            case "VS2Boolean":
+                filter = VS2Boolean()
             default:
                 print("CIFilter(): no filter with ", ciName)
             }
@@ -202,11 +212,19 @@ class VS2Filter:CustomDebugStringConvertible {
                     print(ciName, key, inputKey, value)
                     switch(inputKey) {
                     case kCIInputCenterKey,
-                         "inputPoint0", "inputPoint1", "inputPoint2", "inputPoint3", "inputPoint4":
+                         "inputPoint0", "inputPoint1", "inputPoint2", "inputPoint3", "inputPoint4", "inputRange":
                         if let array = value as? [Any], array.count == 2 {
                             filter?.setValue(CIVector(
                                 x: Self.asCGFloat(array[0]),
                                 y: Self.asCGFloat(array[1])), forKey: inputKey)
+                        }
+                    case "inputColor1", "inputColor2":
+                        if let array = value as? [Any], array.count == 4 { // LATER: or 3
+                            filter?.setValue(CIColor(
+                                red: Self.asCGFloat(array[0]),
+                                green: Self.asCGFloat(array[1]),
+                                blue: Self.asCGFloat(array[2]),
+                                alpha: Self.asCGFloat(array[3])), forKey: inputKey)
                         }
                     case "inputMinComponents", "inputMaxComponents":
                         if let array = value as? [Any], array.count == 4 {
