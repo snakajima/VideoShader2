@@ -9,6 +9,7 @@
 import Cocoa
 import SwiftUI
 import ImageCaptureCore
+import AVFoundation
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -17,6 +18,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var deviceBrowser = ICDeviceBrowser()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera, .externalUnknown], mediaType: AVMediaType.video, position: AVCaptureDevice.Position.unspecified)
+        print("###", session.devices)
+        
         let masks = ICDeviceTypeMask.camera.rawValue
             | ICDeviceLocationTypeMask.local.rawValue
             | ICDeviceLocationTypeMask.shared.rawValue
