@@ -24,6 +24,10 @@ class VS2CameraSession: NSObject {
     private var commandQueue:MTLCommandQueue?
     private var ciImage:CIImage?
     private let filterScale = CIFilter(name: "CILanczosScaleTransform")
+    
+    // animation
+    private let layer = CAShapeLayer()
+    private var shapePixelBuffer:CVPixelBuffer?
 
     func startRunning() {
         // This CIContext allows us to mix regular metal shaders along with CIFilters (in future)
@@ -64,6 +68,28 @@ class VS2CameraSession: NSObject {
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
 
+        // random shape layer
+        layer.frame = CGRect(origin: .zero, size: CGSize(width: CGFloat(dimension.width), height: CGFloat(dimension.height)))
+        let path = CGMutablePath()
+        path.move(to: CGPoint(x:0, y:0))
+        path.addLine(to: CGPoint(x: 100, y: 100))
+        path.addLine(to: CGPoint(x: 0, y: 100))
+        path.closeSubpath()
+        layer.path = path
+        layer.strokeColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
+        layer.fillColor = CGColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+        // device contexts
+        let width = Int(dimension.width)
+        let height = Int(dimension.height)
+        let attributes = [kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue,
+                          kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue]
+        var pixelBuffer:CVPixelBuffer? = nil
+        let state = CVPixelBufferCreate(kCFAllocatorDefault, width, height, kCVPixelFormatType_32ARGB, attributes as CFDictionary, &pixelBuffer)
+        if state == kCVReturnSuccess {
+            shapePixelBuffer = pixelBuffer
+            print("### success")
+        }
+        
         session.startRunning()
     }
     
@@ -81,16 +107,31 @@ class VS2CameraSession: NSObject {
             return
         }
 
+        #if true
+        if let shapePixelBuffer = self.shapePixelBuffer {
+            CVPixelBufferLockBaseAddress(shapePixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
+            let baseAddress = CVPixelBufferGetBaseAddress(shapePixelBuffer)
+            let colorSpace = CGColorSpaceCreateDeviceRGB()
+            let context = CGContext(data: baseAddress, width: Int(dimension.width), height: Int(dimension.height), bitsPerComponent: 8, bytesPerRow: Int(dimension.width * 4), space: colorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+            layer.render(in: context!)
+            CVPixelBufferUnlockBaseAddress(shapePixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
+            
+            let ciImageShape = CIImage(cvImageBuffer: shapePixelBuffer)
+            ciContext.render(ciImageShape, to: drawable.texture, commandBuffer: commandBuffer,
+                             bounds: CGRect(origin: .zero, size: CGSize(width: drawable.texture.width, height: drawable.texture.height)),
+                             colorSpace: CGColorSpaceCreateDeviceRGB())
+
+        }
+        #else
         let scale = CGSize(width: CGFloat(drawable.texture.width) / CGFloat(dimension.width), height: CGFloat(drawable.texture.height) / CGFloat(dimension.height))
         let scaleMin = min(scale.width, scale.height)
         filterScale.setValue(scaleMin, forKey: kCIInputScaleKey)
         filterScale.setValue(ciImage, forKey: kCIInputImageKey)
         pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: filterScale.outputImage!)
- 
         ciContext.render(pipeline.pop(), to: drawable.texture, commandBuffer: commandBuffer,
                          bounds: CGRect(origin: .zero, size: CGSize(width: drawable.texture.width, height: drawable.texture.height)),
                          colorSpace: CGColorSpaceCreateDeviceRGB())
-
+        #endif
         commandBuffer.present(drawable)
         commandBuffer.commit()
         self.ciImage = nil // no need to draw it again
