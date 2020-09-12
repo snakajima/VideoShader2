@@ -160,6 +160,14 @@ class VS2CameraSession: NSObject {
                          bounds: CGRect(origin: .zero, size: CGSize(width: drawable.texture.width, height: drawable.texture.height)),
                          colorSpace: CGColorSpaceCreateDeviceRGB())
 
+        let passDescriptor: MTLRenderPassDescriptor = MTLRenderPassDescriptor()
+        passDescriptor.colorAttachments[0].texture = shapeTexture
+        passDescriptor.colorAttachments[0].storeAction = .store
+        passDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 0.0)
+        passDescriptor.colorAttachments[0].loadAction = .clear
+        let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: passDescriptor)
+        encoder?.endEncoding()
+
         commandBuffer.present(drawable)
         commandBuffer.commit()
         self.ciImage = nil // no need to draw it again
