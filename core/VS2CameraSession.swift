@@ -27,7 +27,6 @@ class VS2CameraSession: NSObject {
     
     // animation
     private let layer = CAShapeLayer()
-    private var shapePixelBuffer:CVPixelBuffer?
     private var renderer:CARenderer?
     private var shapeTexture:MTLTexture?
 
@@ -109,16 +108,6 @@ class VS2CameraSession: NSObject {
         layer.add(pathAnimation, forKey: "pathAnimation")
 
         // device contexts
-        let width = Int(dimension.width)
-        let height = Int(dimension.height)
-        let attributes = [kCVPixelBufferCGImageCompatibilityKey: kCFBooleanTrue,
-                          kCVPixelBufferCGBitmapContextCompatibilityKey: kCFBooleanTrue]
-        var pixelBuffer:CVPixelBuffer? = nil
-        let state = CVPixelBufferCreate(kCFAllocatorDefault, width, height, kCVPixelFormatType_32ARGB, attributes as CFDictionary, &pixelBuffer)
-        if state == kCVReturnSuccess {
-            shapePixelBuffer = pixelBuffer
-            print("### success")
-        }
         let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba8Unorm, width: 600, height: 400, mipmapped: false)
         textureDescriptor.usage = [MTLTextureUsage.shaderRead, .shaderWrite, .renderTarget]
         let texture = gpu.makeTexture(descriptor: textureDescriptor)!
@@ -145,22 +134,6 @@ class VS2CameraSession: NSObject {
         }
 
         var ciImageShape:CIImage? = nil
-        /*
-        if let shapePixelBuffer = self.shapePixelBuffer {
-            CVPixelBufferLockBaseAddress(shapePixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
-            let baseAddress = CVPixelBufferGetBaseAddress(shapePixelBuffer)
-            let colorSpace = CGColorSpaceCreateDeviceRGB()
-            if let context = CGContext(data: baseAddress, width: Int(dimension.width), height: Int(dimension.height), bitsPerComponent: 8, bytesPerRow: Int(dimension.width * 4), space: colorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) {
-                context.clear(CGRect(origin: .zero, size: CGSize(width: Int(dimension.width), height: Int(dimension.height))))
-                //layer.timeOffset = CFTimeInterval(exactly: 123.0)!
-                layer.render(in: context)
-                //layer.draw(in: context)
-            }
-            CVPixelBufferUnlockBaseAddress(shapePixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
-            
-            ciImageShape = CIImage(cvImageBuffer: shapePixelBuffer)
-        }
-        */
         if let renderer = self.renderer {
             renderer.beginFrame(atTime: CACurrentMediaTime(), timeStamp: nil)
             renderer.addUpdate(CGRect(origin: .zero, size: CGSize(width: 600, height: 400)))
