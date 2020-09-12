@@ -44,7 +44,7 @@
 		74B4C22F2503F36A0084BF2C /* VS2Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C22E2503F36A0084BF2C /* VS2Shader.swift */; };
 		74B4C2302503F36A0084BF2C /* VS2Shader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C22E2503F36A0084BF2C /* VS2Shader.swift */; };
 		74B4C2312503F5750084BF2C /* VS2Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B4C22C2503F2BB0084BF2C /* VS2Filter.swift */; };
-		74EEAF4B250C474200761C03 /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EEAF4A250C474200761C03 /* Animation.swift */; };
+		74EEAF4B250C474200761C03 /* CALayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EEAF4A250C474200761C03 /* CALayerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,7 +79,7 @@
 		74B4C2292503BB900084BF2C /* VS2Pipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2Pipeline.swift; sourceTree = "<group>"; };
 		74B4C22C2503F2BB0084BF2C /* VS2Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2Filter.swift; sourceTree = "<group>"; };
 		74B4C22E2503F36A0084BF2C /* VS2Shader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VS2Shader.swift; sourceTree = "<group>"; };
-		74EEAF4A250C474200761C03 /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
+		74EEAF4A250C474200761C03 /* CALayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,7 +175,7 @@
 			children = (
 				74B4C2152502D75E0084BF2C /* AppDelegate.swift */,
 				74B4C2172502D75E0084BF2C /* ContentView.swift */,
-				74EEAF4A250C474200761C03 /* Animation.swift */,
+				74EEAF4A250C474200761C03 /* CALayerView.swift */,
 				746F80E02507AACE0073C306 /* VS2View.swift */,
 				74B4C2192502D7610084BF2C /* Assets.xcassets */,
 				74B4C21E2502D7610084BF2C /* Main.storyboard */,
@@ -329,7 +329,7 @@
 				746F80E12507AACF0073C306 /* VS2View.swift in Sources */,
 				746F80EB2507EEED0073C306 /* VS2TooneFilter.swift in Sources */,
 				74B4C2162502D75E0084BF2C /* AppDelegate.swift in Sources */,
-				74EEAF4B250C474200761C03 /* Animation.swift in Sources */,
+				74EEAF4B250C474200761C03 /* CALayerView.swift in Sources */,
 				74B4C2302503F36A0084BF2C /* VS2Shader.swift in Sources */,
 				746F80F525096DBF0073C306 /* VS2ChromaKey.swift in Sources */,
 				746F80DA2506DFD80073C306 /* VS2Controller.swift in Sources */,
