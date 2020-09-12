@@ -133,26 +133,23 @@ class VS2CameraSession: NSObject {
             return
         }
 
-        var ciImageShape:CIImage? = nil
-        if let renderer = self.renderer {
-            renderer.beginFrame(atTime: CACurrentMediaTime(), timeStamp: nil)
-            renderer.addUpdate(CGRect(origin: .zero, size: CGSize(width: 600, height: 400)))
-            renderer.render()
-            renderer.endFrame()
-            ciImageShape = CIImage(mtlTexture: shapeTexture!, options:nil)
-        }
-        
         let scale = CGSize(width: CGFloat(drawable.texture.width) / CGFloat(dimension.width), height: CGFloat(drawable.texture.height) / CGFloat(dimension.height))
         let scaleMin = min(scale.width, scale.height)
         filterScale.setValue(scaleMin, forKey: kCIInputScaleKey)
         filterScale.setValue(ciImage, forKey: kCIInputImageKey)
         pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: filterScale.outputImage!)
         
-        if let ciImageShape = ciImageShape {
-            if let filter = CIFilter(name: "CISourceOverCompositing") {
-                filter.setValue(ciImageShape, forKey:  kCIInputImageKey )
-                filter.setValue(pipeline.pop(), forKey: kCIInputBackgroundImageKey)
-                pipeline.push(filter.outputImage)
+        if let renderer = self.renderer {
+            renderer.beginFrame(atTime: CACurrentMediaTime(), timeStamp: nil)
+            renderer.addUpdate(CGRect(origin: .zero, size: CGSize(width: 600, height: 400)))
+            renderer.render()
+            renderer.endFrame()
+            if let ciImageShape = CIImage(mtlTexture: shapeTexture!, options:nil) {
+                if let filter = CIFilter(name: "CISourceOverCompositing") {
+                    filter.setValue(ciImageShape, forKey:  kCIInputImageKey )
+                    filter.setValue(pipeline.pop(), forKey: kCIInputBackgroundImageKey)
+                    pipeline.push(filter.outputImage)
+                }
             }
         }
         
