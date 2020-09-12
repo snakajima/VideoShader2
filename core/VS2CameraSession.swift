@@ -107,31 +107,38 @@ class VS2CameraSession: NSObject {
             return
         }
 
-        #if true
+        var ciImageShape:CIImage? = nil
         if let shapePixelBuffer = self.shapePixelBuffer {
             CVPixelBufferLockBaseAddress(shapePixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
             let baseAddress = CVPixelBufferGetBaseAddress(shapePixelBuffer)
             let colorSpace = CGColorSpaceCreateDeviceRGB()
-            let context = CGContext(data: baseAddress, width: Int(dimension.width), height: Int(dimension.height), bitsPerComponent: 8, bytesPerRow: Int(dimension.width * 4), space: colorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
-            layer.render(in: context!)
+            if let context = CGContext(data: baseAddress, width: Int(dimension.width), height: Int(dimension.height), bitsPerComponent: 8, bytesPerRow: Int(dimension.width * 4), space: colorSpace, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) {
+                context.clear(CGRect(origin: .zero, size: CGSize(width: Int(dimension.width), height: Int(dimension.height))))
+                layer.render(in: context)
+            }
             CVPixelBufferUnlockBaseAddress(shapePixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
             
-            let ciImageShape = CIImage(cvImageBuffer: shapePixelBuffer)
-            ciContext.render(ciImageShape, to: drawable.texture, commandBuffer: commandBuffer,
-                             bounds: CGRect(origin: .zero, size: CGSize(width: drawable.texture.width, height: drawable.texture.height)),
-                             colorSpace: CGColorSpaceCreateDeviceRGB())
-
+            ciImageShape = CIImage(cvImageBuffer: shapePixelBuffer)
         }
-        #else
+        
         let scale = CGSize(width: CGFloat(drawable.texture.width) / CGFloat(dimension.width), height: CGFloat(drawable.texture.height) / CGFloat(dimension.height))
         let scaleMin = min(scale.width, scale.height)
         filterScale.setValue(scaleMin, forKey: kCIInputScaleKey)
         filterScale.setValue(ciImage, forKey: kCIInputImageKey)
         pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: filterScale.outputImage!)
+        
+        if let ciImageShape = ciImageShape {
+            if let filter = CIFilter(name: "CIMultiplyCompositing") {
+                filter.setValue(ciImageShape, forKey: kCIInputImageKey)
+                filter.setValue(pipeline.pop(), forKey: kCIInputBackgroundImageKey)
+                pipeline.push(filter.outputImage)
+            }
+        }
+        
         ciContext.render(pipeline.pop(), to: drawable.texture, commandBuffer: commandBuffer,
                          bounds: CGRect(origin: .zero, size: CGSize(width: drawable.texture.width, height: drawable.texture.height)),
                          colorSpace: CGColorSpaceCreateDeviceRGB())
-        #endif
+
         commandBuffer.present(drawable)
         commandBuffer.commit()
         self.ciImage = nil // no need to draw it again
