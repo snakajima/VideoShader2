@@ -38,7 +38,9 @@ struct VS2View: NSViewRepresentable {
         let cameraSession:VS2CameraSession
         let view: VS2View
         
-        private let layer = CAShapeLayer()
+        private let layer = CALayer()
+        private let shapeLayer = CAShapeLayer()
+        private let textLayer = CATextLayer()
         private let renderer:CARenderer
         private let texture:MTLTexture
 
@@ -52,13 +54,21 @@ struct VS2View: NSViewRepresentable {
             textureDescriptor.usage = [MTLTextureUsage.shaderRead, .shaderWrite, .renderTarget]
             texture = gpu.makeTexture(descriptor: textureDescriptor)!
             renderer = CARenderer(mtlTexture: texture, options: nil)
+            layer.addSublayer(shapeLayer)
+            layer.addSublayer(textLayer)
             renderer.layer = layer
         }
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
             renderer.bounds = CGRect(origin: .zero, size: size)
 
-            layer.frame = CGRect(origin: .zero, size: size)
+            textLayer.frame = CGRect(origin: .zero, size: size)
+            textLayer.position = CGPoint(x: 300, y: 50)
+            textLayer.string = "Hello World"
+            textLayer.fontSize = 32
+            textLayer.foregroundColor = NSColor.green.cgColor
+            
+            shapeLayer.frame = CGRect(origin: .zero, size: size)
             let starPath = CGMutablePath()
             starPath.move(to: CGPoint(x: 81.5, y: 7.0))
             starPath.addLine(to: CGPoint(x: 101.07, y: 63.86))
@@ -84,16 +94,16 @@ struct VS2View: NSViewRepresentable {
             rectanglePath.addLine(to: CGPoint(x: 0.0, y: 82.0))
             rectanglePath.addLine(to: CGPoint(x: 0.0, y: 7.0))
             rectanglePath.addLine(to: CGPoint(x: 81.5, y: 7.0))
-            layer.path = starPath
-            layer.strokeColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
-            layer.fillColor = CGColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+            shapeLayer.path = starPath
+            shapeLayer.strokeColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
+            shapeLayer.fillColor = CGColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
             let pathAnimation = CABasicAnimation(keyPath: "path")
             pathAnimation.toValue = rectanglePath
             pathAnimation.duration = 0.75
             pathAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             pathAnimation.autoreverses = true
             pathAnimation.repeatCount = .greatestFiniteMagnitude
-            layer.add(pathAnimation, forKey: "pathAnimation")
+            shapeLayer.add(pathAnimation, forKey: "pathAnimation")
         }
         
         func draw(in view: MTKView) {
