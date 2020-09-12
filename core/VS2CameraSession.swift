@@ -128,9 +128,9 @@ class VS2CameraSession: NSObject {
         pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: filterScale.outputImage!)
         
         if let ciImageShape = ciImageShape {
-            if let filter = CIFilter(name: "CIMultiplyCompositing") {
-                filter.setValue(ciImageShape, forKey: kCIInputImageKey)
-                filter.setValue(pipeline.pop(), forKey: kCIInputBackgroundImageKey)
+            if let filter = CIFilter(name: "CIAdditionCompositing") {
+                filter.setValue(ciImageShape, forKey: kCIInputBackgroundImageKey)
+                filter.setValue(pipeline.pop(), forKey: kCIInputImageKey)
                 pipeline.push(filter.outputImage)
             }
         }
