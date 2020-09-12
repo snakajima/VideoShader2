@@ -102,7 +102,7 @@ struct VS2View: NSViewRepresentable {
             renderer.render()
             renderer.endFrame()
             
-            cameraSession.draw(drawable: view.currentDrawable)
+            cameraSession.draw(drawable: view.currentDrawable, texture:texture)
         }
         
     }
