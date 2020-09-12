@@ -16,12 +16,23 @@ struct CALayerView: NSViewRepresentable {
     }
     
     func makeNSView(context: NSViewRepresentableContext<CALayerView>) -> NSView {
-        let view = NSTextView()
-        view.string = "Hello World"
+        let view = NSView()
+        let layer = CAShapeLayer()
+        view.layer = layer
         return view
     }
     
-    func updateNSView(_ nsView: NSView, context: NSViewRepresentableContext<CALayerView>) {
+    func updateNSView(_ view: NSView, context: NSViewRepresentableContext<CALayerView>) {
+        if let layer = view.layer as? CAShapeLayer {
+            let path = CGMutablePath()
+            path.move(to: CGPoint(x:0, y:0))
+            path.addLine(to: CGPoint(x: 100, y: 100))
+            path.addLine(to: CGPoint(x: 0, y: 100))
+            path.closeSubpath()
+            layer.path = path
+            layer.strokeColor = NSColor.red.cgColor
+            layer.fillColor = NSColor.green.cgColor
+        }
     }
     
     class Coordinator: NSObject {
