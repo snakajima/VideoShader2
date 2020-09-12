@@ -148,7 +148,7 @@ class VS2CameraSession: NSObject {
         
         if let renderer = self.renderer {
             renderer.beginFrame(atTime: CACurrentMediaTime(), timeStamp: nil)
-            renderer.addUpdate(CGRect(origin: .zero, size: CGSize(width: 600, height: 400)))
+            renderer.addUpdate(renderer.bounds)
             renderer.render()
             renderer.endFrame()
             if let ciImageShape = self.ciImageShape {
