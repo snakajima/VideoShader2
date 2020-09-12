@@ -12,7 +12,7 @@ import MetalPerformanceShaders
 import CoreImage
 
 class VS2CameraSession: NSObject {
-    let gpu = MTLCreateSystemDefaultDevice()!
+    let gpu:MTLDevice
     var dimension = CGSize.zero
 
     private let session = AVCaptureSession()
@@ -30,6 +30,10 @@ class VS2CameraSession: NSObject {
     private var renderer:CARenderer?
     private var shapeTexture:MTLTexture?
     private var ciImageShape:CIImage?
+    
+    init(gpu:MTLDevice) {
+        self.gpu = gpu
+    }
 
     func startRunning() {
         // This CIContext allows us to mix regular metal shaders along with CIFilters (in future)
