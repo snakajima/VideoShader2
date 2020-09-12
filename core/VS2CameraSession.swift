@@ -29,6 +29,7 @@ class VS2CameraSession: NSObject {
     private let layer = CAShapeLayer()
     private var renderer:CARenderer?
     private var shapeTexture:MTLTexture?
+    private var ciImageShape:CIImage?
 
     func startRunning() {
         // This CIContext allows us to mix regular metal shaders along with CIFilters (in future)
@@ -114,6 +115,8 @@ class VS2CameraSession: NSObject {
         let renderer = CARenderer(mtlTexture: texture, options: nil)
         renderer.layer = self.layer
         renderer.bounds = CGRect(origin: .zero, size: CGSize(width: 600, height: 400))
+        let ciImage = CIImage(mtlTexture: texture, options:nil)
+        self.ciImageShape = ciImage
         self.shapeTexture = texture
         self.renderer = renderer
         session.startRunning()
@@ -144,7 +147,7 @@ class VS2CameraSession: NSObject {
             renderer.addUpdate(CGRect(origin: .zero, size: CGSize(width: 600, height: 400)))
             renderer.render()
             renderer.endFrame()
-            if let ciImageShape = CIImage(mtlTexture: shapeTexture!, options:nil) {
+            if let ciImageShape = self.ciImageShape {
                 if let filter = CIFilter(name: "CISourceOverCompositing") {
                     filter.setValue(ciImageShape, forKey:  kCIInputImageKey )
                     filter.setValue(pipeline.pop(), forKey: kCIInputBackgroundImageKey)
