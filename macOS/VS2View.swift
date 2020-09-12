@@ -97,6 +97,11 @@ struct VS2View: NSViewRepresentable {
         }
         
         func draw(in view: MTKView) {
+            renderer.beginFrame(atTime: CACurrentMediaTime(), timeStamp: nil)
+            renderer.addUpdate(renderer.bounds)
+            renderer.render()
+            renderer.endFrame()
+            
             cameraSession.draw(drawable: view.currentDrawable)
         }
         
