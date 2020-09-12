@@ -34,10 +34,13 @@ struct VS2View: NSViewRepresentable {
     }
     
     class Coordinator: NSObject, MTKViewDelegate {
-        let cameraSession = VS2CameraSession(gpu:MTLCreateSystemDefaultDevice()!)
+        let gpu:MTLDevice
+        let cameraSession:VS2CameraSession
         let view: VS2View
         init(_ view: VS2View) {
             self.view = view
+            gpu = MTLCreateSystemDefaultDevice()!
+            cameraSession = VS2CameraSession(gpu:gpu)
             cameraSession.startRunning()
         }
 
