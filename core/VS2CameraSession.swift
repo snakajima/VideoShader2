@@ -24,13 +24,7 @@ class VS2CameraSession: NSObject {
     private var commandQueue:MTLCommandQueue?
     private var ciImage:CIImage?
     private let filterScale = CIFilter(name: "CILanczosScaleTransform")
-    
-    // animation
-    private let layer = CAShapeLayer()
-    private var renderer:CARenderer?
-    private var shapeTexture:MTLTexture?
-    private var ciImageShape:CIImage?
-    
+        
     init(gpu:MTLDevice) {
         self.gpu = gpu
     }
@@ -74,55 +68,6 @@ class VS2CameraSession: NSObject {
         output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         session.addOutput(output)
 
-        // random shape layer
-        layer.frame = CGRect(origin: .zero, size: CGSize(width: CGFloat(dimension.width), height: CGFloat(dimension.height)))
-        let starPath = CGMutablePath()
-        starPath.move(to: CGPoint(x: 81.5, y: 7.0))
-        starPath.addLine(to: CGPoint(x: 101.07, y: 63.86))
-        starPath.addLine(to: CGPoint(x: 163.0, y: 64.29))
-        starPath.addLine(to: CGPoint(x: 113.16, y: 99.87))
-        starPath.addLine(to: CGPoint(x: 131.87, y: 157.0))
-        starPath.addLine(to: CGPoint(x: 81.5, y: 122.13))
-        starPath.addLine(to: CGPoint(x: 31.13, y: 157.0))
-        starPath.addLine(to: CGPoint(x: 49.84, y: 99.87))
-        starPath.addLine(to: CGPoint(x: 0.0, y: 64.29))
-        starPath.addLine(to: CGPoint(x: 61.93, y: 63.86))
-        starPath.addLine(to: CGPoint(x: 81.5, y: 7.0))
-        
-        let rectanglePath = CGMutablePath()
-        rectanglePath.move(to: CGPoint(x: 81.5, y: 7.0))
-        rectanglePath.addLine(to: CGPoint(x: 163.0, y: 7.0))
-        rectanglePath.addLine(to: CGPoint(x: 163.0, y: 82.0))
-        rectanglePath.addLine(to: CGPoint(x: 163.0, y: 157.0))
-        rectanglePath.addLine(to: CGPoint(x: 163.0, y: 157.0))
-        rectanglePath.addLine(to: CGPoint(x: 82.0, y: 157.0))
-        rectanglePath.addLine(to: CGPoint(x: 0.0, y: 157.0))
-        rectanglePath.addLine(to: CGPoint(x: 0.0, y: 157.0))
-        rectanglePath.addLine(to: CGPoint(x: 0.0, y: 82.0))
-        rectanglePath.addLine(to: CGPoint(x: 0.0, y: 7.0))
-        rectanglePath.addLine(to: CGPoint(x: 81.5, y: 7.0))
-        layer.path = starPath
-        layer.strokeColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
-        layer.fillColor = CGColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
-        let pathAnimation = CABasicAnimation(keyPath: "path")
-        pathAnimation.toValue = rectanglePath
-        pathAnimation.duration = 0.75
-        pathAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        pathAnimation.autoreverses = true
-        pathAnimation.repeatCount = .greatestFiniteMagnitude
-        layer.add(pathAnimation, forKey: "pathAnimation")
-
-        // device contexts
-        let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba8Unorm, width: 600, height: 400, mipmapped: false)
-        textureDescriptor.usage = [MTLTextureUsage.shaderRead, .shaderWrite, .renderTarget]
-        let texture = gpu.makeTexture(descriptor: textureDescriptor)!
-        let renderer = CARenderer(mtlTexture: texture, options: nil)
-        renderer.layer = self.layer
-        renderer.bounds = CGRect(origin: .zero, size: CGSize(width: 600, height: 400))
-        let ciImage = CIImage(mtlTexture: texture, options:nil)
-        self.ciImageShape = ciImage
-        self.shapeTexture = texture
-        self.renderer = renderer
         session.startRunning()
     }
     
