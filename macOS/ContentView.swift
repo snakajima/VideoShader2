@@ -24,6 +24,10 @@ let s_script1 = [
             "hueMax":144.0,
             "minMax":0.4,
         ]
+    ],[
+        "controller": "texture"
+    ],[
+        "blender": "sourceOver"
     ]]
 ]
 let s_script2 = [
@@ -62,7 +66,7 @@ let s_script3 = [
     ]]
 ]
 struct ContentView: View {
-    @State var script:[String:Any] = s_script3
+    @State var script:[String:Any] = s_script2
     var body: some View {
         VStack {
             VS2View(script:$script)
