@@ -57,6 +57,10 @@ struct VS2View: NSViewRepresentable {
             layer.addSublayer(shapeLayer)
             layer.addSublayer(textLayer)
             renderer.layer = layer
+            layer.shadowRadius = 10.0
+            layer.shadowColor = NSColor.black.cgColor
+            layer.shadowOffset = CGSize(width: 3.0, height: -3.0)
+            layer.shadowOpacity = 1.0
         }
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -104,6 +108,9 @@ struct VS2View: NSViewRepresentable {
             pathAnimation.autoreverses = true
             pathAnimation.repeatCount = .greatestFiniteMagnitude
             shapeLayer.add(pathAnimation, forKey: "pathAnimation")
+            
+            let scale = size.height / 640.0
+            layer.transform = CATransform3DMakeScale(scale, scale, 1.0)
         }
         
         func draw(in view: MTKView) {
