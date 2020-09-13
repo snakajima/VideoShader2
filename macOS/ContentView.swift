@@ -27,6 +27,8 @@ let s_script1 = [
     ],[
         "texture": "star"
     ],[
+        "controller": "swap"
+    ],[
         "blender": "sourceOver"
     ]]
 ]
