@@ -63,7 +63,7 @@ struct VS2View: NSViewRepresentable {
             renderer.bounds = CGRect(origin: .zero, size: size)
 
             textLayer.frame = CGRect(origin: .zero, size: size)
-            textLayer.position = CGPoint(x: 300, y: 50)
+            textLayer.position = CGPoint(x: 50, y: 50)
             textLayer.string = "Hello World"
             textLayer.fontSize = 32
             textLayer.foregroundColor = NSColor.green.cgColor
@@ -117,3 +117,4 @@ struct VS2View: NSViewRepresentable {
         
     }
 }
+

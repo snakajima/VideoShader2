@@ -27,6 +27,12 @@ let s_script1 = [
     ],[
         "texture": "star"
     ],[
+        "filter": "fourfoldTranslatedTile",
+        "props":[
+            "width":200.0,
+            "center":[0, 0],
+        ]
+    ],[
         "controller": "swap"
     ],[
         "blender": "sourceOver"
@@ -49,6 +55,10 @@ let s_script2 = [
             "color1":[1, 1, 0, 1],
             "color2":[0, 0, 1, 1],
         ]
+    ],[
+        "texture": "star"
+    ],[
+        "blender": "sourceOver"
     ]]
 ]
 let s_script3 = [
@@ -84,7 +94,7 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct Foo: View {
+private struct Foo: View {
     @State var script0:[String:Any] = s_script0
     @State var script1:[String:Any] = s_script1
     @State var script2:[String:Any] = s_script2

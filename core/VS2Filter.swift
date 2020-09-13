@@ -139,6 +139,15 @@ class VS2Filter:CustomDebugStringConvertible {
                 "intensity": kCIInputIntensityKey
             ]
         ],
+        "fourfoldTranslatedTile": [
+            "name":"CIFourfoldTranslatedTile",
+            "props":[
+                "center": kCIInputCenterKey,
+                "angle": kCIInputAngleKey,
+                "acuteAngle": "inputAcuteAngle",
+                "width": kCIInputWidthKey,
+            ]
+        ],
 
         // Filters with custom kernels
         "toone": [

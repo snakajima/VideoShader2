@@ -91,17 +91,6 @@ class VS2CameraSession: NSObject {
         filterScale.setValue(ciImage, forKey: kCIInputImageKey)
         pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: filterScale.outputImage!, textures:textures)
 
-        /*
-        if let texture = textures["star"],
-           let ciImageShape = CIImage(mtlTexture: texture, options: nil) {
-            if let filter = CIFilter(name: "CISourceOverCompositing") {
-                filter.setValue(ciImageShape, forKey:  kCIInputImageKey )
-                filter.setValue(pipeline.pop(), forKey: kCIInputBackgroundImageKey)
-                pipeline.push(filter.outputImage)
-            }
-        }
-        */
-        
         ciContext.render(pipeline.pop(), to: drawable.texture, commandBuffer: commandBuffer,
                          bounds: CGRect(origin: .zero, size: CGSize(width: drawable.texture.width, height: drawable.texture.height)),
                          colorSpace: CGColorSpaceCreateDeviceRGB())
