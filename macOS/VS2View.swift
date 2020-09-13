@@ -57,10 +57,12 @@ struct VS2View: NSViewRepresentable {
             layer.addSublayer(shapeLayer)
             layer.addSublayer(textLayer)
             renderer.layer = layer
+            /*
             layer.shadowRadius = 10.0
             layer.shadowColor = NSColor.black.cgColor
             layer.shadowOffset = CGSize(width: 3.0, height: -3.0)
             layer.shadowOpacity = 1.0
+            */
         }
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -114,6 +116,10 @@ struct VS2View: NSViewRepresentable {
         }
         
         func draw(in view: MTKView) {
+            if cameraSession.isProcessing {
+                print("processing")
+                return
+            }
             renderer.beginFrame(atTime: CACurrentMediaTime(), timeStamp: nil)
             renderer.addUpdate(renderer.bounds)
             renderer.render()

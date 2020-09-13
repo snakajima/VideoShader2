@@ -24,6 +24,7 @@ class VS2CameraSession: NSObject {
     private var commandQueue:MTLCommandQueue?
     private var ciImage:CIImage?
     private let filterScale = CIFilter(name: "CILanczosScaleTransform")
+    var isProcessing = false
         
     init(gpu:MTLDevice) {
         self.gpu = gpu
@@ -106,6 +107,10 @@ class VS2CameraSession: NSObject {
         }
 
         commandBuffer.present(drawable)
+        isProcessing = true;
+        commandBuffer.addCompletedHandler { (_) in
+            self.isProcessing = false;
+        }
         commandBuffer.commit()
         self.ciImage = nil // no need to draw it again
     }
