@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-let s_script0 = [
+private let s_script0 = [
     "pipeline": [[
         "filter": "halftone",
         "props":[
@@ -16,7 +16,7 @@ let s_script0 = [
         ]
     ]]
 ]
-let s_script1 = [
+private let s_script1 = [
     "pipeline": [[
         "filter": "chromaKey",
         "props":[
@@ -38,7 +38,7 @@ let s_script1 = [
         "blender": "sourceOver"
     ]]
 ]
-let s_script2 = [
+private let s_script2 = [
     "pipeline": [[
         "controller": "fork"
     ],[
@@ -61,7 +61,7 @@ let s_script2 = [
         "blender": "sourceOver"
     ]]
 ]
-let s_script3 = [
+private let s_script3 = [
     "pipeline": [[
         "controller": "fork"
     ],[

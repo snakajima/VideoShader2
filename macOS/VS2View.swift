@@ -63,7 +63,7 @@ struct VS2View: NSViewRepresentable {
             renderer.bounds = CGRect(origin: .zero, size: size)
 
             textLayer.frame = CGRect(origin: .zero, size: size)
-            textLayer.position = CGPoint(x: 50, y: 50)
+            textLayer.position = CGPoint(x: 300, y: 300)
             textLayer.string = "Hello World"
             textLayer.fontSize = 32
             textLayer.foregroundColor = NSColor.green.cgColor
@@ -118,3 +118,24 @@ struct VS2View: NSViewRepresentable {
     }
 }
 
+
+struct VS2View_Previews: PreviewProvider {
+    static var previews: some View {
+        Foo()
+    }
+}
+
+private let s_script0 = [
+    "pipeline": [[
+        "texture": "star"
+    ],[
+        "blender": "sourceOver"
+    ]]
+]
+
+private struct Foo: View {
+@State var script0:[String:Any] = s_script0
+var body: some View {
+            VS2View(script:$script0)
+    }
+}
