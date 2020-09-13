@@ -62,7 +62,7 @@ let s_script3 = [
     ]]
 ]
 struct ContentView: View {
-    @State var script:[String:Any] = s_script2
+    @State var script:[String:Any] = s_script3
     var body: some View {
         VStack {
             VS2View(script:$script)

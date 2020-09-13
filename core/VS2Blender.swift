@@ -76,6 +76,9 @@ class VS2Blender: CustomDebugStringConvertible {
         "minimum": [
             "name":"CIMinimumCompositing",
         ],
+        "sourceOver": [
+            "name":"CISourceOverCompositing",
+        ],
     ]
     
     static func makeShader(name:String, props: [String:Any], gpu:MTLDevice) -> VS2Shader? {
