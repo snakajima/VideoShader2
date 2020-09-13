@@ -89,7 +89,7 @@ class VS2CameraSession: NSObject {
         let scaleMin = min(scale.width, scale.height)
         filterScale.setValue(scaleMin, forKey: kCIInputScaleKey)
         filterScale.setValue(ciImage, forKey: kCIInputImageKey)
-        pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: filterScale.outputImage!)
+        pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: filterScale.outputImage!, textures:textures)
 
         var textureShape:MTLTexture? = nil
         if let texture = textures["star"],

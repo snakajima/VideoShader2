@@ -14,6 +14,7 @@ class VS2Pipeline {
     var shaders = [VS2Shader]()
     var ciImageSrc:CIImage?
     var stack = [CIImage]()
+    var textures = [String:MTLTexture]()
 
     func compile(_ script:[String:Any], gpu:MTLDevice) {
         shaders.removeAll()
@@ -40,8 +41,9 @@ class VS2Pipeline {
         print("operators", shaders)
     }
     
-    func encode(commandBuffer:MTLCommandBuffer, ciImageSrc:CIImage) {
+    func encode(commandBuffer:MTLCommandBuffer, ciImageSrc:CIImage, textures:[String:MTLTexture]) {
         self.ciImageSrc = ciImageSrc // for underflow
+        self.textures = textures
         stack.append(ciImageSrc)
         for shader in shaders {
             shader.encode(to: commandBuffer, stack: self)
@@ -50,6 +52,13 @@ class VS2Pipeline {
 }
 
 extension VS2Pipeline: VS2CIImageStack {
+    func push(name: String) {
+        if let texture = textures[name],
+           let ciImage = CIImage(mtlTexture: texture, options: nil) {
+            push(ciImage)
+        }
+    }
+    
     func pop() -> CIImage {
         guard let ciImage = stack.popLast() else {
             print("under flow")

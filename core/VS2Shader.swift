@@ -17,5 +17,6 @@ public protocol VS2Shader {
 public protocol VS2CIImageStack {
     func pop() -> CIImage
     func push(_ ciImage:CIImage?)
+    func push(name:String)
 }
 
