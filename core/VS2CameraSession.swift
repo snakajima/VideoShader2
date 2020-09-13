@@ -75,7 +75,7 @@ class VS2CameraSession: NSObject {
         pipeline.compile(script, gpu:gpu)
     }
     
-    func draw(drawable:CAMetalDrawable?, texture:MTLTexture) {
+    func draw(drawable:CAMetalDrawable?, textures:[String:MTLTexture]) {
         guard let ciContext = self.ciContext,
            let ciImage = self.ciImage,
            let commandQueue = self.commandQueue,
@@ -90,26 +90,31 @@ class VS2CameraSession: NSObject {
         filterScale.setValue(scaleMin, forKey: kCIInputScaleKey)
         filterScale.setValue(ciImage, forKey: kCIInputImageKey)
         pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: filterScale.outputImage!)
-        
-        if let ciImageShape = CIImage(mtlTexture: texture, options: nil) {
+
+        var textureShape:MTLTexture? = nil
+        if let texture = textures["star"],
+           let ciImageShape = CIImage(mtlTexture: texture, options: nil) {
             if let filter = CIFilter(name: "CISourceOverCompositing") {
                 filter.setValue(ciImageShape, forKey:  kCIInputImageKey )
                 filter.setValue(pipeline.pop(), forKey: kCIInputBackgroundImageKey)
                 pipeline.push(filter.outputImage)
             }
+            textureShape = texture
         }
         
         ciContext.render(pipeline.pop(), to: drawable.texture, commandBuffer: commandBuffer,
                          bounds: CGRect(origin: .zero, size: CGSize(width: drawable.texture.width, height: drawable.texture.height)),
                          colorSpace: CGColorSpaceCreateDeviceRGB())
 
-        let passDescriptor: MTLRenderPassDescriptor = MTLRenderPassDescriptor()
-        passDescriptor.colorAttachments[0].texture = texture
-        passDescriptor.colorAttachments[0].storeAction = .store
-        passDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 0.0)
-        passDescriptor.colorAttachments[0].loadAction = .clear
-        let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: passDescriptor)
-        encoder?.endEncoding()
+        if let texture = textureShape {
+            let passDescriptor: MTLRenderPassDescriptor = MTLRenderPassDescriptor()
+            passDescriptor.colorAttachments[0].texture = texture
+            passDescriptor.colorAttachments[0].storeAction = .store
+            passDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 0.0)
+            passDescriptor.colorAttachments[0].loadAction = .clear
+            let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: passDescriptor)
+            encoder?.endEncoding()
+        }
 
         commandBuffer.present(drawable)
         commandBuffer.commit()

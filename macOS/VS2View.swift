@@ -112,7 +112,7 @@ struct VS2View: NSViewRepresentable {
             renderer.render()
             renderer.endFrame()
             
-            cameraSession.draw(drawable: view.currentDrawable, texture:texture)
+            cameraSession.draw(drawable: view.currentDrawable, textures:["star":texture])
         }
         
     }
