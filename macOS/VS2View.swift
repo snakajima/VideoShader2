@@ -62,12 +62,12 @@ struct VS2View: NSViewRepresentable {
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
             renderer.bounds = CGRect(origin: .zero, size: size)
 
-            textLayer.frame = CGRect(origin: .zero, size: size)
-            textLayer.position = CGPoint(x: 300, y: 300)
+            textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 200))
+            textLayer.position = CGPoint(x: 200, y: 100)
             textLayer.string = "Hello World"
             textLayer.fontSize = 32
             textLayer.foregroundColor = NSColor.green.cgColor
-            
+
             shapeLayer.frame = CGRect(origin: .zero, size: size)
             let starPath = CGMutablePath()
             starPath.move(to: CGPoint(x: 81.5, y: 7.0))
