@@ -14,7 +14,6 @@ class VS2Controller {
         case noop = "noop"
         case fork = "fork"
         case swap = "swap"
-        case texture = "texture"
     }
     let instruction:Instruction
     
@@ -24,8 +23,6 @@ class VS2Controller {
             self.instruction = .fork
         case Instruction.swap.rawValue:
             self.instruction = .swap
-        case Instruction.texture.rawValue:
-            self.instruction = .texture
         default:
             self.instruction = .noop
         }
@@ -44,8 +41,6 @@ extension VS2Controller: VS2Shader {
             let ciImage2 = stack.pop()
             stack.push(ciImage1)
             stack.push(ciImage2)
-        case .texture:
-            stack.push(name: "star")
         default:
             break
         }

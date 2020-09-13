@@ -36,6 +36,9 @@ class VS2Pipeline {
             } else if let name = shaderInfo["controller"] as? String {
                 let controller = VS2Controller(name: name)
                 shaders.append(controller)
+            } else if let name = shaderInfo["texture"] as? String {
+                let texture = VS2Texture(name: name)
+                shaders.append(texture)
             }
         }
         print("operators", shaders)

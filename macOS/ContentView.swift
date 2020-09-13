@@ -25,7 +25,7 @@ let s_script1 = [
             "minMax":0.4,
         ]
     ],[
-        "controller": "texture"
+        "texture": "star"
     ],[
         "blender": "sourceOver"
     ]]
