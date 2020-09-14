@@ -79,15 +79,36 @@ private let s_script3 = [
 ]
 
 let s_layer:CALayer = { ()-> CALayer in
-        let textLayer = CATextLayer()
+    let textLayer = CATextLayer()
 
-        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
-        textLayer.position = CGPoint(x: 100, y: 100)
-        textLayer.string = "Hello World"
-        textLayer.fontSize = 32
-        textLayer.foregroundColor = NSColor.green.cgColor
-        textLayer.backgroundColor = NSColor.red.cgColor
-        return textLayer
+    textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
+    textLayer.position = CGPoint(x: 100, y: 100)
+    textLayer.string = "Hello World"
+    textLayer.fontSize = 32
+    textLayer.foregroundColor = NSColor.green.cgColor
+    textLayer.backgroundColor = NSColor.red.cgColor
+    
+    let shapeLayer = CAShapeLayer()
+    let starPath = CGMutablePath()
+    starPath.move(to: CGPoint(x: 81.5, y: 7.0))
+    starPath.addLine(to: CGPoint(x: 101.07, y: 63.86))
+    starPath.addLine(to: CGPoint(x: 163.0, y: 64.29))
+    starPath.addLine(to: CGPoint(x: 113.16, y: 99.87))
+    starPath.addLine(to: CGPoint(x: 131.87, y: 157.0))
+    starPath.addLine(to: CGPoint(x: 81.5, y: 122.13))
+    starPath.addLine(to: CGPoint(x: 31.13, y: 157.0))
+    starPath.addLine(to: CGPoint(x: 49.84, y: 99.87))
+    starPath.addLine(to: CGPoint(x: 0.0, y: 64.29))
+    starPath.addLine(to: CGPoint(x: 61.93, y: 63.86))
+    starPath.addLine(to: CGPoint(x: 81.5, y: 7.0))
+    shapeLayer.path = starPath
+    shapeLayer.strokeColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
+    shapeLayer.fillColor = CGColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+    
+    let layer = CALayer()
+    layer.addSublayer(shapeLayer)
+    layer.addSublayer(textLayer)
+    return layer
 }()
 
 struct ContentView: View {
