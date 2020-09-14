@@ -30,7 +30,7 @@ struct VS2View: NSViewRepresentable {
     }
     
     func updateNSView(_ nsView: MTKView, context: NSViewRepresentableContext<VS2View>) {
-        context.coordinator.cameraSession.update(script:script)
+        context.coordinator.update(script:script)
     }
     
     class Coordinator: NSObject, MTKViewDelegate {
@@ -113,6 +113,10 @@ struct VS2View: NSViewRepresentable {
             
             let scale = size.height / 640.0
             layer.transform = CATransform3DMakeScale(scale, scale, 1.0)
+        }
+        
+        func update(script:[String:Any]) {
+            cameraSession.update(script:script)
         }
         
         func draw(in view: MTKView) {
