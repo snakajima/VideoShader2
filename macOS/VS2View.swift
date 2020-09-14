@@ -122,7 +122,10 @@ let layer:CALayer = { ()-> CALayer in
         textLayer.fontSize = 32
         textLayer.foregroundColor = NSColor.green.cgColor
         textLayer.backgroundColor = NSColor.red.cgColor
-        return textLayer
+    
+        let layer = CALayer()
+        layer.addSublayer(textLayer)
+        return layer
 }()
 var body: some View {
     return VS2View(script:$script0, layer:layer)
