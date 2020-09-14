@@ -34,8 +34,8 @@ struct VS2View: NSViewRepresentable {
         layer.frame = CGRect(origin: .zero, size: CGSize(width: 640, height: 640))
         //layer.anchorPoint = CGPoint.zero
 
-        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 200))
-        textLayer.position = CGPoint(x: 200, y: 100)
+        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
+        textLayer.position = CGPoint(x: 100, y: 100)
         textLayer.string = "Hello World"
         textLayer.fontSize = 32
         textLayer.foregroundColor = NSColor.green.cgColor
@@ -112,11 +112,12 @@ struct VS2View: NSViewRepresentable {
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
             renderer.bounds = CGRect(origin: .zero, size: size)
             
-            /*if let layer = renderer.layer {
+            if let layer = renderer.layer {
                 let scale = size.height / 640.0
+                layer.anchorPoint = CGPoint(x: 0.0, y: 0)
+                layer.position = CGPoint(x: 0, y: 0)
                 layer.transform = CATransform3DMakeScale(scale, scale, 1.0)
             }
-            */
         }
         
         func update(script:[String:Any], layer:CALayer) {
