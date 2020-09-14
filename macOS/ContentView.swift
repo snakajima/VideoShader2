@@ -77,12 +77,24 @@ private let s_script3 = [
         "blender": "minimum"
     ]]
 ]
+
+let s_layer:CALayer = { ()-> CALayer in
+        let textLayer = CATextLayer()
+
+        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
+        textLayer.position = CGPoint(x: 100, y: 100)
+        textLayer.string = "Hello World"
+        textLayer.fontSize = 32
+        textLayer.foregroundColor = NSColor.green.cgColor
+        textLayer.backgroundColor = NSColor.red.cgColor
+        return textLayer
+}()
+
 struct ContentView: View {
     @State var script:[String:Any] = s_script2
-    @State var layer:CALayer? = nil
     var body: some View {
         VStack {
-            VS2View(script:$script, layer:layer)
+            VS2View(script:$script, layer:s_layer)
                 .edgesIgnoringSafeArea(.top)
         }
     }
@@ -102,7 +114,7 @@ private struct Foo: View {
     @State var script3:[String:Any] = s_script3
     @State var script4:[String:Any] = s_script2
     @State var script5:[String:Any] = s_script3
-    @State var layer:CALayer? = nil
+    @State var layer:CALayer? = s_layer
     var body: some View {
         VStack {
             HStack {
