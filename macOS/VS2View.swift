@@ -13,8 +13,6 @@ import MetalKit
 struct VS2View: NSViewRepresentable {
     @Binding var script:[String:Any]
     private let layer = CALayer()
-    private let shapeLayer = CAShapeLayer()
-    private let textLayer = CATextLayer()
 
     func makeCoordinator() -> Coordinator {
         return Coordinator(self)
@@ -29,6 +27,8 @@ struct VS2View: NSViewRepresentable {
         metalView.translatesAutoresizingMaskIntoConstraints = false
         metalView.autoResizeDrawable = true
         metalView.framebufferOnly = false // without this, window is not resizable
+        let shapeLayer = CAShapeLayer()
+        let textLayer = CATextLayer()
         layer.addSublayer(shapeLayer)
         layer.addSublayer(textLayer)
         layer.frame = CGRect(origin: .zero, size: CGSize(width: 640, height: 640))
