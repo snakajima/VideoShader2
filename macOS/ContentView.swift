@@ -86,7 +86,6 @@ let s_layer:CALayer = { ()-> CALayer in
     textLayer.string = "Hello World"
     textLayer.fontSize = 32
     textLayer.foregroundColor = NSColor.green.cgColor
-    textLayer.backgroundColor = NSColor.red.cgColor
     
     let shapeLayer = CAShapeLayer()
     let starPath = CGMutablePath()
@@ -104,6 +103,26 @@ let s_layer:CALayer = { ()-> CALayer in
     shapeLayer.path = starPath
     shapeLayer.strokeColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
     shapeLayer.fillColor = CGColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+    
+    let rectanglePath = CGMutablePath()
+               rectanglePath.move(to: CGPoint(x: 81.5, y: 7.0))
+               rectanglePath.addLine(to: CGPoint(x: 163.0, y: 7.0))
+               rectanglePath.addLine(to: CGPoint(x: 163.0, y: 82.0))
+               rectanglePath.addLine(to: CGPoint(x: 163.0, y: 157.0))
+               rectanglePath.addLine(to: CGPoint(x: 163.0, y: 157.0))
+               rectanglePath.addLine(to: CGPoint(x: 82.0, y: 157.0))
+               rectanglePath.addLine(to: CGPoint(x: 0.0, y: 157.0))
+               rectanglePath.addLine(to: CGPoint(x: 0.0, y: 157.0))
+               rectanglePath.addLine(to: CGPoint(x: 0.0, y: 82.0))
+               rectanglePath.addLine(to: CGPoint(x: 0.0, y: 7.0))
+               rectanglePath.addLine(to: CGPoint(x: 81.5, y: 7.0))
+    let pathAnimation = CABasicAnimation(keyPath: "path")
+    pathAnimation.toValue = rectanglePath
+    pathAnimation.duration = 0.75
+    pathAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+    pathAnimation.autoreverses = true
+    pathAnimation.repeatCount = .greatestFiniteMagnitude
+    shapeLayer.add(pathAnimation, forKey: "pathAnimation")
     
     let layer = CALayer()
     layer.addSublayer(shapeLayer)
@@ -139,7 +158,7 @@ private struct Foo: View {
     var body: some View {
         VStack {
             HStack {
-                VS2View(script:$script0, layer:layer)
+                VS2View(script:$script0, layer:s_layer)
                 VS2View(script:$script1, layer:layer)
             }
             HStack {
