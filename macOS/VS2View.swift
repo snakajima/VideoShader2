@@ -121,7 +121,7 @@ struct VS2View: NSViewRepresentable {
             }
         }
         
-        func update(script:[String:Any], layer:CALayer) {
+        func update(script:[String:Any], layer:CALayer?) {
             cameraSession.update(script:script)
             renderer.layer = layer
         }
