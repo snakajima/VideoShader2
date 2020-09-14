@@ -12,7 +12,6 @@ import MetalKit
 
 struct VS2View: NSViewRepresentable {
     @Binding var script:[String:Any]
-    private let layer = CALayer()
 
     func makeCoordinator() -> Coordinator {
         return Coordinator(self)
@@ -27,6 +26,13 @@ struct VS2View: NSViewRepresentable {
         metalView.translatesAutoresizingMaskIntoConstraints = false
         metalView.autoResizeDrawable = true
         metalView.framebufferOnly = false // without this, window is not resizable
+
+        
+        return metalView
+    }
+    
+    func updateNSView(_ nsView: MTKView, context: NSViewRepresentableContext<VS2View>) {
+        let layer = CALayer()
         let shapeLayer = CAShapeLayer()
         let textLayer = CATextLayer()
         layer.addSublayer(shapeLayer)
@@ -75,11 +81,6 @@ struct VS2View: NSViewRepresentable {
         pathAnimation.autoreverses = true
         pathAnimation.repeatCount = .greatestFiniteMagnitude
         shapeLayer.add(pathAnimation, forKey: "pathAnimation")
-        
-        return metalView
-    }
-    
-    func updateNSView(_ nsView: MTKView, context: NSViewRepresentableContext<VS2View>) {
         context.coordinator.update(script:script, layer:layer)
     }
     
