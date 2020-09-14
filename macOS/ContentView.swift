@@ -82,7 +82,7 @@ struct ContentView: View {
     @State var layer:CALayer? = nil
     var body: some View {
         VStack {
-            VS2View(script:$script, layer:$layer)
+            VS2View(script:$script, layer:layer)
                 .edgesIgnoringSafeArea(.top)
         }
     }
@@ -106,12 +106,12 @@ private struct Foo: View {
     var body: some View {
         VStack {
             HStack {
-                VS2View(script:$script0, layer:$layer)
-                VS2View(script:$script1, layer:$layer)
+                VS2View(script:$script0, layer:layer)
+                VS2View(script:$script1, layer:layer)
             }
             HStack {
-                VS2View(script:$script2, layer:$layer)
-                VS2View(script:$script3, layer:$layer)
+                VS2View(script:$script2, layer:layer)
+                VS2View(script:$script3, layer:layer)
             }
         }
     }}
