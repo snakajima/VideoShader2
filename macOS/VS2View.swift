@@ -56,7 +56,6 @@ struct VS2View: NSViewRepresentable {
             renderer = CARenderer(mtlTexture: texture, options: nil)
             layer.addSublayer(shapeLayer)
             layer.addSublayer(textLayer)
-            renderer.layer = layer
             /*
             layer.shadowRadius = 10.0
             layer.shadowColor = NSColor.black.cgColor
@@ -117,6 +116,7 @@ struct VS2View: NSViewRepresentable {
         
         func update(script:[String:Any]) {
             cameraSession.update(script:script)
+            renderer.layer = layer
         }
         
         func draw(in view: MTKView) {
