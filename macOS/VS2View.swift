@@ -12,6 +12,7 @@ import MetalKit
 
 struct VS2View: NSViewRepresentable {
     @Binding var script:[String:Any]
+    @Binding var layer:CALayer?
 
     func makeCoordinator() -> Coordinator {
         return Coordinator(self)
@@ -159,7 +160,8 @@ private let s_script0 = [
 
 private struct Foo: View {
 @State var script0:[String:Any] = s_script0
+@State var layer:CALayer? = nil
 var body: some View {
-            VS2View(script:$script0)
+    VS2View(script:$script0, layer:$layer)
     }
 }

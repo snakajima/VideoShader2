@@ -79,9 +79,10 @@ private let s_script3 = [
 ]
 struct ContentView: View {
     @State var script:[String:Any] = s_script2
+    @State var layer:CALayer? = nil
     var body: some View {
         VStack {
-            VS2View(script:$script)
+            VS2View(script:$script, layer:$layer)
                 .edgesIgnoringSafeArea(.top)
         }
     }
@@ -101,15 +102,16 @@ private struct Foo: View {
     @State var script3:[String:Any] = s_script3
     @State var script4:[String:Any] = s_script2
     @State var script5:[String:Any] = s_script3
+    @State var layer:CALayer? = nil
     var body: some View {
         VStack {
             HStack {
-                VS2View(script:$script0)
-                VS2View(script:$script1)
+                VS2View(script:$script0, layer:$layer)
+                VS2View(script:$script1, layer:$layer)
             }
             HStack {
-                VS2View(script:$script2)
-                VS2View(script:$script3)
+                VS2View(script:$script2, layer:$layer)
+                VS2View(script:$script3, layer:$layer)
             }
         }
     }}
