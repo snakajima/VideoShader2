@@ -76,6 +76,12 @@ class VS2CameraSession: NSObject {
         pipeline.compile(script, gpu:gpu)
     }
     
+    func makeTexture() -> MTLTexture{
+        let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba8Unorm, width: Int(dimension.width), height: Int(dimension.height), mipmapped: false)
+        textureDescriptor.usage = [MTLTextureUsage.shaderRead, .shaderWrite, .renderTarget]
+        return gpu.makeTexture(descriptor: textureDescriptor)!
+    }
+    
     func draw(drawable:CAMetalDrawable?, textures:[String:MTLTexture]) {
         guard let ciContext = self.ciContext,
            let ciImage = self.ciImage,

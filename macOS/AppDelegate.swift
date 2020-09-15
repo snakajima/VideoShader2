@@ -55,11 +55,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension AppDelegate: ICDeviceBrowserDelegate {
     func deviceBrowser(_ browser: ICDeviceBrowser, didAdd device: ICDevice, moreComing: Bool) {
-        print("###deviceBrowser: didAdd", device.name)
+        //print("###deviceBrowser: didAdd", device.name)
     }
     
     func deviceBrowser(_ browser: ICDeviceBrowser, didRemove device: ICDevice, moreGoing: Bool) {
-        print("###deviceBrowser: didRemove")
+        //print("###deviceBrowser: didRemove")
     }
     
     

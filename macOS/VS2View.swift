@@ -51,10 +51,7 @@ struct VS2View: NSViewRepresentable {
             gpu = MTLCreateSystemDefaultDevice()!
             cameraSession = VS2CameraSession(gpu:gpu)
             cameraSession.startRunning()
-
-            let textureDescriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba8Unorm, width: 600, height: 400, mipmapped: false)
-            textureDescriptor.usage = [MTLTextureUsage.shaderRead, .shaderWrite, .renderTarget]
-            texture = gpu.makeTexture(descriptor: textureDescriptor)!
+            texture = cameraSession.makeTexture()
             renderer = CARenderer(mtlTexture: texture, options: nil)
         }
 
