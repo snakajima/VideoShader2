@@ -147,11 +147,13 @@ let layer:CALayer = { ()-> CALayer in
     rectanglePath.addLine(to: CGPoint(x: 0.0, y: 7.0))
     rectanglePath.addLine(to: CGPoint(x: 81.5, y: 7.0))
     shapeLayer.path = starPath
+    shapeLayer.lineWidth = 2.0
+    shapeLayer.lineJoin = .round
     shapeLayer.strokeColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
     shapeLayer.fillColor = CGColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
     let pathAnimation = CABasicAnimation(keyPath: "path")
     pathAnimation.toValue = rectanglePath
-    pathAnimation.duration = 0.75
+    pathAnimation.duration = 4.0
     pathAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
     pathAnimation.autoreverses = true
     pathAnimation.repeatCount = .greatestFiniteMagnitude
