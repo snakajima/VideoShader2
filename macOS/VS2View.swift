@@ -98,6 +98,12 @@ private let s_script0 = [
     "pipeline": [[
         "texture": "star"
     ],[
+        "filter": "fourfoldTranslatedTile",
+        "props":[
+            "width":300.0,
+            "center":[0, 0],
+        ]
+    ],[
         "blender": "sourceOver"
     ]]
 ]
@@ -105,14 +111,13 @@ private let s_script0 = [
 private struct Foo: View {
 @State var script0:[String:Any] = s_script0
 let layer:CALayer = { ()-> CALayer in
-        let textLayer = CATextLayer()
+    let textLayer = CATextLayer()
 
-        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
-        textLayer.position = CGPoint(x: 100, y: 100)
-        textLayer.string = "Hello World"
-        textLayer.fontSize = 32
-        textLayer.foregroundColor = NSColor.green.cgColor
-        textLayer.backgroundColor = NSColor.red.cgColor
+    textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
+    textLayer.position = CGPoint(x: 100, y: 100)
+    textLayer.string = "Hello World"
+    textLayer.fontSize = 32
+    textLayer.foregroundColor = NSColor.green.cgColor
     
     let shapeLayer = CAShapeLayer()
     //shapeLayer.frame = CGRect(origin: .zero, size: size)
@@ -152,10 +157,10 @@ let layer:CALayer = { ()-> CALayer in
     pathAnimation.repeatCount = .greatestFiniteMagnitude
     shapeLayer.add(pathAnimation, forKey: "pathAnimation")
     
-        let layer = CALayer()
-        layer.addSublayer(textLayer)
+    let layer = CALayer()
     layer.addSublayer(shapeLayer)
-        return layer
+    layer.addSublayer(textLayer)
+    return layer
 }()
 var body: some View {
     return VS2View(script:$script0, layer:layer)
