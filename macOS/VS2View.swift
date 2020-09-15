@@ -56,12 +56,6 @@ struct VS2View: NSViewRepresentable {
             textureDescriptor.usage = [MTLTextureUsage.shaderRead, .shaderWrite, .renderTarget]
             texture = gpu.makeTexture(descriptor: textureDescriptor)!
             renderer = CARenderer(mtlTexture: texture, options: nil)
-            /*
-            layer.shadowRadius = 10.0
-            layer.shadowColor = NSColor.black.cgColor
-            layer.shadowOffset = CGSize(width: 3.0, height: -3.0)
-            layer.shadowOpacity = 1.0
-            */
         }
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
