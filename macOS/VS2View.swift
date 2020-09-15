@@ -96,13 +96,22 @@ struct VS2View_Previews: PreviewProvider {
 
 private let s_script0 = [
     "pipeline": [[
+        "filter": "chromaKey",
+        "props":[
+            "hueMin":100.0,
+            "hueMax":144.0,
+            "minMax":0.4,
+        ]
+    ],[
         "texture": "star"
     ],[
         "filter": "fourfoldTranslatedTile",
         "props":[
-            "width":300.0,
+            "width":240.0,
             "center":[0, 0],
         ]
+    ],[
+        "controller": "swap"
     ],[
         "blender": "sourceOver"
     ]]
