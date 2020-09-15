@@ -171,6 +171,11 @@ let layer:CALayer = { ()-> CALayer in
     let layer = CALayer()
     layer.addSublayer(shapeLayer)
     layer.addSublayer(textLayer)
+    layer.shadowColor = NSColor.black.cgColor
+    layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
+    layer.shadowRadius = 3.0
+    layer.shadowOpacity = 0.5
+
     return layer
 }()
 var body: some View {
