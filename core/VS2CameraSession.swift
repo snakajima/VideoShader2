@@ -31,7 +31,6 @@ class VS2CameraSession: NSObject {
     // Vision
     lazy var sequenceRequestHandler = VNSequenceRequestHandler()
     private var detectionRequests = [VNDetectFaceRectanglesRequest]()
-    private var trackingRequests = [VNTrackObjectRequest]()
 
     init(gpu:MTLDevice) {
         self.gpu = gpu
@@ -87,7 +86,15 @@ class VS2CameraSession: NSObject {
             if error != nil {
                 print("FaceDetection error: \(String(describing: error)).")
             }
-            print("detected")
+            guard let results = request.results as? [VNFaceObservation] else {
+                print("FaceDetection no result")
+                return
+            }
+            //print("FaceDetection count=", results.count)
+            for result in results {
+                let bounds = result.boundingBox
+                print("bounds", bounds)
+            }
         }
         self.detectionRequests = [faceDetectionRequest]
     }
