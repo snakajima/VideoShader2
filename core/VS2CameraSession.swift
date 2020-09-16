@@ -104,7 +104,10 @@ class VS2CameraSession: NSObject {
         let scaleMin = min(scale.width, scale.height)
         filterScale.setValue(scaleMin, forKey: kCIInputScaleKey)
         filterScale.setValue(ciImage, forKey: kCIInputImageKey)
-        pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: filterScale.outputImage!, textures:textures)
+        
+        let scaledImage = filterScale.outputImage!
+        
+        pipeline.encode(commandBuffer: commandBuffer, ciImageSrc: scaledImage, textures:textures)
 
         ciContext.render(pipeline.pop(), to: drawable.texture, commandBuffer: commandBuffer,
                          bounds: CGRect(origin: .zero, size: CGSize(width: drawable.texture.width, height: drawable.texture.height)),
@@ -126,6 +129,16 @@ class VS2CameraSession: NSObject {
             self.isProcessing = false;
         }
         commandBuffer.commit()
+        
+        // Vision
+        //let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
+        do {
+            //try imageRequestHandler.perform(detectionRequests)
+            try sequenceRequestHandler.perform(detectionRequests, on: scaledImage)
+        } catch {
+            print("perform", error.localizedDescription)
+        }
+
         self.ciImage = nil // no need to draw it again
     }
 }
@@ -135,15 +148,6 @@ extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             ciImage = CIImage(cvImageBuffer: pixelBuffer)
             self.sampleBuffer = sampleBuffer // to retain the sampleBuffer behind the texture
-            
-            // Vision
-            //let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
-            do {
-                //try imageRequestHandler.perform(detectionRequests)
-                try sequenceRequestHandler.perform(detectionRequests, on: pixelBuffer)
-            } catch {
-                print("perform", error.localizedDescription)
-            }
         }
     }
 }
