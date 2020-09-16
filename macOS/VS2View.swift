@@ -12,7 +12,8 @@ import MetalKit
 
 struct VS2View: NSViewRepresentable {
     @Binding var script:[String:Any]
-    
+    var layer:CALayer?
+
     func makeCoordinator() -> Coordinator {
         return Coordinator(self)
     }
@@ -26,27 +27,158 @@ struct VS2View: NSViewRepresentable {
         metalView.translatesAutoresizingMaskIntoConstraints = false
         metalView.autoResizeDrawable = true
         metalView.framebufferOnly = false // without this, window is not resizable
+
+        
         return metalView
     }
     
     func updateNSView(_ nsView: MTKView, context: NSViewRepresentableContext<VS2View>) {
-        context.coordinator.cameraSession.update(script:script)
+        /*
+        */
+        context.coordinator.update(script:script, layer:layer)
     }
     
     class Coordinator: NSObject, MTKViewDelegate {
-        let cameraSession = VS2CameraSession()
+        let gpu:MTLDevice
+        let cameraSession:VS2CameraSession
         let view: VS2View
+        
+        private let renderer:CARenderer
+        private let texture:MTLTexture
+
         init(_ view: VS2View) {
             self.view = view
+            gpu = MTLCreateSystemDefaultDevice()!
+            cameraSession = VS2CameraSession(gpu:gpu)
             cameraSession.startRunning()
+            texture = cameraSession.makeTexture()
+            renderer = CARenderer(mtlTexture: texture, options: nil)
         }
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+            renderer.bounds = CGRect(origin: .zero, size: size)
+            
+            if let layer = renderer.layer {
+                let scale = size.height / 640.0
+                layer.anchorPoint = CGPoint(x: 0.0, y: 0)
+                layer.position = CGPoint(x: 0, y: 0)
+                layer.transform = CATransform3DMakeScale(scale, scale, 1.0)
+            }
+        }
+        
+        func update(script:[String:Any], layer:CALayer?) {
+            cameraSession.update(script:script)
+            renderer.layer = layer
         }
         
         func draw(in view: MTKView) {
-            cameraSession.draw(drawable: view.currentDrawable)
+            if cameraSession.isProcessing {
+                print("processing")
+                return
+            }
+            renderer.beginFrame(atTime: CACurrentMediaTime(), timeStamp: nil)
+            renderer.addUpdate(renderer.bounds)
+            renderer.render()
+            renderer.endFrame()
+            
+            cameraSession.draw(drawable: view.currentDrawable, textures:["star":texture])
         }
         
+    }
+}
+
+
+struct VS2View_Previews: PreviewProvider {
+    static var previews: some View {
+        Foo()
+    }
+}
+
+private let s_script0 = [
+    "pipeline": [[
+        "filter": "chromaKey",
+        "props":[
+            "hueMin":100.0,
+            "hueMax":144.0,
+            "minMax":0.4,
+        ]
+    ],[
+        "texture": "star"
+    ],[
+        "filter": "fourfoldTranslatedTile",
+        "props":[
+            "width":240.0,
+            "center":[0, 0],
+        ]
+    ],[
+        "controller": "swap"
+    ],[
+        "blender": "sourceOver"
+    ]]
+]
+
+private struct Foo: View {
+@State var script0:[String:Any] = s_script0
+let layer:CALayer = { ()-> CALayer in
+    let textLayer = CATextLayer()
+
+    textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
+    textLayer.position = CGPoint(x: 100, y: 100)
+    textLayer.string = "Hello World"
+    textLayer.fontSize = 32
+    textLayer.foregroundColor = NSColor.green.cgColor
+    
+    let shapeLayer = CAShapeLayer()
+    //shapeLayer.frame = CGRect(origin: .zero, size: size)
+    let starPath = CGMutablePath()
+    starPath.move(to: CGPoint(x: 81.5, y: 7.0))
+    starPath.addLine(to: CGPoint(x: 101.07, y: 63.86))
+    starPath.addLine(to: CGPoint(x: 163.0, y: 64.29))
+    starPath.addLine(to: CGPoint(x: 113.16, y: 99.87))
+    starPath.addLine(to: CGPoint(x: 131.87, y: 157.0))
+    starPath.addLine(to: CGPoint(x: 81.5, y: 122.13))
+    starPath.addLine(to: CGPoint(x: 31.13, y: 157.0))
+    starPath.addLine(to: CGPoint(x: 49.84, y: 99.87))
+    starPath.addLine(to: CGPoint(x: 0.0, y: 64.29))
+    starPath.addLine(to: CGPoint(x: 61.93, y: 63.86))
+    starPath.addLine(to: CGPoint(x: 81.5, y: 7.0))
+    
+    let rectanglePath = CGMutablePath()
+    rectanglePath.move(to: CGPoint(x: 81.5, y: 7.0))
+    rectanglePath.addLine(to: CGPoint(x: 163.0, y: 7.0))
+    rectanglePath.addLine(to: CGPoint(x: 163.0, y: 82.0))
+    rectanglePath.addLine(to: CGPoint(x: 163.0, y: 157.0))
+    rectanglePath.addLine(to: CGPoint(x: 163.0, y: 157.0))
+    rectanglePath.addLine(to: CGPoint(x: 82.0, y: 157.0))
+    rectanglePath.addLine(to: CGPoint(x: 0.0, y: 157.0))
+    rectanglePath.addLine(to: CGPoint(x: 0.0, y: 157.0))
+    rectanglePath.addLine(to: CGPoint(x: 0.0, y: 82.0))
+    rectanglePath.addLine(to: CGPoint(x: 0.0, y: 7.0))
+    rectanglePath.addLine(to: CGPoint(x: 81.5, y: 7.0))
+    shapeLayer.path = starPath
+    shapeLayer.lineWidth = 2.0
+    shapeLayer.lineJoin = .round
+    shapeLayer.strokeColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0)
+    shapeLayer.fillColor = CGColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 1.0)
+    let pathAnimation = CABasicAnimation(keyPath: "path")
+    pathAnimation.toValue = rectanglePath
+    pathAnimation.duration = 4.0
+    pathAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+    pathAnimation.autoreverses = true
+    pathAnimation.repeatCount = .greatestFiniteMagnitude
+    shapeLayer.add(pathAnimation, forKey: "pathAnimation")
+    
+    let layer = CALayer()
+    layer.addSublayer(shapeLayer)
+    layer.addSublayer(textLayer)
+    layer.shadowColor = NSColor.black.cgColor
+    layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
+    layer.shadowRadius = 3.0
+    layer.shadowOpacity = 0.5
+
+    return layer
+}()
+var body: some View {
+    return VS2View(script:$script0, layer:layer)
     }
 }
