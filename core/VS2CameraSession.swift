@@ -10,6 +10,7 @@
 import AVFoundation
 import MetalPerformanceShaders
 import CoreImage
+import Vision
 
 class VS2CameraSession: NSObject {
     let gpu:MTLDevice
@@ -26,7 +27,12 @@ class VS2CameraSession: NSObject {
     private var ciImage:CIImage?
     private let filterScale = CIFilter(name: "CILanczosScaleTransform")
     var isProcessing = false
-        
+    
+    // Vision
+    lazy var sequenceRequestHandler = VNSequenceRequestHandler()
+    private var detectionRequests = [VNDetectFaceRectanglesRequest]()
+    private var trackingRequests = [VNTrackObjectRequest]()
+
     init(gpu:MTLDevice) {
         self.gpu = gpu
     }
@@ -69,8 +75,21 @@ class VS2CameraSession: NSObject {
         #endif
         output.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
         session.addOutput(output)
-
+        
+        prepareVisionRequest()
+        
         session.startRunning()
+    }
+    
+    func prepareVisionRequest() {
+        //var requests = [VNTrackObjectRequest]()
+        let faceDetectionRequest = VNDetectFaceRectanglesRequest { (request, error) in
+            if error != nil {
+                print("FaceDetection error: \(String(describing: error)).")
+            }
+            print("detected")
+        }
+        self.detectionRequests = [faceDetectionRequest]
     }
     
     func update(script:[String:Any]) {
@@ -128,6 +147,15 @@ extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
         if let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
             ciImage = CIImage(cvImageBuffer: pixelBuffer)
             self.sampleBuffer = sampleBuffer // to retain the sampleBuffer behind the texture
+            
+            // Vision
+            let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
+            do {
+                try imageRequestHandler.perform(detectionRequests)
+                //try sequenceRequestHandler.perform(detectionRequests, on: pixelBuffer)
+            } catch {
+                print("perform", error.localizedDescription)
+            }
         }
     }
 }

@@ -34,9 +34,12 @@ struct VS2View: UIViewRepresentable {
     }
     
     class Coordinator: NSObject, MTKViewDelegate {
-        let cameraSession = VS2CameraSession()
+        let gpu:MTLDevice
+        let cameraSession:VS2CameraSession
         let view: VS2View
         init(_ view: VS2View) {
+            gpu = MTLCreateSystemDefaultDevice()!
+            cameraSession = VS2CameraSession(gpu:gpu)
             self.view = view
             cameraSession.startRunning()
         }
@@ -45,7 +48,7 @@ struct VS2View: UIViewRepresentable {
         }
         
         func draw(in view: MTKView) {
-            cameraSession.draw(drawable: view.currentDrawable)
+            cameraSession.draw(drawable: view.currentDrawable, textures:[:])
         }
         
     }
