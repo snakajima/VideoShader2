@@ -156,10 +156,10 @@ extension VS2CameraSession : AVCaptureVideoDataOutputSampleBufferDelegate {
             self.sampleBuffer = sampleBuffer // to retain the sampleBuffer behind the texture
             
             // Vision
-            let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
+            //let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
             do {
-                try imageRequestHandler.perform(detectionRequests)
-                //try sequenceRequestHandler.perform(detectionRequests, on: pixelBuffer)
+                //try imageRequestHandler.perform(detectionRequests)
+                try sequenceRequestHandler.perform(detectionRequests, on: pixelBuffer)
             } catch {
                 print("perform", error.localizedDescription)
             }
