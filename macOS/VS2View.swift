@@ -73,7 +73,13 @@ struct VS2View: NSViewRepresentable {
                 //print("FaceDetection count=", results.count)
                 for result in results {
                     let bounds = result.boundingBox
-                    print("bounds", bounds)
+                    //print("bounds", bounds)
+                    DispatchQueue.main.async {
+                        if let layer = self.renderer.layer {
+                            layer.position = CGPoint(x: bounds.origin.x * 400.0, y: bounds.origin.y * 400)
+                        }
+                    }
+
                 }
             }
             return [faceDetectionRequest]
