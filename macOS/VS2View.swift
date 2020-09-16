@@ -47,6 +47,7 @@ struct VS2View: NSViewRepresentable {
         
         private var renderer:CARenderer! = nil
         private var texture:MTLTexture! = nil
+        private var drawableSize = CGSize.zero
 
         init(_ view: VS2View) {
             self.view = view
@@ -76,7 +77,7 @@ struct VS2View: NSViewRepresentable {
                     //print("bounds", bounds)
                     DispatchQueue.main.async {
                         if let layer = self.renderer.layer {
-                            layer.position = CGPoint(x: bounds.origin.x * 400.0, y: bounds.origin.y * 400)
+                            layer.position = CGPoint(x: bounds.origin.x * self.drawableSize.width, y: bounds.origin.y * self.drawableSize.height)
                         }
                     }
 
@@ -87,6 +88,7 @@ struct VS2View: NSViewRepresentable {
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
             renderer!.bounds = CGRect(origin: .zero, size: size)
+            drawableSize = size
             
             if let layer = renderer!.layer {
                 let scale = size.height / 640.0
