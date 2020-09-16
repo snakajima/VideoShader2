@@ -15,6 +15,7 @@ class VS2CameraSession: NSObject {
     let gpu:MTLDevice
     var dimension = CGSize.zero
 
+    private let videoDataOutputQueue = DispatchQueue(label: "videoDataOutputQueue")
     private let session = AVCaptureSession()
     private let camera = AVCaptureDevice.default(for: .video)
     private var sampleBuffer: CMSampleBuffer? // retainer
@@ -66,7 +67,7 @@ class VS2CameraSession: NSObject {
             kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
         ]
         #endif
-        output.setSampleBufferDelegate(self, queue: DispatchQueue.main)
+        output.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
         session.addOutput(output)
 
         session.startRunning()
