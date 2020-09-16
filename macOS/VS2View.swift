@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import MetalKit
+import Vision
 
 struct VS2View: NSViewRepresentable {
     @Binding var script:[String:Any]
@@ -54,9 +55,28 @@ struct VS2View: NSViewRepresentable {
         }
         
         func startRunning() {
-            cameraSession.startRunning()
+            cameraSession.startRunning(detectionRequests: prepareVisionRequest())
             texture = cameraSession.makeTexture()
             renderer = CARenderer(mtlTexture: texture, options: nil)
+        }
+
+        func prepareVisionRequest() -> [VNImageBasedRequest] {
+            //var requests = [VNTrackObjectRequest]()
+            let faceDetectionRequest = VNDetectFaceRectanglesRequest { (request, error) in
+                if error != nil {
+                    print("FaceDetection error: \(String(describing: error)).")
+                }
+                guard let results = request.results as? [VNFaceObservation] else {
+                    print("FaceDetection no result")
+                    return
+                }
+                //print("FaceDetection count=", results.count)
+                for result in results {
+                    let bounds = result.boundingBox
+                    print("bounds", bounds)
+                }
+            }
+            return [faceDetectionRequest]
         }
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {

@@ -30,13 +30,13 @@ class VS2CameraSession: NSObject {
     
     // Vision
     lazy var sequenceRequestHandler = VNSequenceRequestHandler()
-    private var detectionRequests = [VNDetectFaceRectanglesRequest]()
+    private var detectionRequests = [VNImageBasedRequest]()
 
     init(gpu:MTLDevice) {
         self.gpu = gpu
     }
 
-    func startRunning() {
+    func startRunning(detectionRequests:[VNImageBasedRequest] = []) {
         // This CIContext allows us to mix regular metal shaders along with CIFilters (in future)
         commandQueue = gpu.makeCommandQueue()
         ciContext = CIContext(mtlCommandQueue: commandQueue!, options: [
@@ -75,28 +75,9 @@ class VS2CameraSession: NSObject {
         output.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
         session.addOutput(output)
         
-        prepareVisionRequest()
+        self.detectionRequests = detectionRequests
         
         session.startRunning()
-    }
-    
-    func prepareVisionRequest() {
-        //var requests = [VNTrackObjectRequest]()
-        let faceDetectionRequest = VNDetectFaceRectanglesRequest { (request, error) in
-            if error != nil {
-                print("FaceDetection error: \(String(describing: error)).")
-            }
-            guard let results = request.results as? [VNFaceObservation] else {
-                print("FaceDetection no result")
-                return
-            }
-            //print("FaceDetection count=", results.count)
-            for result in results {
-                let bounds = result.boundingBox
-                print("bounds", bounds)
-            }
-        }
-        self.detectionRequests = [faceDetectionRequest]
     }
     
     func update(script:[String:Any]) {
