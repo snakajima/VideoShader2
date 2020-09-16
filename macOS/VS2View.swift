@@ -15,7 +15,9 @@ struct VS2View: NSViewRepresentable {
     var layer:CALayer?
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(self)
+        let coordinator = Coordinator(self)
+        coordinator.startRunning()
+        return coordinator
     }
 
     func makeNSView(context: NSViewRepresentableContext<VS2View>) -> MTKView {
@@ -27,7 +29,6 @@ struct VS2View: NSViewRepresentable {
         metalView.translatesAutoresizingMaskIntoConstraints = false
         metalView.autoResizeDrawable = true
         metalView.framebufferOnly = false // without this, window is not resizable
-
         
         return metalView
     }
@@ -43,22 +44,25 @@ struct VS2View: NSViewRepresentable {
         let cameraSession:VS2CameraSession
         let view: VS2View
         
-        private let renderer:CARenderer
-        private let texture:MTLTexture
+        private var renderer:CARenderer! = nil
+        private var texture:MTLTexture! = nil
 
         init(_ view: VS2View) {
             self.view = view
             gpu = MTLCreateSystemDefaultDevice()!
             cameraSession = VS2CameraSession(gpu:gpu)
+        }
+        
+        func startRunning() {
             cameraSession.startRunning()
             texture = cameraSession.makeTexture()
             renderer = CARenderer(mtlTexture: texture, options: nil)
         }
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-            renderer.bounds = CGRect(origin: .zero, size: size)
+            renderer!.bounds = CGRect(origin: .zero, size: size)
             
-            if let layer = renderer.layer {
+            if let layer = renderer!.layer {
                 let scale = size.height / 640.0
                 layer.anchorPoint = CGPoint(x: 0.0, y: 0)
                 layer.position = CGPoint(x: 0, y: 0)
