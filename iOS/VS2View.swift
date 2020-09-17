@@ -34,13 +34,15 @@ struct VS2View: UIViewRepresentable {
     }
     
     func updateUIView(_ UIView: MTKView, context: UIViewRepresentableContext<VS2View>) {
-        context.coordinator.cameraSession.update(script:script)
+        context.coordinator.update(script:script, UIView:UIView)
     }
     
     class Coordinator: NSObject, MTKViewDelegate {
         let gpu:MTLDevice
         let cameraSession:VS2CameraSession
         let view: VS2View
+        let textLayer = CATextLayer()
+        
         init(_ view: VS2View) {
             gpu = MTLCreateSystemDefaultDevice()!
             let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .front)
@@ -48,6 +50,13 @@ struct VS2View: UIViewRepresentable {
             let device = deviceDiscoverySession.devices.first!
             cameraSession = VS2CameraSession(gpu:gpu, camera:device)
             self.view = view
+
+            textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
+            textLayer.position = CGPoint(x: 100, y: 100)
+            textLayer.string = "Hello World"
+            textLayer.fontSize = 32
+            textLayer.foregroundColor = UIColor.green.cgColor
+            
         }
         
         func startRunning() {
@@ -78,6 +87,10 @@ struct VS2View: UIViewRepresentable {
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
         }
         
+        func update(script:[String:Any], UIView:UIView) {
+            cameraSession.update(script:script)
+        }
+
         func draw(in view: MTKView) {
             cameraSession.draw(drawable: view.currentDrawable, textures:[:])
         }
