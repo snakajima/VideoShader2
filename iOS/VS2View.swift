@@ -78,7 +78,7 @@ struct VS2View: UIViewRepresentable {
                         let location = point.location
                         let textLayer = CATextLayer()
                         textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
-                        textLayer.string = "H"
+                        textLayer.string = "✌️"
                         textLayer.fontSize = 10
                         textLayer.foregroundColor = UIColor.green.cgColor
                         textLayer.position = CGPoint(x: location.x * self.drawableSize.width, y: (1.0-location.y) * self.drawableSize.height)
