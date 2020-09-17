@@ -43,6 +43,7 @@ struct VS2View: UIViewRepresentable {
         let view: VS2View
         let layer = CALayer()
         var drawableSize = CGSize.zero
+        var lastFrame:CGRect? = nil
         
         init(_ view: VS2View) {
             gpu = MTLCreateSystemDefaultDevice()!
@@ -67,36 +68,44 @@ struct VS2View: UIViewRepresentable {
                       var analyzer = try? HandGectureAnalyzer(observation: result)
                       else {
                     DispatchQueue.main.async {
+                        self.lastFrame = nil
                         for sublayer in self.layer.sublayers ?? [] {
                             sublayer.removeFromSuperlayer()
                         }
                     }
                     return
                 }
+                
+                // Low-pass filter.
+                var frame = analyzer.bounds
+                if let lastFrame = self.lastFrame {
+                    frame = lastFrame.mixed(frame, ratio:0.2)
+                }
+                self.lastFrame = frame
 
-                var lengthIndex = CGFloat(0.0)
-                if let pointIndexTip = try? result.recognizedPoint(.indexTip),
-                   let pointIndexMCP = try? result.recognizedPoint(.indexMCP) {
-                    lengthIndex = pointIndexTip.distance(pointIndexMCP)
-                }
-                var lengthMiddle = CGFloat(0.0)
-                if let pointMiddleTip = try? result.recognizedPoint(.middleTip),
-                   let pointMiddleMCP = try? result.recognizedPoint(.middleMCP) {
-                    lengthMiddle = pointMiddleTip.distance(pointMiddleMCP)
-                }
-                var lengthRing = CGFloat(0.0)
-                if let pointRingTip = try? result.recognizedPoint(.ringTip),
-                   let pointRingMCP = try? result.recognizedPoint(.ringMCP) {
-                    lengthRing = pointRingTip.distance(pointRingMCP)
-                }
+                let vectorThumb = analyzer.vector(from: .thumbTip, to: .thumbCMC)
+                let vectorIndex = analyzer.vector(from: .indexMCP, to: .indexTip)
+                let vectorMid = analyzer.vector(from: .middleMCP, to: .middleTip)
+                let vectorRing = analyzer.vector(from: .ringMCP, to: .ringTip)
+                let vectorLittle = analyzer.vector(from: .littleMCP, to: .littleTip)
+
+                let upIndex = -vectorIndex.dy > frame.height * 0.3
+                let upMid = -vectorMid.dy > frame.height * 0.3
+                let upRing = -vectorRing.dy > frame.height * 0.3
+                let upThumb = -vectorThumb.dy > frame.height * 0.3
+                let upLittle = -vectorLittle.dy > frame.height * 0.3
 
                 var emoji = "?"
-                if lengthIndex > 0.05 && lengthIndex > max(lengthMiddle, lengthRing) * 1.5 {
+                if upIndex && !upMid && !upRing && !upThumb && !upLittle {
                     emoji = "☝️"
-                } else if lengthMiddle > 0.05 && lengthMiddle > max(lengthIndex, lengthRing) * 1.5 {
-                    emoji = "🈲"
-                } else if lengthIndex > 0.05 && lengthMiddle > 0.05 && min(lengthIndex, lengthMiddle) > lengthRing * 1.5 {
+                } else if upIndex && upMid && !upRing && !upThumb && !upLittle {
                     emoji = "✌️"
+                } else if !upIndex && upMid && !upRing && !upThumb && !upLittle {
+                    emoji = "🈲"
+                } else if !upIndex && !upMid && !upRing && upThumb && !upLittle {
+                    emoji = "👍"
+                } else if upIndex && upMid && upRing && upThumb && upLittle {
+                    emoji = "✋"
                 }
 
                 var newLayers = [CALayer]()
@@ -114,15 +123,15 @@ struct VS2View: UIViewRepresentable {
                 }
                 
                 let layerBox = CALayer()
-                layerBox.frame = analyzer.bounds.unnormalized(size: self.drawableSize)
-                //print(layerBox.bounds)
-                layerBox.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.3)
-                
+                layerBox.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.2)
+                layerBox.frame = frame.unnormalized(size: self.drawableSize)
+
                 DispatchQueue.main.async {
                     for sublayer in self.layer.sublayers ?? [] {
                         sublayer.removeFromSuperlayer()
                     }
                     
+
                     self.layer.addSublayer(layerBox)
                     for newLayer in newLayers {
                         self.layer.addSublayer(newLayer)
@@ -152,28 +161,3 @@ struct VS2View: UIViewRepresentable {
     }
 }
 
-extension VNRecognizedPoint {
-    func distance(_ from:VNRecognizedPoint) -> CGFloat {
-        let dx = self.location.x - from.location.x
-        let dy = self.location.y - from.location.y
-        return sqrt(dx * dx + dy * dy)
-    }
-}
-
-extension CGPoint {
-    func unnormalized(size:CGSize) -> CGPoint {
-        return CGPoint(x: x * size.width, y: y * size.height)
-    }
-}
-
-extension CGSize {
-    func unnormalized(size:CGSize) -> CGSize {
-        return CGSize(width: width * size.width, height: height * size.height)
-    }
-}
-
-extension CGRect {
-    func unnormalized(size:CGSize) -> CGRect {
-        return CGRect(origin: origin.unnormalized(size: size), size: self.size.unnormalized(size: size))
-    }
-}

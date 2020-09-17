@@ -38,4 +38,56 @@ struct HandGectureAnalyzer {
         self.observation = observation
         self.points = try observation.recognizedPoints(.all)
     }
+    
+    func vector(from: VNHumanHandPoseObservation.JointName, to:VNHumanHandPoseObservation.JointName) -> CGVector {
+        if let pointFrom = points[from],
+           let pointTo = points[to] {
+            return pointTo.location.vector(from: pointFrom.location)
+        }
+        return .zero
+    }
+}
+
+extension VNRecognizedPoint {
+    func distance(_ from:VNRecognizedPoint) -> CGFloat {
+        let dx = self.location.x - from.location.x
+        let dy = self.location.y - from.location.y
+        return sqrt(dx * dx + dy * dy)
+    }
+}
+
+extension CGPoint {
+    func unnormalized(size:CGSize) -> CGPoint {
+        return CGPoint(x: x * size.width, y: y * size.height)
+    }
+    func mixed(_ another:CGPoint, ratio:CGFloat) -> CGPoint {
+        return CGPoint(x: x * (1-ratio) + another.x * ratio, y: y * (1-ratio) + another.y * ratio)
+    }
+    func vector(from:CGPoint) -> CGVector {
+        return CGVector(dx: x - from.x, dy: y - from.y)
+    }
+}
+
+extension CGVector {
+    func length() -> CGFloat {
+        return sqrt(dx * dx + dy * dy)
+    }
+}
+
+extension CGSize {
+    func unnormalized(size:CGSize) -> CGSize {
+        return CGSize(width: width * size.width, height: height * size.height)
+    }
+    func mixed(_ another:CGSize, ratio:CGFloat) -> CGSize {
+        return CGSize(width: width * (1-ratio) + another.width * ratio, height: height * (1-ratio) + another.height * ratio)
+    }
+}
+
+extension CGRect {
+    func unnormalized(size:CGSize) -> CGRect {
+        return CGRect(origin: origin.unnormalized(size: size), size: self.size.unnormalized(size: size))
+    }
+    func mixed(_ another:CGRect, ratio:CGFloat) -> CGRect {
+        return CGRect(origin: origin.mixed(another.origin, ratio:ratio), size: size.mixed(another.size, ratio:ratio))
+    }
 }
