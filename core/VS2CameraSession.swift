@@ -101,7 +101,7 @@ class VS2CameraSession: NSObject {
         }
 
         let scale = CGSize(width: CGFloat(drawable.texture.width) / CGFloat(dimension.width), height: CGFloat(drawable.texture.height) / CGFloat(dimension.height))
-        let scaleMin = min(scale.width, scale.height)
+        let scaleMin = max(scale.width, scale.height)
         filterScale.setValue(scaleMin, forKey: kCIInputScaleKey)
         filterScale.setValue(ciImage, forKey: kCIInputImageKey)
         

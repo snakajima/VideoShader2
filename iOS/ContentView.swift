@@ -25,7 +25,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             VS2View(script:$script)
-                .edgesIgnoringSafeArea(.top)
+                .edgesIgnoringSafeArea(.all)
         }
     }}
 

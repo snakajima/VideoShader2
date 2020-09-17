@@ -161,7 +161,7 @@ struct VS2View: UIViewRepresentable {
                         textLayer.fontSize = 15
                         textLayer.foregroundColor = UIColor.green.cgColor
                         textLayer.position = CGPoint(x: location.x * self.drawableSize.width, y: location.y * self.drawableSize.height)
-                        newLayers.append(textLayer)
+                        //newLayers.append(textLayer)
                     }
                 }
 

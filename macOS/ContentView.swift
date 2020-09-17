@@ -135,7 +135,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             VS2View(script:$script, layer:s_layer)
-                .edgesIgnoringSafeArea(.top)
+                .edgesIgnoringSafeArea(.all)
         }
     }
 }
