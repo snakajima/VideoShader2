@@ -114,8 +114,8 @@ struct VS2View: UIViewRepresentable {
                 }
                 
                 let layerBox = CALayer()
-                layerBox.bounds = analyzer.bounds.unnormalized(size: self.drawableSize)
-                print(layerBox.bounds)
+                layerBox.frame = analyzer.bounds.unnormalized(size: self.drawableSize)
+                //print(layerBox.bounds)
                 layerBox.backgroundColor = UIColor.yellow.cgColor
                 
                 DispatchQueue.main.async {
