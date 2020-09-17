@@ -74,13 +74,13 @@ struct VS2View: UIViewRepresentable {
 
                 var lengthIndex = CGFloat(0.0)
                 if let pointIndexTip = try? result.recognizedPoint(.indexTip),
-                   let pointIndexDip = try? result.recognizedPoint(.indexDIP) {
-                    lengthIndex = pointIndexTip.distance(pointIndexDip)
+                   let pointIndexMCP = try? result.recognizedPoint(.indexMCP) {
+                    lengthIndex = pointIndexTip.distance(pointIndexMCP)
                 }
                 var lengthMiddle = CGFloat(0.0)
                 if let pointMiddleTip = try? result.recognizedPoint(.middleTip),
-                   let pointMiddleDip = try? result.recognizedPoint(.middleDIP) {
-                    lengthMiddle = pointMiddleTip.distance(pointMiddleDip)
+                   let pointMiddleMCP = try? result.recognizedPoint(.middleMCP) {
+                    lengthMiddle = pointMiddleTip.distance(pointMiddleMCP)
                 }
 
                 var emoji = "?"
