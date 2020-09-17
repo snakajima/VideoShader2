@@ -82,13 +82,19 @@ struct VS2View: UIViewRepresentable {
                    let pointMiddleMCP = try? result.recognizedPoint(.middleMCP) {
                     lengthMiddle = pointMiddleTip.distance(pointMiddleMCP)
                 }
+                var lengthRing = CGFloat(0.0)
+                if let pointRingTip = try? result.recognizedPoint(.ringTip),
+                   let pointRingMCP = try? result.recognizedPoint(.ringMCP) {
+                    lengthRing = pointRingTip.distance(pointRingMCP)
+                }
 
                 var emoji = "?"
-                if lengthIndex > 0.05 && lengthIndex > lengthMiddle {
+                if lengthIndex > 0.05 && lengthIndex > max(lengthMiddle, lengthRing) * 1.5 {
                     emoji = "☝️"
-                }
-                if lengthMiddle > 0.05 && lengthMiddle > lengthIndex {
+                } else if lengthMiddle > 0.05 && lengthMiddle > max(lengthIndex, lengthRing) * 1.5 {
                     emoji = "🈲"
+                } else if lengthIndex > 0.05 && lengthMiddle > 0.05 && min(lengthIndex, lengthMiddle) > lengthRing * 1.5 {
+                    emoji = "✌️"
                 }
 
                 var newLayers = [CALayer]()
