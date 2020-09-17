@@ -51,7 +51,28 @@ struct VS2View: UIViewRepresentable {
         }
         
         func startRunning() {
-            cameraSession.startRunning()
+            cameraSession.startRunning(detectionRequests: prepareVisionRequest())
+        }
+
+        func prepareVisionRequest() -> [VNImageBasedRequest] {
+            //var requests = [VNTrackObjectRequest]()
+            let faceDetectionRequest = VNDetectFaceRectanglesRequest { (request, error) in
+                if error != nil {
+                    print("FaceDetection error: \(String(describing: error)).")
+                }
+                guard let results = request.results as? [VNFaceObservation] else {
+                    print("FaceDetection no result")
+                    return
+                }
+                //print("FaceDetection count=", results.count)
+                for result in results {
+                    let bounds = result.boundingBox
+                    print("bounds", bounds)
+                    //DispatchQueue.main.async {
+                    //}
+                }
+            }
+            return [faceDetectionRequest]
         }
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
