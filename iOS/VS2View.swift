@@ -92,10 +92,10 @@ struct VS2View: UIViewRepresentable {
                 let upIndex = -vectorIndex.dy > frame.height * 0.3
                 let upMid = -vectorMid.dy > frame.height * 0.3
                 let upRing = -vectorRing.dy > frame.height * 0.3
-                let upThumb = -vectorThumb.dy > frame.height * 0.3
-                let upLittle = -vectorLittle.dy > frame.height * 0.3
+                let upThumb = -vectorThumb.dy > frame.height * 0.2
+                let upLittle = -vectorLittle.dy > frame.height * 0.2
 
-                var emoji = "?"
+                var emoji = ""
                 if upIndex && !upMid && !upRing && !upThumb && !upLittle {
                     emoji = "☝️"
                 } else if upIndex && upMid && !upRing && !upThumb && !upLittle {
@@ -109,31 +109,25 @@ struct VS2View: UIViewRepresentable {
                 }
 
                 var newLayers = [CALayer]()
+                let textLayer = CATextLayer()
+                textLayer.frame = frame.unnormalized(size: self.drawableSize)
+                textLayer.string = emoji
+                textLayer.fontSize = textLayer.frame.width
+                textLayer.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.2)
+                newLayers.append(textLayer)
+
                 if let allPoints = try? result.recognizedPoints(forGroupKey: VNRecognizedPointGroupKey.all) {
                     for (_, point) in allPoints {
                         let location = point.location
                         let textLayer = CATextLayer()
                         textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 10, height: 10))
-                        textLayer.string = emoji
+                        textLayer.string = "P"
                         textLayer.fontSize = 10
                         textLayer.foregroundColor = UIColor.green.cgColor
                         textLayer.position = CGPoint(x: location.x * self.drawableSize.width, y: location.y * self.drawableSize.height)
                         newLayers.append(textLayer)
                     }
                 }
-                /*
-                let layerBox = CALayer()
-                layerBox.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.2)
-                layerBox.frame = frame.unnormalized(size: self.drawableSize)
-                self.layer.addSublayer(layerBox)
-                */
-                let textLayer = CATextLayer()
-                textLayer.frame = frame.unnormalized(size: self.drawableSize)
-                textLayer.string = emoji
-                textLayer.fontSize = 50 // textLayer.frame.width
-                textLayer.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.2)
-                //textLayer.opacity = 0.5
-                newLayers.append(textLayer)
 
                 DispatchQueue.main.async {
                     for sublayer in self.layer.sublayers ?? [] {
