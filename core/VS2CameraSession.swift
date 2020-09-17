@@ -131,7 +131,7 @@ class VS2CameraSession: NSObject {
         commandBuffer.commit()
         
         // Vision
-        let imageRequestHandler = VNImageRequestHandler(ciImage: scaledImage, orientation: .up, options: [:])
+        let imageRequestHandler = VNImageRequestHandler(ciImage: scaledImage, orientation: .downMirrored, options: [:])
         do {
             try imageRequestHandler.perform(detectionRequests)
             // try sequenceRequestHandler.perform(detectionRequests, on: scaledImage)

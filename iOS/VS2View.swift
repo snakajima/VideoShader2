@@ -104,11 +104,11 @@ struct VS2View: UIViewRepresentable {
                     for (_, point) in allPoints {
                         let location = point.location
                         let textLayer = CATextLayer()
-                        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
+                        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 10, height: 10))
                         textLayer.string = emoji
                         textLayer.fontSize = 10
                         textLayer.foregroundColor = UIColor.green.cgColor
-                        textLayer.position = CGPoint(x: location.x * self.drawableSize.width, y: (1.0-location.y) * self.drawableSize.height)
+                        textLayer.position = CGPoint(x: location.x * self.drawableSize.width, y: location.y * self.drawableSize.height)
                         newLayers.append(textLayer)
                     }
                 }
@@ -116,7 +116,7 @@ struct VS2View: UIViewRepresentable {
                 let layerBox = CALayer()
                 layerBox.frame = analyzer.bounds.unnormalized(size: self.drawableSize)
                 //print(layerBox.bounds)
-                layerBox.backgroundColor = UIColor.yellow.cgColor
+                layerBox.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.3)
                 
                 DispatchQueue.main.async {
                     for sublayer in self.layer.sublayers ?? [] {
