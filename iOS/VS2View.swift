@@ -89,6 +89,9 @@ struct VS2View: UIViewRepresentable {
         
         func update(script:[String:Any], UIView:UIView) {
             cameraSession.update(script:script)
+            if UIView.layer.sublayers?.first == nil {
+                UIView.layer.addSublayer(textLayer)
+            }
         }
 
         func draw(in view: MTKView) {
