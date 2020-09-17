@@ -18,7 +18,7 @@ class VS2CameraSession: NSObject {
 
     private let videoDataOutputQueue = DispatchQueue(label: "videoDataOutputQueue")
     private let session = AVCaptureSession()
-    private let camera = AVCaptureDevice.default(for: .video)
+    private let camera:AVCaptureDevice
     private var sampleBuffer: CMSampleBuffer? // retainer
     private let pipeline = VS2Pipeline()
 
@@ -32,8 +32,9 @@ class VS2CameraSession: NSObject {
     lazy var sequenceRequestHandler = VNSequenceRequestHandler()
     private var detectionRequests = [VNImageBasedRequest]()
 
-    init(gpu:MTLDevice) {
+    init(gpu:MTLDevice, camera:AVCaptureDevice) {
         self.gpu = gpu
+        self.camera = camera
     }
 
     func startRunning(detectionRequests:[VNImageBasedRequest] = []) {
@@ -43,8 +44,7 @@ class VS2CameraSession: NSObject {
             .cacheIntermediates : false,
         ])
 
-        guard let camera = camera,
-              let input = try? AVCaptureDeviceInput(device: camera) else {
+        guard let input = try? AVCaptureDeviceInput(device: camera) else {
             return
         }
         guard session.canAddInput(input) else {

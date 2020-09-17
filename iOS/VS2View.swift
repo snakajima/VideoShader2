@@ -9,6 +9,7 @@
 import Foundation
 import SwiftUI
 import MetalKit
+import AVFoundation
 
 struct VS2View: UIViewRepresentable {
     @Binding var script:[String:Any]
@@ -39,7 +40,10 @@ struct VS2View: UIViewRepresentable {
         let view: VS2View
         init(_ view: VS2View) {
             gpu = MTLCreateSystemDefaultDevice()!
-            cameraSession = VS2CameraSession(gpu:gpu)
+            let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .front)
+            
+            let device = deviceDiscoverySession.devices.first!
+            cameraSession = VS2CameraSession(gpu:gpu, camera:device)
             self.view = view
             cameraSession.startRunning()
         }
