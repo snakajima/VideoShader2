@@ -64,7 +64,11 @@ struct VS2View: UIViewRepresentable {
                     print("Detection error: \(String(describing: error)).")
                 }
                 guard let result = request.results?.first as? VNHumanHandPoseObservation else {
-                    print("Detection no result")
+                    DispatchQueue.main.async {
+                        for sublayer in self.layer.sublayers ?? [] {
+                            sublayer.removeFromSuperlayer()
+                        }
+                    }
                     return
                 }
                 
@@ -74,11 +78,10 @@ struct VS2View: UIViewRepresentable {
                         let location = point.location
                         let textLayer = CATextLayer()
                         textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
-                        textLayer.position = CGPoint(x: 100, y: 100)
                         textLayer.string = "H"
                         textLayer.fontSize = 10
                         textLayer.foregroundColor = UIColor.green.cgColor
-                        textLayer.position = CGPoint(x: location.x * self.drawableSize.width, y: location.y * self.drawableSize.height)
+                        textLayer.position = CGPoint(x: location.x * self.drawableSize.width, y: (1.0-location.y) * self.drawableSize.height)
                         newLayers.append(textLayer)
                     }
                 }
@@ -95,7 +98,9 @@ struct VS2View: UIViewRepresentable {
         }
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
-            drawableSize = size
+            let scale = UIScreen.main.scale
+            drawableSize = CGSize(width: size.width / scale, height: size.height / scale)
+            print("willChange", drawableSize)
         }
         
         func update(script:[String:Any], UIView:UIView) {
