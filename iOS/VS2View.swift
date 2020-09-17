@@ -110,11 +110,20 @@ struct VS2View: UIViewRepresentable {
                 }
 
                 var newLayers = [CALayer]()
+                
+                let boundLayer = CALayer()
+                boundLayer.frame = frame.unnormalized(size: self.drawableSize)
+                boundLayer.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.2)
+                newLayers.append(boundLayer)
+
                 let textLayer = CATextLayer()
-                textLayer.frame = frame.unnormalized(size: self.drawableSize)
+                let textOrigin = CGPoint(x: boundLayer.frame.origin.x - boundLayer.frame.width * 0.5,
+                                         y: boundLayer.frame.origin.y - boundLayer.frame.height * 0.5)
+                textLayer.frame = CGRect(origin: textOrigin, size: self.drawableSize)
                 textLayer.string = emoji
-                textLayer.fontSize = textLayer.frame.width
-                textLayer.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.2)
+                textLayer.fontSize = max(boundLayer.frame.height, boundLayer.frame.width) * 1.5
+                textLayer.opacity = 0.8
+                textLayer.backgroundColor = CGColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.2)
                 newLayers.append(textLayer)
 
                 if let allPoints = try? result.recognizedPoints(forGroupKey: VNRecognizedPointGroupKey.all) {
