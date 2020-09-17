@@ -71,14 +71,33 @@ struct VS2View: UIViewRepresentable {
                     }
                     return
                 }
-                
+
+                var lengthIndex = CGFloat(0.0)
+                if let pointIndexTip = try? result.recognizedPoint(.indexTip),
+                   let pointIndexDip = try? result.recognizedPoint(.indexDIP) {
+                    lengthIndex = pointIndexTip.distance(pointIndexDip)
+                }
+                var lengthMiddle = CGFloat(0.0)
+                if let pointMiddleTip = try? result.recognizedPoint(.middleTip),
+                   let pointMiddleDip = try? result.recognizedPoint(.middleDIP) {
+                    lengthMiddle = pointMiddleTip.distance(pointMiddleDip)
+                }
+
+                var emoji = "?"
+                if lengthIndex > 0.05 && lengthIndex > lengthMiddle {
+                    emoji = "☝️"
+                }
+                if lengthMiddle > 0.05 && lengthMiddle > lengthIndex {
+                    emoji = "🈲"
+                }
+
                 var newLayers = [CALayer]()
                 if let allPoints = try? result.recognizedPoints(forGroupKey: VNRecognizedPointGroupKey.all) {
                     for (_, point) in allPoints {
                         let location = point.location
                         let textLayer = CATextLayer()
                         textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
-                        textLayer.string = "✌️"
+                        textLayer.string = emoji
                         textLayer.fontSize = 10
                         textLayer.foregroundColor = UIColor.green.cgColor
                         textLayer.position = CGPoint(x: location.x * self.drawableSize.width, y: (1.0-location.y) * self.drawableSize.height)
@@ -114,5 +133,13 @@ struct VS2View: UIViewRepresentable {
             cameraSession.draw(drawable: view.currentDrawable, textures:[:])
         }
         
+    }
+}
+
+extension VNRecognizedPoint {
+    func distance(_ from:VNRecognizedPoint) -> CGFloat {
+        let dx = self.location.x - from.location.x
+        let dy = self.location.y - from.location.y
+        return sqrt(dx * dx + dy * dy)
     }
 }
