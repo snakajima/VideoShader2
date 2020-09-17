@@ -83,24 +83,25 @@ struct VS2View: UIViewRepresentable {
                 }
                 self.lastFrame = frame
 
-                let vectorThumb = analyzer.vector(from: .thumbTip, to: .thumbCMC)
+                let vectorThumb = analyzer.vector(from: .thumbCMC, to: .thumbTip)
                 let vectorIndex = analyzer.vector(from: .indexMCP, to: .indexTip)
                 let vectorMid = analyzer.vector(from: .middleMCP, to: .middleTip)
                 let vectorRing = analyzer.vector(from: .ringMCP, to: .ringTip)
                 let vectorLittle = analyzer.vector(from: .littleMCP, to: .littleTip)
 
+                let upThumb = -vectorThumb.dy > frame.height * 0.3
                 let upIndex = -vectorIndex.dy > frame.height * 0.3
                 let upMid = -vectorMid.dy > frame.height * 0.3
                 let upRing = -vectorRing.dy > frame.height * 0.3
-                let upThumb = -vectorThumb.dy > frame.height * 0.2
-                let upLittle = -vectorLittle.dy > frame.height * 0.2
+                let upLittle = -vectorLittle.dy > frame.height * 0.3
+                print(upThumb, upIndex, upMid, upRing, upLittle)
 
                 var emoji = ""
-                if upIndex && !upMid && !upRing && !upThumb && !upLittle {
+                if upIndex && !upMid && !upRing && !upLittle {
                     emoji = "☝️"
-                } else if upIndex && upMid && !upRing && !upThumb && !upLittle {
+                } else if upIndex && upMid && !upRing && !upLittle {
                     emoji = "✌️"
-                } else if !upIndex && upMid && !upRing && !upThumb && !upLittle {
+                } else if !upIndex && upMid && !upRing && !upLittle {
                     emoji = "🈲"
                 } else if !upIndex && !upMid && !upRing && upThumb && !upLittle {
                     emoji = "👍"
