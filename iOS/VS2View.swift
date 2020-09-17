@@ -121,18 +121,24 @@ struct VS2View: UIViewRepresentable {
                         newLayers.append(textLayer)
                     }
                 }
-                
+                /*
                 let layerBox = CALayer()
                 layerBox.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.2)
                 layerBox.frame = frame.unnormalized(size: self.drawableSize)
+                self.layer.addSublayer(layerBox)
+                */
+                let textLayer = CATextLayer()
+                textLayer.frame = frame.unnormalized(size: self.drawableSize)
+                textLayer.string = emoji
+                textLayer.fontSize = 50 // textLayer.frame.width
+                textLayer.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.2)
+                //textLayer.opacity = 0.5
+                newLayers.append(textLayer)
 
                 DispatchQueue.main.async {
                     for sublayer in self.layer.sublayers ?? [] {
                         sublayer.removeFromSuperlayer()
                     }
-                    
-
-                    self.layer.addSublayer(layerBox)
                     for newLayer in newLayers {
                         self.layer.addSublayer(newLayer)
                     }
