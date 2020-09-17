@@ -67,21 +67,20 @@ struct VS2View: UIViewRepresentable {
                     print("Detection no result")
                     return
                 }
-                //var newLayers = [CALayer]()
-                let allPoints = try? result.recognizedPoints(forGroupKey: VNRecognizedPointGroupKey.all)
-                print(allPoints)
-                /*
-                for keypoints in result.keypointsMultiArray() {
-                    let bounds = result.boundingBox
-                    //print("bounds", bounds)
-                    let textLayer = CATextLayer()
-                    textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
-                    textLayer.position = CGPoint(x: 100, y: 100)
-                    textLayer.string = "Hello World"
-                    textLayer.fontSize = 32
-                    textLayer.foregroundColor = UIColor.green.cgColor
-                    textLayer.position = CGPoint(x: bounds.origin.x * self.drawableSize.width, y: bounds.origin.y * self.drawableSize.height)
-                    newLayers.append(textLayer)
+                
+                var newLayers = [CALayer]()
+                if let allPoints = try? result.recognizedPoints(forGroupKey: VNRecognizedPointGroupKey.all) {
+                    for (_, point) in allPoints {
+                        let location = point.location
+                        let textLayer = CATextLayer()
+                        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
+                        textLayer.position = CGPoint(x: 100, y: 100)
+                        textLayer.string = "H"
+                        textLayer.fontSize = 10
+                        textLayer.foregroundColor = UIColor.green.cgColor
+                        textLayer.position = CGPoint(x: location.x * self.drawableSize.width, y: location.y * self.drawableSize.height)
+                        newLayers.append(textLayer)
+                    }
                 }
                 DispatchQueue.main.async {
                     for sublayer in self.layer.sublayers ?? [] {
@@ -91,7 +90,6 @@ struct VS2View: UIViewRepresentable {
                         self.layer.addSublayer(newLayer)
                     }
                 }
-                */
             }
             return [faceDetectionRequest]
         }
