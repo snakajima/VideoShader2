@@ -41,7 +41,7 @@ struct VS2View: UIViewRepresentable {
         let gpu:MTLDevice
         let cameraSession:VS2CameraSession
         let view: VS2View
-        let textLayer = CATextLayer()
+        let layer = CALayer()
         var drawableSize = CGSize.zero
         
         init(_ view: VS2View) {
@@ -51,13 +51,6 @@ struct VS2View: UIViewRepresentable {
             let device = deviceDiscoverySession.devices.first!
             cameraSession = VS2CameraSession(gpu:gpu, camera:device)
             self.view = view
-
-            textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
-            textLayer.position = CGPoint(x: 100, y: 100)
-            textLayer.string = "Hello World"
-            textLayer.fontSize = 32
-            textLayer.foregroundColor = UIColor.green.cgColor
-            
         }
         
         func startRunning() {
@@ -79,7 +72,17 @@ struct VS2View: UIViewRepresentable {
                     let bounds = result.boundingBox
                     //print("bounds", bounds)
                     DispatchQueue.main.async {
-                        self.textLayer.position = CGPoint(x: bounds.origin.x * self.drawableSize.width, y: bounds.origin.y * self.drawableSize.height)
+                        for sublayer in self.layer.sublayers ?? [] {
+                            sublayer.removeFromSuperlayer()
+                        }
+                        let textLayer = CATextLayer()
+                        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
+                        textLayer.position = CGPoint(x: 100, y: 100)
+                        textLayer.string = "Hello World"
+                        textLayer.fontSize = 32
+                        textLayer.foregroundColor = UIColor.green.cgColor
+                        textLayer.position = CGPoint(x: bounds.origin.x * self.drawableSize.width, y: bounds.origin.y * self.drawableSize.height)
+                        self.layer.addSublayer(textLayer)
                     }
                 }
             }
@@ -93,7 +96,7 @@ struct VS2View: UIViewRepresentable {
         func update(script:[String:Any], UIView:UIView) {
             cameraSession.update(script:script)
             if UIView.layer.sublayers?.first == nil {
-                UIView.layer.addSublayer(textLayer)
+                UIView.layer.addSublayer(layer)
             }
         }
 
