@@ -63,7 +63,9 @@ struct VS2View: UIViewRepresentable {
                 if error != nil {
                     print("Detection error: \(String(describing: error)).")
                 }
-                guard let result = request.results?.first as? VNHumanHandPoseObservation else {
+                guard let result = request.results?.first as? VNHumanHandPoseObservation,
+                      var analyzer = try? HandGectureAnalyzer(observation: result)
+                      else {
                     DispatchQueue.main.async {
                         for sublayer in self.layer.sublayers ?? [] {
                             sublayer.removeFromSuperlayer()
@@ -110,10 +112,18 @@ struct VS2View: UIViewRepresentable {
                         newLayers.append(textLayer)
                     }
                 }
+                
+                let layerBox = CALayer()
+                layerBox.bounds = analyzer.bounds.unnormalized(size: self.drawableSize)
+                print(layerBox.bounds)
+                layerBox.backgroundColor = UIColor.yellow.cgColor
+                
                 DispatchQueue.main.async {
                     for sublayer in self.layer.sublayers ?? [] {
                         sublayer.removeFromSuperlayer()
                     }
+                    
+                    self.layer.addSublayer(layerBox)
                     for newLayer in newLayers {
                         self.layer.addSublayer(newLayer)
                     }
@@ -147,5 +157,23 @@ extension VNRecognizedPoint {
         let dx = self.location.x - from.location.x
         let dy = self.location.y - from.location.y
         return sqrt(dx * dx + dy * dy)
+    }
+}
+
+extension CGPoint {
+    func unnormalized(size:CGSize) -> CGPoint {
+        return CGPoint(x: x * size.width, y: y * size.height)
+    }
+}
+
+extension CGSize {
+    func unnormalized(size:CGSize) -> CGSize {
+        return CGSize(width: width * size.width, height: height * size.height)
+    }
+}
+
+extension CGRect {
+    func unnormalized(size:CGSize) -> CGRect {
+        return CGRect(origin: origin.unnormalized(size: size), size: self.size.unnormalized(size: size))
     }
 }
