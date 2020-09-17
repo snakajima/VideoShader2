@@ -29,7 +29,7 @@ class VS2CameraSession: NSObject {
     var isProcessing = false
     
     // Vision
-    lazy var sequenceRequestHandler = VNSequenceRequestHandler()
+    //lazy var sequenceRequestHandler = VNSequenceRequestHandler()
     private var detectionRequests = [VNImageBasedRequest]()
 
     init(gpu:MTLDevice, camera:AVCaptureDevice) {
@@ -131,10 +131,10 @@ class VS2CameraSession: NSObject {
         commandBuffer.commit()
         
         // Vision
-        //let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
+        let imageRequestHandler = VNImageRequestHandler(ciImage: scaledImage, orientation: .up, options: [:])
         do {
-            //try imageRequestHandler.perform(detectionRequests)
-            try sequenceRequestHandler.perform(detectionRequests, on: scaledImage)
+            try imageRequestHandler.perform(detectionRequests)
+            // try sequenceRequestHandler.perform(detectionRequests, on: scaledImage)
         } catch {
             print("perform", error.localizedDescription)
         }
