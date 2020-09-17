@@ -10,13 +10,16 @@ import Foundation
 import SwiftUI
 import MetalKit
 import AVFoundation
+import Vision
 
 struct VS2View: UIViewRepresentable {
     @Binding var script:[String:Any]
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(self)
-    }
+        let coordinator = Coordinator(self)
+        coordinator.startRunning()
+        return coordinator
+   }
 
     func makeUIView(context: UIViewRepresentableContext<VS2View>) -> MTKView {
         let metalView = MTKView()
@@ -45,6 +48,9 @@ struct VS2View: UIViewRepresentable {
             let device = deviceDiscoverySession.devices.first!
             cameraSession = VS2CameraSession(gpu:gpu, camera:device)
             self.view = view
+        }
+        
+        func startRunning() {
             cameraSession.startRunning()
         }
 
