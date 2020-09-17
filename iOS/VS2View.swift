@@ -59,32 +59,39 @@ struct VS2View: UIViewRepresentable {
 
         func prepareVisionRequest() -> [VNImageBasedRequest] {
             //var requests = [VNTrackObjectRequest]()
-            let faceDetectionRequest = VNDetectFaceRectanglesRequest { (request, error) in
+            let faceDetectionRequest = VNDetectHumanHandPoseRequest { (request, error) in
                 if error != nil {
-                    print("FaceDetection error: \(String(describing: error)).")
+                    print("Detection error: \(String(describing: error)).")
                 }
-                guard let results = request.results as? [VNFaceObservation] else {
-                    print("FaceDetection no result")
+                guard let result = request.results?.first as? VNHumanHandPoseObservation else {
+                    print("Detection no result")
                     return
                 }
-                //print("FaceDetection count=", results.count)
-                for result in results {
+                //var newLayers = [CALayer]()
+                let allPoints = try? result.recognizedPoints(forGroupKey: VNRecognizedPointGroupKey.all)
+                print(allPoints)
+                /*
+                for keypoints in result.keypointsMultiArray() {
                     let bounds = result.boundingBox
                     //print("bounds", bounds)
-                    DispatchQueue.main.async {
-                        for sublayer in self.layer.sublayers ?? [] {
-                            sublayer.removeFromSuperlayer()
-                        }
-                        let textLayer = CATextLayer()
-                        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
-                        textLayer.position = CGPoint(x: 100, y: 100)
-                        textLayer.string = "Hello World"
-                        textLayer.fontSize = 32
-                        textLayer.foregroundColor = UIColor.green.cgColor
-                        textLayer.position = CGPoint(x: bounds.origin.x * self.drawableSize.width, y: bounds.origin.y * self.drawableSize.height)
-                        self.layer.addSublayer(textLayer)
+                    let textLayer = CATextLayer()
+                    textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 200, height: 50))
+                    textLayer.position = CGPoint(x: 100, y: 100)
+                    textLayer.string = "Hello World"
+                    textLayer.fontSize = 32
+                    textLayer.foregroundColor = UIColor.green.cgColor
+                    textLayer.position = CGPoint(x: bounds.origin.x * self.drawableSize.width, y: bounds.origin.y * self.drawableSize.height)
+                    newLayers.append(textLayer)
+                }
+                DispatchQueue.main.async {
+                    for sublayer in self.layer.sublayers ?? [] {
+                        sublayer.removeFromSuperlayer()
+                    }
+                    for newLayer in newLayers {
+                        self.layer.addSublayer(newLayer)
                     }
                 }
+                */
             }
             return [faceDetectionRequest]
         }
