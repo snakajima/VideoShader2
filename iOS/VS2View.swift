@@ -110,6 +110,10 @@ struct VS2View: UIViewRepresentable {
                     emoji = "👎"
                 } else if upIndex && upMid && upRing && upThumb && upLittle {
                     emoji = "✋"
+                } else if upIndex && !upMid && !upRing && upThumb && upLittle {
+                    emoji = "🤟"
+                } else if upIndex && !upMid && !upRing && !upThumb && upLittle {
+                    emoji = "🤘"
                 }
 
                 var newLayers = [CALayer]()
