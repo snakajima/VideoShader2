@@ -42,6 +42,7 @@ struct VS2View: UIViewRepresentable {
         let cameraSession:VS2CameraSession
         let view: VS2View
         let textLayer = CATextLayer()
+        var drawableSize = CGSize.zero
         
         init(_ view: VS2View) {
             gpu = MTLCreateSystemDefaultDevice()!
@@ -76,15 +77,17 @@ struct VS2View: UIViewRepresentable {
                 //print("FaceDetection count=", results.count)
                 for result in results {
                     let bounds = result.boundingBox
-                    print("bounds", bounds)
-                    //DispatchQueue.main.async {
-                    //}
+                    //print("bounds", bounds)
+                    DispatchQueue.main.async {
+                        self.textLayer.position = CGPoint(x: bounds.origin.x * self.drawableSize.width, y: bounds.origin.y * self.drawableSize.height)
+                    }
                 }
             }
             return [faceDetectionRequest]
         }
 
         func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+            drawableSize = size
         }
         
         func update(script:[String:Any], UIView:UIView) {
