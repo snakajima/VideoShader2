@@ -90,11 +90,12 @@ struct VS2View: UIViewRepresentable {
                 let vectorLittle = analyzer.vector(from: .littleMCP, to: .littleTip)
 
                 let upThumb = -vectorThumb.dy > frame.height * 0.3
+                let upThumbLarge = -vectorThumb.dy > frame.height * 0.6
+                let downThumb = vectorThumb.dy > frame.height * 0.4
                 let upIndex = -vectorIndex.dy > frame.height * 0.3
                 let upMid = -vectorMid.dy > frame.height * 0.3
                 let upRing = -vectorRing.dy > frame.height * 0.3
                 let upLittle = -vectorLittle.dy > frame.height * 0.3
-                print(upThumb, upIndex, upMid, upRing, upLittle)
 
                 var emoji = ""
                 if upIndex && !upMid && !upRing && !upLittle {
@@ -103,8 +104,10 @@ struct VS2View: UIViewRepresentable {
                     emoji = "✌️"
                 } else if !upIndex && upMid && !upRing && !upLittle {
                     emoji = "🈲"
-                } else if !upIndex && !upMid && !upRing && upThumb && !upLittle {
+                } else if !upIndex && !upMid && !upRing && upThumbLarge && !upLittle {
                     emoji = "👍"
+                } else if !upIndex && !upMid && !upRing && downThumb && !upLittle {
+                    emoji = "👎"
                 } else if upIndex && upMid && upRing && upThumb && upLittle {
                     emoji = "✋"
                 }
@@ -113,26 +116,45 @@ struct VS2View: UIViewRepresentable {
                 
                 let boundLayer = CALayer()
                 boundLayer.frame = frame.unnormalized(size: self.drawableSize)
-                boundLayer.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.2)
+                //boundLayer.backgroundColor = CGColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 0.2)
                 newLayers.append(boundLayer)
 
                 let textLayer = CATextLayer()
                 let textOrigin = CGPoint(x: boundLayer.frame.origin.x - boundLayer.frame.width * 0.5,
                                          y: boundLayer.frame.origin.y - boundLayer.frame.height * 0.5)
-                textLayer.frame = CGRect(origin: textOrigin, size: self.drawableSize)
+                let fontSize = max(boundLayer.frame.height, boundLayer.frame.width) * 1.5
+                textLayer.frame = CGRect(origin: textOrigin, size: CGSize(width: fontSize, height: fontSize * 1.5))
                 textLayer.string = emoji
-                textLayer.fontSize = max(boundLayer.frame.height, boundLayer.frame.width) * 1.5
+                textLayer.fontSize = fontSize
                 textLayer.opacity = 0.8
-                textLayer.backgroundColor = CGColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.2)
+                //textLayer.backgroundColor = CGColor(red: 0.0, green: 0.0, blue: 1.0, alpha: 0.2)
                 newLayers.append(textLayer)
 
                 if let allPoints = try? result.recognizedPoints(forGroupKey: VNRecognizedPointGroupKey.all) {
-                    for (_, point) in allPoints {
+                    for (key, point) in allPoints {
                         let location = point.location
                         let textLayer = CATextLayer()
-                        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 10, height: 10))
-                        textLayer.string = "P"
-                        textLayer.fontSize = 10
+                        var string = "?"
+                        switch(key.rawValue) {
+                        case "VNHLKITIP", "VNHLKIDIP", "VNHLKIPIP", "VNHLKIMCP":
+                            string = "I"
+                        case "VNHLKMTIP", "VNHLKMDIP", "VNHLKMPIP", "VNHLKMMCP":
+                            string = "M"
+                        case "VNHLKRTIP", "VNHLKRDIP", "VNHLKRPIP", "VNHLKRMCP":
+                            string = "R"
+                        case "VNHLKPTIP", "VNHLKPDIP", "VNHLKPPIP", "VNHLKPMCP":
+                            string = "L"
+                        case "VNHLKTTIP", "VNHLKTIP", "VNHLKTMP", "VNHLKTCMC":
+                            string = "T"
+                        case "VNHLKWRI":
+                            string = "W"
+                        default:
+                            print(key.rawValue)
+                            break
+                        }
+                        textLayer.bounds = CGRect(origin: .zero, size: CGSize(width: 20, height: 20))
+                        textLayer.string = string
+                        textLayer.fontSize = 15
                         textLayer.foregroundColor = UIColor.green.cgColor
                         textLayer.position = CGPoint(x: location.x * self.drawableSize.width, y: location.y * self.drawableSize.height)
                         newLayers.append(textLayer)
