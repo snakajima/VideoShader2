@@ -83,19 +83,13 @@ struct VS2View: UIViewRepresentable {
                 }
                 self.lastFrame = frame
 
-                let vectorThumb = analyzer.vector(from: .thumbCMC, to: .thumbTip)
-                let vectorIndex = analyzer.vector(from: .indexMCP, to: .indexTip)
-                let vectorMid = analyzer.vector(from: .middleMCP, to: .middleTip)
-                let vectorRing = analyzer.vector(from: .ringMCP, to: .ringTip)
-                let vectorLittle = analyzer.vector(from: .littleMCP, to: .littleTip)
-
-                let upThumb = -vectorThumb.dy > frame.height * 0.3
-                let upThumbLarge = -vectorThumb.dy > frame.height * 0.6
-                let downThumb = vectorThumb.dy > frame.height * 0.4
-                let upIndex = -vectorIndex.dy > frame.height * 0.3
-                let upMid = -vectorMid.dy > frame.height * 0.3
-                let upRing = -vectorRing.dy > frame.height * 0.3
-                let upLittle = -vectorLittle.dy > frame.height * 0.3
+                let upThumb = -analyzer.vectorThumb.dy > frame.height * 0.3
+                let upThumbLarge = -analyzer.vectorThumb.dy > frame.height * 0.6
+                let downThumb = analyzer.vectorThumb.dy > frame.height * 0.3
+                let upIndex = -analyzer.vectorIndex.dy > frame.height * 0.3
+                let upMid = -analyzer.vectorMid.dy > frame.height * 0.3
+                let upRing = -analyzer.vectorRing.dy > frame.height * 0.3
+                let upLittle = -analyzer.vectorLittle.dy > frame.height * 0.3
 
                 var emoji = ""
                 if upIndex && !upMid && !upRing && !upLittle {
@@ -124,9 +118,9 @@ struct VS2View: UIViewRepresentable {
                 newLayers.append(boundLayer)
 
                 let textLayer = CATextLayer()
-                let textOrigin = CGPoint(x: boundLayer.frame.origin.x - boundLayer.frame.width * 0.5,
-                                         y: boundLayer.frame.origin.y - boundLayer.frame.height * 0.5)
-                let fontSize = max(boundLayer.frame.height, boundLayer.frame.width) * 1.5
+                let fontSize = max(boundLayer.frame.height, boundLayer.frame.width) * 2.0
+                let textOrigin = CGPoint(x: boundLayer.frame.origin.x - fontSize * 0.25,
+                                         y: boundLayer.frame.origin.y - fontSize * 0.40)
                 textLayer.frame = CGRect(origin: textOrigin, size: CGSize(width: fontSize, height: fontSize * 1.5))
                 textLayer.string = emoji
                 textLayer.fontSize = fontSize
@@ -161,7 +155,7 @@ struct VS2View: UIViewRepresentable {
                         textLayer.fontSize = 15
                         textLayer.foregroundColor = UIColor.green.cgColor
                         textLayer.position = CGPoint(x: location.x * self.drawableSize.width, y: location.y * self.drawableSize.height)
-                        //newLayers.append(textLayer)
+                        newLayers.append(textLayer)
                     }
                 }
 

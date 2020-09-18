@@ -33,7 +33,13 @@ struct HandGectureAnalyzer {
         }
         return CGRect(origin: origin, size: CGSize(width: extend.x - origin.x, height: extend.y - origin.y))
     }()
-    
+
+    lazy var vectorThumb = self.vector(from: .thumbCMC, to: .thumbTip)
+    lazy var vectorIndex = self.vector(from: .indexMCP, to: .indexTip)
+    lazy var vectorMid = self.vector(from: .middleMCP, to: .middleTip)
+    lazy var vectorRing = self.vector(from: .ringMCP, to: .ringTip)
+    lazy var vectorLittle = self.vector(from: .littleMCP, to: .littleTip)
+
     init(observation:VNHumanHandPoseObservation) throws {
         self.observation = observation
         self.points = try observation.recognizedPoints(.all)
